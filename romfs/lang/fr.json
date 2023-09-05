@@ -11,11 +11,11 @@
     },
     "theme": {
       "title": "Use Theme",
-      "desc": "Press OK to quit Tinwoo or Cancel to continue.\n\nThemes will activate the next time you start Tinwoo."
+      "desc": "Appuyez sur OK pour quitter Tinwoo ou sur Annuler pour continuer.\n\nLes thèmes s'activeront au prochain démarrage de Tinwoo."
     },
     "hdd": {
       "title": "USB HDD",
-      "notfound": "USB HDD is not connected."
+      "notfound": "Le disque dur USB n'est pas connecté."
     },
     "net": {
       "title": "Connection au réseau impossible",
@@ -36,14 +36,14 @@
       "title": "Le mode Applet n'est pas compatible",
       "desc": "Vous pouvez rencontrer des problèmes en utilisant TinWoo Installer en mode Applet. Si vous \navez des problèmes, veuillez lancer TinWoo en mode 'non-Applet'\n (Maintenez R pendant le démarrage d'un jeu)!"
     },
-    "buttons": "\ue0e0 Select    \ue0e3 Espace libre    \ue0e4+\ue0e5 ou \ue0ef ou \ue0f0 Quitter"
+    "buttons": "\ue0e0 Sélectionner  \ue0e3 Espace libre  \ue0e4+\ue0e5 ou \ue0ef ou \ue0f0 Quitter"
   },
   "inst": {
     "net": {
       "help": {
         "title": "Aide",
         "desc": "Les fichiers peuvent être installés à distance depuis vos autres périphériques à l'aide d'outils\ntels que NS-USBloader en mode Tinfoil. Pour envoyer des fichiers à votre Switch, ouvrez l'un\nde ces logiciels sur votre PC ou votre appareil mobile, entrez\nl'adresse IP de votre Switch (indiquée à l'écran), sélectionnez vos fichiers, puis téléchargez-les\nsur votre console ! Si le logiciel que vous utilisez ne vous permet pas de sélectionner des types de fichiers\nspécifiques, essayez de modifier l'extension en quelque chose qu'il accepte.\nTinWoo Installer ne se soucie pas des extensions de fichiers lors des installations via le net !\n\nSi vous n'arrivez pas à comprendre, copiez simplement vos fichiers sur votre carte SD et essayez\nl'option \"Installer à partir de la carte SD\" depuis le menu principal!",
-        "blank": "The server address is currently blank. You need to enter a proper url.\n\nExample: http://192.168.0.51"
+        "blank": "L'adresse du serveur est actuellement vide. Vous devez entrer une URL appropriée.\n\nExemple: http://192.168.0.51"
       },
       "src": {
         "title": "D'où voulez-vous installer ?",
@@ -60,17 +60,17 @@
         "alt_name": "Fichier Google Drive",
         "source_string": " à partir de Google Drive"
       },
-      "sd": "Free space on sd card: ",
-      "nand": "Free space on nand: ",
-      "index_error": "No games found!",
-      "index_error_info": "Did you enter the correct HTTP server source URL in the config page?",
+      "sd": "Espace libre sur la carte SD: ",
+      "nand": "Espace libre sur la NAND: ",
+      "index_error": "Aucun jeu trouvé !",
+      "index_error_info": "Avez-vous entré la bonne URL source du serveur HTTP dans la page de configuration ?",
       "top_info": "Sélectionnez les fichiers que vous voulez installer à partir du serveur, puis appuyez sur le bouton Plus !",
       "top_info1": "En attente d'une connexion... L'adresse IP de votre switch est : ",
       "failed": "Echec de l'installation à distance !",
       "transfer_interput": "Une erreur s'est produite pendant le transfert des données. Vérifiez votre connexion réseau.",
       "source_string": " à partir d'un réeseau",
-      "buttons": "\ue0e3 Installer via Internet    \ue0e2 Aide    \ue0e1 Annuler",
-      "buttons1": "\ue0e0 Sélectionnez un fichier    \ue0e3 Tout sélectionner   \ue0ef Installer un/des fichier(s)    \ue0e1 Annuler"
+      "buttons": "\ue0e3 Installer via Internet  \ue0e2 Aide  \ue0e1 Annuler",
+      "buttons1": "\ue0e0 Sélectionnez un fichier  \ue0e3 Tout sélectionner  \ue0ef Installer un/des fichier(s)  \ue0e1 Annuler"
     },
     "sd": {
       "help": {
@@ -82,19 +82,19 @@
       "delete_info": " Installation réussie! Supprimer de la carte SD?",
       "delete_info_multi": " fichiers installés avec succès ! Les supprimer de la carte SD ?",
       "delete_desc": "Les fichiers originaux ne sont plus nécessaires une fois qu'ils ont été installés.",
-      "buttons": "\ue0e0 Sélectionnez un fichier    \ue0e3 Tout sélectionner    \ue0ef Installer un/des fichier(s)    \ue0e2 Aide    \ue0e1 Annuler"
+      "buttons": "\ue0e0 Sélectionnez un fichier  \ue0e3 Tout sélectionner  \ue0ef Installer un/des fichier(s)  \ue0e2 Aide  \ue0e1 Annuler"
     },
     "hd": {
       "help": {
-        "title": "Help",
-        "desc": "Copy your NSP, NSZ, XCI, or XCZ files to your hard drive, browse to and\nselect the ones you want to install, then press the Plus button."
+        "title": "Aide",
+        "desc": "Copiez vos fichiers NSP, NSZ, XCI ou XCZ sur votre disque dur, recherchez et \nsélectionnez ceux que vous souhaitez installer, puis appuyez sur le bouton Plus."
       },
-      "top_info": "Select the files you want to install, then press the Plus button!",
-      "source_string": " from hard drive",
-      "delete_info": " installed\nDelete it from the hard drive?",
-      "delete_info_multi": " files installed successfully!\nDelete them from the hard drive?",
-      "delete_desc": "The original files aren't needed anymore after they've been installed",
-      "buttons": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0e2 Help    \ue0e1 Cancel"
+      "top_info": "Sélectionnez les fichiers que vous souhaitez installer, puis appuyez sur le bouton Plus !",
+      "source_string": " du disque dur",
+      "delete_info": " Installée\nLe supprimer du disque dur ?",
+      "delete_info_multi": " fichiers installés avec succès ! \nLes supprimer du disque dur ?",
+      "delete_desc": "Les fichiers originaux ne sont plus nécessaires une fois installés",
+      "buttons": "\ue0e0 Choisir le dossier  \ue0e3 Tout sélectionner \ue0ef Installer le fichier(s)  \ue0e2 Aide  \ue0e1 Annuler"
     },
     "usb": {
       "help": {
@@ -106,7 +106,7 @@
       "error": "Le transfert USB a été interrompu ou a échoué",
       "source_string": " à partir d'un périphèrique USB",
       "buttons": "\ue0e2 (Maintenir) Aide    \ue0e1 (Maintenir) Annuler",
-      "buttons2": "\ue0e0 Sélectionnez un fichier    \ue0e3 Tout sélectionner    \ue0ef Installer un/des fichier(s)    \ue0e1 Annuler"
+      "buttons2": "\ue0e0 Sélectionnez un fichier  \ue0e3 Tout sélectionner  \ue0ef Installer un/des fichier(s)  \ue0e1 Annuler"
     },
     "target": {
       "desc0": "Où ",
@@ -125,7 +125,7 @@
       "desc0": " fichiers installés avec succès !",
       "desc1": " installé !",
       "downloading": "Téléchargement ",
-      "queue": "Files in queue: ",
+      "queue": "Fichiers en file d'attente: ",
       "at": " à "
     },
     "nca_verify": {
@@ -175,14 +175,14 @@
       "ask_delete": "Demande de suppression des fichiers originaux après l'installation",
       "auto_update": "Vérifier les mises à jour de l'installateur TinWoo automatiquement",
       "gay_option": "Utiliser le thème",
-      "useSound": "Use sound notifications during installs",
-      "useoldphp": "Auto encode urls for http server installs",
-      "streamhtmls": "Auto add server base url for http server installs",
-      "fixticket": "Convert temporary tickets to permanent",
-      "usehttpkeyboard": "Use keyboard during http server installs",
+      "useSound": "Utiliser les notifications sonores lors des installations",
+      "useoldphp": "Encodage automatique des URL pour les installations de serveur http",
+      "streamhtmls": "Ajout automatique de l'URL de base du serveur pour les installations de serveur http",
+      "fixticket": "Convertir des billets temporaires en billets permanents",
+      "usehttpkeyboard": "Utiliser le clavier lors des installations du serveur http",
       "sig_url": "Patchs de signatures URL: ",
-      "http_url": "Http server source URL: ",
-      "language": "Langage: ",
+      "http_url": "URL source du serveur HTTP: ",
+      "language": "Langue: ",
       "check_update": "Vérifiez les mises à jour de l'installateur TinWoo",
       "credits": "Crédits"
     },
@@ -216,7 +216,7 @@
       "system_language": "Système"
     },
     "title": "Modifiez les paramètres de TinWoo Installler !",
-    "buttons": "\ue0e0 Sélectionner/Modifier    \ue0e1 Annuler"
+    "buttons": "\ue0e0 Sélectionner/Modifier  \ue0e1 Annuler"
   },
   "common": {
     "ok": "OK",
