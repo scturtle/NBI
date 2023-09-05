@@ -1,0 +1,229 @@
+{
+  "main": {
+    "menu": {
+      "sd": "Instalar desde tarjeta SD",
+      "net": "Instalar a través de LAN o Internet",
+      "usb": "Instalar a través de USB",
+      "hdd": "Instalar a través de disco duro USB",
+      "sig": "Gestionar parches de firma",
+      "set": "Configuración",
+      "exit": "Salir"
+    },
+    "theme": {
+      "title": "Usar tema",
+      "desc": "Presiona OK para salir de Tinwoo o Cancelar para continuar.\n\nLos temas se activarán la próxima vez que inicies Tinwoo"
+    },
+    "hdd": {
+      "title": "HDD USB",
+      "notfound": "El disco duro USB no está conectado"
+    },
+    "net": {
+      "title": "Conexión de red no disponible",
+      "desc": "Verifica que el modo avión esté deshabilitado y que estés conectado a una red local"
+    },
+    "usb": {
+      "warn": {
+        "title": "¡Advertencia!",
+        "desc": "Es posible que las instalaciones USB \"simplemente\" no funcionen en algunos dispositivos y configuraciones.\nSi tiene problemas con las instalaciones USB, ¡por favor, no se tire\nde los pelos! Se recomienda usar NS-USBloader para instalaciones USB. , o\ninstalaciones de LAN/Internet en lugar de una instalación remota, ¡especialmente\ncuando se combina con un adaptador de ethernet!\n\nHa sido advertido...",
+        "opt1": "No me lo vuelvas a decir"
+      },
+      "error": {
+        "title": "No se detectó ninguna conexión USB",
+        "desc": "Conéctalo a un dispositivo compatible para instalar a través de USB"
+      }
+    },
+    "applet": {
+      "title": "Modo subprograma no compatible",
+      "desc": "Es posible que experimente problemas al utilizar TinWoo Installer en modo Applet. Si tiene\nproblemas, cambie a ejecutar TinWoo Installer sobre un\ntítulo instalado (mantenga presionada la tecla R al iniciar un juego)"
+    },
+    "buttons": "\ue0e0 Seleccionar \ue0e3 FreeSpace \ue0e4+\ue0e5 o \ue0ef o \ue0f0 Salir"
+  },
+  "inst": {
+    "net": {
+      "help": {
+        "title": "Ayuda",
+        "desc": "Files can be installed remotely from your other devices using tools such\nas NS-USBloader in Tinfoil mode. To send files to your Switch, open one\nof these pieces of software on your PC or mobile device, input your\nSwitch's IP address (listed on-screen), select your files, then upload\nto your console! If the software you're using won't let you select\nspecific file types, try renaming the extension to something it accepts.\nTinWoo Installer doesn't care about file extensions during net installations!\n\nIf you can't figure it out, just copy your files to your SD card and try\nthe \"Install from SD Card\" option on the main menu!",
+        "blank": "The server address is currently blank. You need to enter a proper url.\n\nExample: http://192.168.0.51"
+      },
+      "src": {
+        "title": "¿Desde dónde quieres instalar?",
+        "opt0": "URL",
+        "opt1": "Google Drive"
+      },
+      "url": {
+        "hint": "Ingrese la dirección de Internet de un archivo",
+        "invalid": "¡La URL especificada no es válida!",
+        "source_string": "desde la URL"
+      },
+      "gdrive": {
+        "hint": "Introduce el ID de un archivo público de Google Drive",
+        "alt_name": "Archivo de Google Drive",
+        "source_string": "de Google Drive"
+      },
+      "sd": "Free space on sd card: ",
+      "nand": "Free space on nand: ",
+      "index_error": "¡No se encontraron juegos!",
+      "index_error_info": "¿Escribiste la URL correcta?",
+      "top_info": "¡Selecciona qué archivos quieres instalar desde el servidor, luego presiona el botón Más!",
+      "top_info1": "Esperando conexión... La dirección IP de su Switch es: ",
+      "failed": "¡Error al realizar la instalación remota!",
+      "transfer_interput": "Ocurrió un error durante la transferencia de datos. Verifica tu conexión de red.",
+      "source_string": "a través de la red local",
+      "buttons": "\ue0e3 Instalar a través de Internet \ue0f0 Instalar desde el directorio HTTP \ue0e2 Ayuda \ue0e1 Cancelar",
+      "buttons1": "\ue0e0 Seleccionar archivo \ue0e3 Seleccionar todo \ue0ef Instalar archivo(s) \ue0e1 Cancelar"
+    },
+    "sd": {
+      "help": {
+        "title": "Ayuda",
+        "desc": "Copie sus archivos NSP, NSZ, XCI o XCZ a su tarjeta SD, busque y\nseleccione los que desea instalar, luego presione el botón Más"
+      },
+      "top_info": "¡Selecciona los archivos que deseas instalar, luego presiona el botón Más!",
+      "source_string": " de la tarjeta SD",
+      "delete_info": "¡instalado! ¿Eliminarlo de la tarjeta SD?",
+      "delete_info_multi": "¡archivos instalados correctamente! ¿Eliminarlos de la tarjeta SD?",
+      "delete_desc": "Los archivos originales ya no son necesarios después de haber sido instalados",
+      "buttons": "\ue0e0 Seleccionar archivo \ue0e3 Seleccionar todo \ue0ef Instalar archivo(s) \ue0e2 Ayuda \ue0e1 Cancelar"
+    },
+    "hd": {
+      "help": {
+        "title": "Ayuda",
+        "desc": "Copie sus archivos NSP, NSZ, XCI o XCZ en su disco duro, busque y\nseleccione los que desea instalar, luego presione el botón Más"
+      },
+      "top_info": "¡Selecciona los archivos que deseas instalar, luego presiona el botón Más!",
+      "source_string": " del disco duro",
+      "delete_info": " instalado\n¿Eliminarlo del disco duro?",
+      "delete_info_multi": " ¡archivos instalados con éxito!\n¿Borrarlos del disco duro?",
+      "delete_desc": "Los archivos originales ya no son necesarios después de haber sido instalados",
+      "buttons": "\ue0e0 Seleccionar archivo \ue0e3 Seleccionar todo \ue0ef Instalar archivo(s) \ue0e2 Ayuda \ue0e1 Cancelar"
+    },
+    "usb": {
+      "help": {
+        "title": "Ayuda",
+        "desc": "Los archivos se pueden instalar a través de USB desde otros dispositivos usando herramientas como\nNS-USBloader en modo Tinfoil. Para enviar archivos a su Switch, abra uno de\nestos programas de software en su PC, seleccione sus archivos, luego cargar a\nsu consola!\n\nLamentablemente, las instalaciones USB requieren una configuración específica en algunas\nplataformas, y pueden ser bastante problemáticas a veces. Si no puede resolverlo,\npruebe las instalaciones de LAN/Internet, o copie su archivos a su tarjeta SD y\npruebe la opción \"Instalar desde tarjeta SD\" en el menú principal"
+      },
+      "top_info": "¡Conexión USB exitosa! Esperando a que se envíe la lista de archivos...",
+      "top_info2": "¡Selecciona qué archivos quieres instalar a través de USB, luego presiona el botón Más!",
+      "error": "La transferencia USB se agotó o falló",
+      "source_string": "a través de USB",
+      "buttons": "\ue0e2 (Mantener) Ayuda \ue0e1 (Mantener) Cancelar",
+      "buttons2": "\ue0e0 Seleccionar archivo \ue0e3 Seleccionar todo \ue0ef Instalar archivo(s) \ue0e1 Cancelar"
+    },
+    "target": {
+      "desc0": "Dónde debería",
+      "desc1": "¿se instalará en?",
+      "desc00": "Donde se debe seleccionar",
+      "desc01": "¿Se instalarán los archivos?",
+      "opt0": "Tarjeta SD",
+      "opt1": "Almacenamiento interno"
+    },
+    "info_page": {
+      "top_info0": "Instalando",
+      "preparing": "Preparando la instalación...",
+      "failed": "Error al instalar",
+      "failed_desc": "El contenido parcialmente instalado se puede eliminar del applet de configuración del sistema.",
+      "complete": "Instalación completa",
+      "desc0": " ¡archivos instalados correctamente!",
+      "desc1": "¡instalado!",
+      "downloading": "Descargando",
+      "queue": "Files in queue: ",
+      "at": "en"
+    },
+    "nca_verify": {
+      "title": "¡Firma NCA no válida detectada!",
+      "desc": "El software firmado incorrectamente solo debe instalarse de fuentes\nconfiables. Los archivos que contienen reempaquetados de cartuchos y desbloqueadores de DLC siempre\nmostrarán esta advertencia. Puede deshabilitar esta verificación en la configuración del instalador de TinWoo.\n\n¿Está seguro de que desea ¿Continuar con la instalación?",
+      "opt1": "Sí, entiendo los riesgos",
+      "error": "La NCA solicitada no está debidamente firmada: "
+    },
+    "finished": [
+      "¡Disfruta de tus \"copias de seguridad legales\"!",
+      "¡Estoy seguro de que después de probar el juego te divertirás muchísimo comprándolo!",
+      "¿Compras gamu, verdad? ¡Nintendo-san, gracias por tu compra!",
+      "Omitir DRM es genial, ¿no?",
+      "¡Probablemente salvaste como seis árboles al no comprar el juego! ¡Todo ese plástico va a alguna parte!",
+      "Se han enviado ninjas de Nintendo a tu ubicación actual.",
+      "¡Y ni siquiera tuvimos que meterte una ideología política en la garganta para llegar aquí!"
+    ]
+  },
+  "sig": {
+    "install": "Instalar",
+    "uninstall": "Desinstalar",
+    "update": "Actualizar",
+    "version_text": "Actualmente tiene parches de firma instalados hasta para la versión HOS",
+    "title0": "¿Instalar parches de firma?",
+    "desc0": "Se requieren parches de firma para instalar y reproducir software oficial.",
+    "backup_failed": "¡No se pudo hacer una copia de seguridad de Hekate patches.ini! ¿Instalar de todos modos?",
+    "backup_failed_desc": "Si no usas Hekate, puedes ignorar esta advertencia.",
+    "download_failed": "No se pudieron descargar parches de firma",
+    "download_failed_desc": "You may have supplied an invalid source in TinWoo Installer's settings,\nor the host may just be down right now.",
+    "version_text2": "Sus parches de firma han sido actualizados hasta la versión HOS ",
+    "install_complete": "¡Instalación completa!",
+    "complete_desc": "Reinicia tu consola para aplicar",
+    "restart": "Reiniciar",
+    "later": "Lo haré más tarde",
+    "extract_failed": "¡No se pudieron extraer los archivos!",
+    "restore_failed": "¡No se pueden restaurar los parches.ini originales de Hekate! ¿Continuar con la desinstalación?",
+    "uninstall_complete": "Desinstalación completa",
+    "remove_failed": "No se pueden eliminar los parches de firma",
+    "remove_failed_desc": "Los archivos pueden haber sido renombrados o eliminados",
+    "generic_error": "¡Error al instalar parches de firma!"
+  },
+  "options": {
+    "menu_items": {
+      "ignore_firm": "Ignorar la versión mínima de firmware requerida por los títulos",
+      "nca_verify": "Verificar firmas NCA antes de la instalación",
+      "boost_mode": "Habilitar \"modo impulso\" durante las instalaciones",
+      "ask_delete": "Solicitar eliminar los archivos originales después de la instalación",
+      "auto_update": "Busca actualizaciones para el instalador de TinWoo automáticamente",
+      "gay_option": "Usar tema",
+      "useSound": "Usar notificaciones de sonido durante las instalaciones",
+      "useoldphp": "Usar archivos php antiguos para instalaciones de servidor http",
+      "streamhtmls": "Auto add server base url for http server installs",
+      "fixticket": "Convert temporary tickets to permanent",
+      "usehttpkeyboard": "Use keyboard during http server installs",
+      "sig_url": "URL de origen de parches de firma: ",
+      "http_url": "Http server source URL: ",
+      "language": "Idioma: ",
+      "check_update": "Buscar actualizaciones del instalador de TinWoo",
+      "credits": "Créditos"
+    },
+    "nca_warn": {
+      "title": "¡Advertencia!",
+      "desc": "Some installable files may contain malicious contents! Only disable this\nfeature if you are absolutely certain the software you will be installing\nis trustworthy!\n\nDo you still want to disable NCA signature verification?",
+      "opt1": "Sí, quiero un ladrillo"
+    },
+    "sig_hint": "Ingrese la URL para obtener parches de firma",
+    "update": {
+      "title": "Actualización disponible",
+      "desc0": "Instalador de TinWoo",
+      "desc1": "¡Ya está disponible! ¿Listo para actualizar?",
+      "opt0": "Actualizar",
+      "top_info": "Actualizando al instalador de TinWoo",
+      "bot_info": "Descargando el instalador de TinWoo",
+      "bot_info2": "Extrayendo el instalador de TinWoo",
+      "complete": "¡Actualización completa!",
+      "failed": "¡Falló la actualización!",
+      "end_desc": "El software ahora se cerrará.",
+      "title_check_fail": "No se encontraron actualizaciones",
+      "desc_check_fail": "¡Tienes la última versión del instalador de TinWoo!"
+    },
+    "credits": {
+      "title": "¡Gracias a los siguientes!",
+      "desc": "TinWoo - MrDude\nXorTroll - Plutonium\nTinleaf - BlaWar\nInstalador de Awoo - Huntereb\nCompatibilidad con disco duro - DarkMatterCore\n\n\nhttps://github.com/Huntereb/Awoo-Installer\nhttps:// github.com/blawar/tinleaf\nhttps://github.com/DarkMatterCore/libusbhsfs\n\nGracias por probar - LyuboA"
+    },
+    "language": {
+      "title": "Seleccione el idioma del instalador de TinWoo",
+      "desc": "El software se cerrará después de cambiar de idioma. Presiona B para cancelar.",
+      "system_language": "Sistema"
+    },
+    "title": "¡Cambiar la configuración del instalador de TinWoo!",
+    "buttons": "\ue0e0 Seleccionar/Cambiar \ue0e1 Cancelar"
+  },
+  "common": {
+    "ok": "",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "yes": "Si",
+    "no": "No",
+    "cancel_desc": "Presiona B para cancelar"
+  }
+}
