@@ -18,6 +18,7 @@
 namespace inst::ui {
 	extern MainApplication* mainApp;
 	s32 prev_touchcount = 0;
+	std::string flag = "romfs:/images/flags/en.png";
 
 	std::vector<std::string> languageStrings = { "En", "Jpn", "Fr", "De", "It", "Ru", "Es", "Tw" };
 
@@ -90,7 +91,17 @@ namespace inst::ui {
 	}
 
 	std::string optionsPage::getMenuLanguage(int ourLangCode) {
-		if (ourLangCode >= 0) return languageStrings[ourLangCode];
+		if (ourLangCode >= 0) {
+			if (ourLangCode == 0) flag = "romfs:/images/flags/en.png";
+			else if (ourLangCode == 1) flag = "romfs:/images/flags/jpn.png";
+			else if (ourLangCode == 2) flag = "romfs:/images/flags/fr.png";
+			else if (ourLangCode == 3) flag = "romfs:/images/flags/de.png";
+			else if (ourLangCode == 4) flag = "romfs:/images/flags/it.png";
+			else if (ourLangCode == 5) flag = "romfs:/images/flags/ru.png";
+			else if (ourLangCode == 6) flag = "romfs:/images/flags/es.png";
+			else if (ourLangCode == 7) flag = "romfs:/images/flags/tw.png";
+			return languageStrings[ourLangCode];
+		}
 		else {
 			return "options.language.system_language"_lang;
 		}
@@ -354,7 +365,7 @@ namespace inst::ui {
 					case 14:
 						languageList = languageStrings;
 						languageList.push_back("options.language.system_language"_lang);
-						rc = inst::ui::mainApp->CreateShowDialog("options.language.title"_lang, "options.language.desc"_lang, languageList, false, "romfs:/images/lang.png");
+						rc = inst::ui::mainApp->CreateShowDialog("options.language.title"_lang, "options.language.desc"_lang, languageList, false, flag );
 						if (rc == -1) break;
 						switch (rc) {
 						case 0:
