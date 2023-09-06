@@ -159,12 +159,10 @@ namespace netInstStuff {
 	void OnUnwound()
 	{
 		LOG_DEBUG("unwinding view\n");
-		if (m_clientSocket != 0)
-		{
+		if (m_clientSocket != 0) {
 			close(m_clientSocket);
 			m_clientSocket = 0;
 		}
-
 		curl_global_cleanup();
 	}
 
@@ -301,13 +299,11 @@ namespace netInstStuff {
 
 		OnUnwound();
 
-		try
-		{
+		try {
 			ASSERT_OK(curl_global_init(CURL_GLOBAL_ALL), "Curl failed to initialized");
 
 			// Initialize the server socket if it hasn't already been
-			if (m_serverSocket == 0)
-			{
+			if (m_serverSocket == 0) {
 				InitializeServerSocket();
 
 				if (m_serverSocket <= 0)
@@ -328,12 +324,12 @@ namespace netInstStuff {
 
 			std::vector<std::string> urls;
 
-			while (true)
-			{
+			while (true) {
 				padUpdate(&pad);
 
 				// If we don't update the UI occasionally the Switch basically crashes on this screen if you press the home button
 				u64 newTime = armGetSystemTick();
+				
 				if (newTime - startTime >= freq * 0.25) {
 					startTime = newTime;
 					inst::ui::mainApp->CallForRender();
@@ -556,17 +552,17 @@ namespace netInstStuff {
 			}
 
 			return urls;
-
+			}
 		}
-		catch (std::runtime_error& e)
-		{
-			close(m_serverSocket);
-			m_serverSocket = 0;
-			LOG_DEBUG("Failed to perform remote install!\n");
-			LOG_DEBUG("%s", e.what());
-			fprintf(stdout, "%s", e.what());
-			inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
-			return {};
+		
+		catch (std::runtime_error& e) {
+		close(m_serverSocket);
+		m_serverSocket = 0;
+		LOG_DEBUG("Failed to perform remote install!\n");
+		LOG_DEBUG("%s", e.what());
+		fprintf(stdout, "%s", e.what());
+		inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+		return {};
 		}
 	}
 }
