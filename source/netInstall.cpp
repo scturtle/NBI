@@ -47,7 +47,7 @@ SOFTWARE.
 #include "ui/instPage.hpp"
 
 const unsigned int MAX_URL_SIZE = 1024;
-const unsigned int MAX_URLS = 2048;
+const unsigned int MAX_URLS = 1000;
 const int REMOTE_INSTALL_PORT = 2000;
 static int m_serverSocket = 0;
 static int m_clientSocket = 0;
@@ -111,6 +111,15 @@ namespace netInstStuff {
 			}
 		}
 		return new_str;
+	}
+
+	std::string url_decode(const std::string& encoded)
+	{
+		int output_length;
+		const auto decoded_value = curl_easy_unescape(nullptr, encoded.c_str(), static_cast<int>(encoded.length()), &output_length);
+		std::string result(decoded_value, output_length);
+		curl_free(decoded_value);
+		return result;
 	}
 
 	void InitializeServerSocket()
@@ -287,13 +296,9 @@ namespace netInstStuff {
 
 	std::vector<std::string> OnSelected()
 	{
-		/*
-		https://switchbrew.github.io/libnx/hid_8h.html#aa163470a1a7b811662e5c38905cc86fba4d9ae7fa7e27704abaf86c8a8a5398bd
-		*/
 		padConfigureInput(8, HidNpadStyleSet_NpadStandard);
 		PadState pad;
 		padInitializeAny(&pad);
-
 		u64 freq = armGetSystemTickFreq();
 		u64 startTime = armGetSystemTick();
 
@@ -301,11 +306,9 @@ namespace netInstStuff {
 
 		try {
 			ASSERT_OK(curl_global_init(CURL_GLOBAL_ALL), "Curl failed to initialized");
-
 			// Initialize the server socket if it hasn't already been
 			if (m_serverSocket == 0) {
 				InitializeServerSocket();
-
 				if (m_serverSocket <= 0)
 				{
 					THROW_FORMAT("Server socket failed to initialize.\n");
@@ -321,15 +324,15 @@ namespace netInstStuff {
 			LOG_DEBUG("%s %s\n", "Switch IP is ", ourIPAddress.c_str());
 			LOG_DEBUG("%s\n", "Waiting for network");
 			LOG_DEBUG("%s\n", "B to cancel");
-
 			std::vector<std::string> urls;
+			std::vector<std::string> tmp_array;
 
 			while (true) {
 				padUpdate(&pad);
 
 				// If we don't update the UI occasionally the Switch basically crashes on this screen if you press the home button
 				u64 newTime = armGetSystemTick();
-				
+
 				if (newTime - startTime >= freq * 0.25) {
 					startTime = newTime;
 					inst::ui::mainApp->CallForRender();
@@ -372,148 +375,125 @@ namespace netInstStuff {
 						inst::config::setConfig();
 						//refresh options page
 						inst::ui::mainApp->optionspage->setMenuText();
-
+						break;
 					}
 
 					else {
 						std::string response;
-						if (inst::util::formatUrlString(url) == "" || url == "https://" || url == "http://" || url == "HTTP://" || url == "HTTPS://")
+						if (inst::util::formatUrlString(url) == "" || url == "https://" || url == "http://" || url == "HTTP://" || url == "HTTPS://") {
 							inst::ui::mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
+							break;
+						}
 						else {
-							if (url[url.size() - 1] != '/')
+							//if (url[url.size() - 1] != '/') //does this line even do anything?
 
-								//First try and stream the links
-								response = inst::curl::downloadToBuffer(url);
+							//First try and stream the links
+							response = inst::curl::downloadToBuffer(url);
 
 							//If the above fails we probably have an html page - try to download it instead.
 							if (response.empty()) {
 								response = inst::curl::html_to_buffer(url);
 							}
-
-							// debug - write the webpage to check for the game urls
-							/*
-							  FILE * fp;
-							  fp = fopen ("index.html", "a+");
-							  auto *info = response.c_str();
-							  fprintf(fp, "%s", info);
-							  fclose(fp);
-							*/
-							//end of debug
 						}
 
 						if (!response.empty()) {
-							if (response[0] == '{')
+							if (response[0] == '{') {
 								try {
 								nlohmann::json j = nlohmann::json::parse(response);
 								for (const auto& file : j["files"]) {
-									/* info on dealing with c++ vector
-									https://www.cplusplus.com/reference/vector/vector/
-									https://www.cplusplus.com/reference/vector/vector/push_back/
-									*/
 									urls.push_back(file["url"]);
 								}
 
-								/*
-								//debug scan http links for size of file
-								FILE * fp;
-								fp = fopen ("http link log.txt", "a+");
-
-								for (const auto &file : j["files"]) {
-									std::string url = file["url"];
-									std::string size = file["size"];
-									auto *info = url.c_str();
-									auto *info2 = size.c_str();
-									fprintf(fp, "%s-%sMB\n", info, info2);
-								}
-								fclose(fp);
-								//end of debug
-								//*/
-
 								return urls;
-							}
-							catch (const nlohmann::detail::exception& ex) {
+								response.clear();
+								}
+								catch (const nlohmann::detail::exception& ex) {
 								LOG_DEBUG("Failed to parse JSON\n");
+								}
 							}
-
-							else if (response[0] == '<') {
+							else if (!response.empty()) {
 								std::size_t index = 0;
 								while (index < response.size()) {
 									std::string link;
 									auto found = findCaseInsensitive(response, "href=\"", index);
-									if (found == std::string::npos)
+									if (found == std::string::npos) {
 										break;
+									}
 
 									index = found + 6;
 									while (index < response.size()) {
 										if (response[index] == '"') {
 											if (link.find("../") == std::string::npos)
 												if (findCaseInsensitive(link, ".nsp") != std::string::npos || findCaseInsensitive(link, ".nsz") != std::string::npos || findCaseInsensitive(link, ".xci") != std::string::npos || findCaseInsensitive(link, ".xcz") != std::string::npos) {
-													if (inst::config::encodeurl) {
-														// if url encoded is set in options - url encode the link			
-														link = urlencode(link);
-														// if the link doesn't contain http in the url add the url from the settings page
-														if (link.find("http") == std::string::npos) {
-															std::string before_strip = stripfilename(url);
-															urls.push_back(before_strip + "/" + link);
-														}
-														else {
-															urls.push_back(link);
-														}
+
+													/*
+													Try to see if the href links contain http - if not add the own url
+													defined in the settings page
+													*/
+													if (link.find("http") == std::string::npos) {
+														std::string before_strip = stripfilename(url);
+														tmp_array.push_back(before_strip + "/" + link);
 													}
 													else {
-														// if the link doesn't contain http in the url add the url from the settings page
-														if (link.find("http") == std::string::npos) {
-															std::string before_strip = stripfilename(url);
-															urls.push_back(before_strip + "/" + link);
-														}
-														else {
-															urls.push_back(link);
-														}
+														tmp_array.push_back(link);
 													}
 												}
 											break;
 										}
 										link += response[index++];
 									}
-
 								}
-								if (urls.size() > 0) {
+								if (tmp_array.size() > 0) {
 
-									//debug scan http links
+									//code to decode the url (if it's encoded), if not then (re)encode all urls.
+									for (unsigned long int i = 0; i < tmp_array.size(); i++) {
+										std::string debug = tmp_array[i];
+										std::string decoded = url_decode(debug);
+										debug = urlencode(decoded);
+										urls.push_back(debug);
+									}
+
 									/*
 									FILE * fp;
-										fp = fopen ("http link log.txt", "a+");
+									fp = fopen ("links.txt", "a+");
+									for (unsigned long int i = 0; i < urls.size(); i++) {
+										std::string x = urls[i];
+										const char *info = x.c_str();
+										fprintf(fp, "%s\n", info);
+									}
+									fclose(fp);
+									*/
 
-										for (unsigned long int i = 0; i < urls.size(); i++) {
-											std::string debug = urls[i];
-											const char *info = debug.c_str();
-											fprintf(fp, "%s\n", info);
-										}
-										fclose(fp);
-										*/
-										//end of debug
+									tmp_array.clear(); //we may as well clear this now as it's done it's job..
 									std::sort(urls.begin(), urls.end(), inst::util::ignoreCaseCompare);
 									return urls;
+									break;
 								}
 
 								else {
 									inst::ui::mainApp->CreateShowDialog("inst.net.url.nolinks"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
+									LOG_DEBUG("Failed to parse games from HTML\n");
+									break;
 								}
-
-								LOG_DEBUG("Failed to parse games from HTML\n");
+								response.clear();
+							}
+							
+							else {
+								inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+								break;
 							}
 						}
 
 						else {
 							LOG_DEBUG("Failed to fetch game list\n");
 							inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+							break;
 						}
 					}
 				}
 
 				struct sockaddr_in client;
 				socklen_t clientLen = sizeof(client);
-
 				m_clientSocket = accept(m_serverSocket, (struct sockaddr*)&client, &clientLen);
 
 				if (m_clientSocket >= 0)
@@ -542,27 +522,24 @@ namespace netInstStuff {
 
 					while (std::getline(urlStream, segment, '\n')) urls.push_back(segment);
 					std::sort(urls.begin(), urls.end(), inst::util::ignoreCaseCompare);
-
 					break;
 				}
 				else if (errno != EAGAIN)
 				{
 					THROW_FORMAT("Failed to open client socket with code %u\n", errno);
+					break;
 				}
 			}
-
 			return urls;
-			}
 		}
-		
 		catch (std::runtime_error& e) {
-		close(m_serverSocket);
-		m_serverSocket = 0;
-		LOG_DEBUG("Failed to perform remote install!\n");
-		LOG_DEBUG("%s", e.what());
-		fprintf(stdout, "%s", e.what());
-		inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
-		return {};
+			close(m_serverSocket);
+			m_serverSocket = 0;
+			LOG_DEBUG("Failed to perform remote install!\n");
+			LOG_DEBUG("%s", e.what());
+			fprintf(stdout, "%s", e.what());
+			inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+			return {};
 		}
 	}
 }

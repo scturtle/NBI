@@ -177,7 +177,6 @@
       "auto_update": "Suche automatisch nach Updates für TinWoo",
       "gay_option": "Design verwenden",
       "useSound": "Nutzen von Benachrichtungstönen während Installation",
-      "encodeurl": "Auto encode urls for http server installs",
       "fixticket": "Convert temporary tickets to permanent",
       "usehttpkeyboard": "Use keyboard during http server installs",
       "sig_url": "Signatur Patches URL: ",

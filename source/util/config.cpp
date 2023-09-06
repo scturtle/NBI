@@ -18,7 +18,6 @@ namespace inst::config {
 	bool useSound;
 	bool usbAck;
 	bool validateNCAs;
-	bool encodeurl;
 	bool fixticket;
 	bool httpkeyboard;
 
@@ -37,7 +36,6 @@ namespace inst::config {
 			{"validateNCAs", validateNCAs},
 			{"httpIndexUrl", httpIndexUrl},
 			{"httplastUrl", httplastUrl},
-			{"encodeurl", encodeurl},
 			{"fixticket", fixticket},
 			{"httpkeyboard", httpkeyboard}
 		};
@@ -51,7 +49,6 @@ namespace inst::config {
 			nlohmann::json j;
 			file >> j;
 			autoUpdate = j["autoUpdate"].get<bool>();
-			encodeurl = j["encodeurl"].get<bool>();
 			fixticket = j["fixticket"].get<bool>();
 			httpkeyboard = j["httpkeyboard"].get<bool>();
 			deletePrompt = j["deletePrompt"].get<bool>();
@@ -78,7 +75,6 @@ namespace inst::config {
 			deletePrompt = true;
 			gayMode = false;
 			useSound = true;
-			encodeurl = false;
 			fixticket = true;
 			httpkeyboard = false;
 			ignoreReqVers = true;
