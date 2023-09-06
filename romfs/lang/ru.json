@@ -53,6 +53,7 @@
       "url": {
         "hint": "Укажите ссылку на файл",
         "invalid": "Указан неверный URL!",
+        "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
         "source_string": " из URL"
       },
       "gdrive": {
@@ -177,7 +178,6 @@
       "gay_option": "Использовать тему",
       "useSound": "Use sound notifications during installs",
       "encodeurl": "Auto encode urls for http server installs",
-      "add_baseurl": "Auto add server base url for http server installs",
       "fixticket": "Convert temporary tickets to permanent",
       "usehttpkeyboard": "Use keyboard during http server installs",
       "sig_url": "URL для скачивания Signature patches: ",

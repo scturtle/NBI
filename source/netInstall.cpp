@@ -459,8 +459,10 @@ namespace netInstStuff {
 											if (link.find("../") == std::string::npos)
 												if (findCaseInsensitive(link, ".nsp") != std::string::npos || findCaseInsensitive(link, ".nsz") != std::string::npos || findCaseInsensitive(link, ".xci") != std::string::npos || findCaseInsensitive(link, ".xcz") != std::string::npos) {
 													if (inst::config::encodeurl) {
+													  // if url encoded is set in options - url encode the link			
 														link = urlencode(link);
-														if (inst::config::add_baseurl) {
+														// if the link doesn't contain http in the url add the url from the settings page
+														if (link.find("http") == std::string::npos) {
 															std::string before_strip = stripfilename(url);
 															urls.push_back(before_strip + "/" + link);
 														}
@@ -469,7 +471,8 @@ namespace netInstStuff {
 														}
 													}
 													else {
-														if (inst::config::add_baseurl) {
+														// if the link doesn't contain http in the url add the url from the settings page
+														if (link.find("http") == std::string::npos) {
 															std::string before_strip = stripfilename(url);
 															urls.push_back(before_strip + "/" + link);
 														}
@@ -501,6 +504,10 @@ namespace netInstStuff {
 										//end of debug
 									std::sort(urls.begin(), urls.end(), inst::util::ignoreCaseCompare);
 									return urls;
+								}
+								
+								else {
+									inst::ui::mainApp->CreateShowDialog("inst.net.url.nolinks"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
 								}
 
 								LOG_DEBUG("Failed to parse games from HTML\n");

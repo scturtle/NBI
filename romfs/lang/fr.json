@@ -53,6 +53,7 @@
       "url": {
         "hint": "Entrez l'URL d'un fichier",
         "invalid": "L'URL spécifiée n'est pas valide !",
+        "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
         "source_string": " à partir d'un URL"
       },
       "gdrive": {
@@ -177,7 +178,6 @@
       "gay_option": "Utiliser le thème",
       "useSound": "Utiliser les notifications sonores lors des installations",
       "encodeurl": "Encodage automatique des URL pour les installations de serveur http",
-      "add_baseurl": "Ajout automatique de l'URL de base du serveur pour les installations de serveur http",
       "fixticket": "Convertir des billets temporaires en billets permanents",
       "usehttpkeyboard": "Utiliser le clavier lors des installations du serveur http",
       "sig_url": "Patchs de signatures URL: ",

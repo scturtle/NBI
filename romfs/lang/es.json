@@ -53,6 +53,7 @@
       "url": {
         "hint": "Ingrese la dirección de Internet de un archivo",
         "invalid": "¡La URL especificada no es válida!",
+        "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
         "source_string": "desde la URL"
       },
       "gdrive": {
@@ -177,7 +178,6 @@
       "gay_option": "Usar tema",
       "useSound": "Usar notificaciones de sonido durante las instalaciones",
       "encodeurl": "Usar archivos php antiguos para instalaciones de servidor http",
-      "add_baseurl": "Auto add server base url for http server installs",
       "fixticket": "Convert temporary tickets to permanent",
       "usehttpkeyboard": "Use keyboard during http server installs",
       "sig_url": "URL de origen de parches de firma: ",

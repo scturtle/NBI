@@ -22,7 +22,6 @@ namespace inst::config {
 	extern bool gayMode;
 	extern bool useSound;
 	extern bool encodeurl;
-	extern bool add_baseurl;
 	extern bool fixticket;
 	extern bool httpkeyboard;
 

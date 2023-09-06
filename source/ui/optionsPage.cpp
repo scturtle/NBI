@@ -156,10 +156,6 @@ namespace inst::ui {
 		encodeurl->SetColor(COLOR("#FFFFFFFF"));
 		encodeurl->SetIcon(this->getMenuOptionIcon(inst::config::encodeurl));
 		this->menu->AddItem(encodeurl);
-		auto add_baseurl = pu::ui::elm::MenuItem::New("options.menu_items.add_baseurl"_lang);
-		add_baseurl->SetColor(COLOR("#FFFFFFFF"));
-		add_baseurl->SetIcon(this->getMenuOptionIcon(inst::config::add_baseurl));
-		this->menu->AddItem(add_baseurl);
 		auto fixticket = pu::ui::elm::MenuItem::New("options.menu_items.fixticket"_lang);
 		fixticket->SetColor(COLOR("#FFFFFFFF"));
 		fixticket->SetIcon(this->getMenuOptionIcon(inst::config::fixticket));
@@ -303,18 +299,6 @@ namespace inst::ui {
 						break;
 
 					case 8:
-						if (inst::config::add_baseurl) {
-							inst::config::add_baseurl = false;
-						}
-						else {
-							inst::config::add_baseurl = true;
-						}
-						this->setMenuText();
-						this->menu->SetSelectedIndex(index);
-						inst::config::setConfig();
-						break;
-
-					case 9:
 						if (inst::config::fixticket) {
 							inst::config::fixticket = false;
 						}
@@ -326,7 +310,7 @@ namespace inst::ui {
 						inst::config::setConfig();
 						break;
 
-					case 10:
+					case 9:
 						if (inst::config::httpkeyboard) {
 							inst::config::httpkeyboard = false;
 						}
@@ -338,11 +322,11 @@ namespace inst::ui {
 						inst::config::setConfig();
 						break;
 
-					case 11:
+					case 10:
 						sigPatchesMenuItem_Click();
 						break;
 
-					case 12:
+					case 11:
 						keyboardResult = inst::util::softwareKeyboard("options.sig_hint"_lang, inst::config::sigPatchesUrl.c_str(), 500);
 						if (keyboardResult.size() > 0) {
 							inst::config::sigPatchesUrl = keyboardResult;
@@ -352,7 +336,7 @@ namespace inst::ui {
 						}
 						break;
 
-					case 13:
+					case 12:
 						keyboardResult = inst::util::softwareKeyboard("inst.net.url.hint"_lang, inst::config::httpIndexUrl.c_str(), 500);
 						if (keyboardResult.size() > 0) {
 							inst::config::httpIndexUrl = keyboardResult;
@@ -362,7 +346,7 @@ namespace inst::ui {
 						}
 						break;
 
-					case 14:
+					case 13:
 						languageList = languageStrings;
 						languageList.push_back("options.language.system_language"_lang);
 						rc = inst::ui::mainApp->CreateShowDialog("options.language.title"_lang, "options.language.desc"_lang, languageList, false, flag );
@@ -399,7 +383,7 @@ namespace inst::ui {
 						mainApp->FadeOut();
 						mainApp->Close();
 						break;
-					case 15:
+					case 14:
 						if (inst::util::getIPAddress() == "1.0.0.127") {
 							inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/update.png");
 							break;
@@ -411,7 +395,7 @@ namespace inst::ui {
 						}
 						this->askToUpdate(downloadUrl);
 						break;
-					case 16:
+					case 15:
 						inst::ui::mainApp->CreateShowDialog("options.credits.title"_lang, "options.credits.desc"_lang, { "common.close"_lang }, true, "romfs:/images/icons/credits.png");
 						break;
 					default:
