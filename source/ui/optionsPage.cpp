@@ -152,14 +152,14 @@ namespace inst::ui {
 		useSoundOption->SetColor(COLOR("#FFFFFFFF"));
 		useSoundOption->SetIcon(this->getMenuOptionIcon(inst::config::useSound));
 		this->menu->AddItem(useSoundOption);
-		auto useoldphp = pu::ui::elm::MenuItem::New("options.menu_items.useoldphp"_lang);
-		useoldphp->SetColor(COLOR("#FFFFFFFF"));
-		useoldphp->SetIcon(this->getMenuOptionIcon(inst::config::useoldphp));
-		this->menu->AddItem(useoldphp);
-		auto streamhtmls = pu::ui::elm::MenuItem::New("options.menu_items.streamhtmls"_lang);
-		streamhtmls->SetColor(COLOR("#FFFFFFFF"));
-		streamhtmls->SetIcon(this->getMenuOptionIcon(inst::config::streamhtmls));
-		this->menu->AddItem(streamhtmls);
+		auto encodeurl = pu::ui::elm::MenuItem::New("options.menu_items.encodeurl"_lang);
+		encodeurl->SetColor(COLOR("#FFFFFFFF"));
+		encodeurl->SetIcon(this->getMenuOptionIcon(inst::config::encodeurl));
+		this->menu->AddItem(encodeurl);
+		auto add_baseurl = pu::ui::elm::MenuItem::New("options.menu_items.add_baseurl"_lang);
+		add_baseurl->SetColor(COLOR("#FFFFFFFF"));
+		add_baseurl->SetIcon(this->getMenuOptionIcon(inst::config::add_baseurl));
+		this->menu->AddItem(add_baseurl);
 		auto fixticket = pu::ui::elm::MenuItem::New("options.menu_items.fixticket"_lang);
 		fixticket->SetColor(COLOR("#FFFFFFFF"));
 		fixticket->SetIcon(this->getMenuOptionIcon(inst::config::fixticket));
@@ -291,11 +291,11 @@ namespace inst::ui {
 						break;
 
 					case 7:
-						if (inst::config::useoldphp) {
-							inst::config::useoldphp = false;
+						if (inst::config::encodeurl) {
+							inst::config::encodeurl = false;
 						}
 						else {
-							inst::config::useoldphp = true;
+							inst::config::encodeurl = true;
 						}
 						this->setMenuText();
 						this->menu->SetSelectedIndex(index);
@@ -303,11 +303,11 @@ namespace inst::ui {
 						break;
 
 					case 8:
-						if (inst::config::streamhtmls) {
-							inst::config::streamhtmls = false;
+						if (inst::config::add_baseurl) {
+							inst::config::add_baseurl = false;
 						}
 						else {
-							inst::config::streamhtmls = true;
+							inst::config::add_baseurl = true;
 						}
 						this->setMenuText();
 						this->menu->SetSelectedIndex(index);

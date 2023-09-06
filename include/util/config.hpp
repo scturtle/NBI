@@ -21,8 +21,8 @@ namespace inst::config {
 	extern bool usbAck;
 	extern bool gayMode;
 	extern bool useSound;
-	extern bool useoldphp;
-	extern bool streamhtmls;
+	extern bool encodeurl;
+	extern bool add_baseurl;
 	extern bool fixticket;
 	extern bool httpkeyboard;
 

@@ -18,8 +18,8 @@ namespace inst::config {
 	bool useSound;
 	bool usbAck;
 	bool validateNCAs;
-	bool useoldphp;
-	bool streamhtmls;
+	bool encodeurl;
+	bool add_baseurl;
 	bool fixticket;
 	bool httpkeyboard;
 
@@ -38,8 +38,8 @@ namespace inst::config {
 			{"validateNCAs", validateNCAs},
 			{"httpIndexUrl", httpIndexUrl},
 			{"httplastUrl", httplastUrl},
-			{"httpoldphp", useoldphp},
-			{"streamhtmls", streamhtmls},
+			{"httpoldphp", encodeurl},
+			{"add_baseurl", add_baseurl},
 			{"fixticket", fixticket},
 			{"httpkeyboard", httpkeyboard}
 		};
@@ -53,8 +53,8 @@ namespace inst::config {
 			nlohmann::json j;
 			file >> j;
 			autoUpdate = j["autoUpdate"].get<bool>();
-			useoldphp = j["httpoldphp"].get<bool>();
-			streamhtmls = j["streamhtmls"].get<bool>();
+			encodeurl = j["httpoldphp"].get<bool>();
+			add_baseurl = j["add_baseurl"].get<bool>();
 			fixticket = j["fixticket"].get<bool>();
 			httpkeyboard = j["httpkeyboard"].get<bool>();
 			deletePrompt = j["deletePrompt"].get<bool>();
@@ -81,8 +81,8 @@ namespace inst::config {
 			deletePrompt = true;
 			gayMode = false;
 			useSound = true;
-			useoldphp = false;
-			streamhtmls = true;
+			encodeurl = false;
+			add_baseurl = true;
 			fixticket = true;
 			httpkeyboard = false;
 			ignoreReqVers = true;

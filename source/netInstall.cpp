@@ -458,9 +458,9 @@ namespace netInstStuff {
 										if (response[index] == '"') {
 											if (link.find("../") == std::string::npos)
 												if (findCaseInsensitive(link, ".nsp") != std::string::npos || findCaseInsensitive(link, ".nsz") != std::string::npos || findCaseInsensitive(link, ".xci") != std::string::npos || findCaseInsensitive(link, ".xcz") != std::string::npos) {
-													if (inst::config::useoldphp) {
+													if (inst::config::encodeurl) {
 														link = urlencode(link);
-														if (inst::config::streamhtmls) {
+														if (inst::config::add_baseurl) {
 															std::string before_strip = stripfilename(url);
 															urls.push_back(before_strip + "/" + link);
 														}
@@ -469,7 +469,7 @@ namespace netInstStuff {
 														}
 													}
 													else {
-														if (inst::config::streamhtmls) {
+														if (inst::config::add_baseurl) {
 															std::string before_strip = stripfilename(url);
 															urls.push_back(before_strip + "/" + link);
 														}
