@@ -154,9 +154,9 @@ namespace inst::ui {
 	void sdInstPage::startInstall() {
 		int dialogResult = -1;
 		if (this->selectedTitles.size() == 1) {
-			dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + inst::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) + "inst.target.desc1"_lang, "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false);
+			dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ":\n\n" + inst::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) + "\n\n" + "inst.target.desc1"_lang, "\n\n\n\n\n\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, true, "romfs:/images/icons/install.png");
 		}
-		else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false);
+		else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, "romfs:/images/icons/install.png");
 		if (dialogResult == -1) return;
 		nspInstStuff::installNspFromFile(this->selectedTitles, dialogResult);
 	}
@@ -209,7 +209,7 @@ namespace inst::ui {
 		}
 
 		if ((Down & HidNpadButton_X)) {
-			inst::ui::mainApp->CreateShowDialog("inst.sd.help.title"_lang, "inst.sd.help.desc"_lang, { "common.ok"_lang }, true);
+			inst::ui::mainApp->CreateShowDialog("inst.sd.help.title"_lang, "inst.sd.help.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 		}
 
 		if (Down & HidNpadButton_Plus) {

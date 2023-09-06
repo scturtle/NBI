@@ -62,7 +62,7 @@ namespace inst::ui {
 	}
 
 	void optionsPage::askToUpdate(std::vector<std::string> updateInfo) {
-		if (!mainApp->CreateShowDialog("options.update.title"_lang, "options.update.desc0"_lang + updateInfo[0] + "options.update.desc1"_lang, { "options.update.opt0"_lang, "common.cancel"_lang }, false)) {
+		if (!mainApp->CreateShowDialog("options.update.title"_lang, "options.update.desc0"_lang + updateInfo[0] + "options.update.desc1"_lang, { "options.update.opt0"_lang, "common.cancel"_lang }, false, "romfs:/images/icons/update.png")) {
 			inst::ui::instPage::loadInstallScreen();
 			inst::ui::instPage::setTopInstInfoText("options.update.top_info"_lang + updateInfo[0]);
 			inst::ui::instPage::setInstBarPerc(0);
@@ -74,10 +74,10 @@ namespace inst::ui {
 				inst::ui::instPage::setInstInfoText("options.update.bot_info2"_lang + updateInfo[0]);
 				inst::zip::extractFile(downloadName, "sdmc:/");
 				std::filesystem::remove(downloadName);
-				mainApp->CreateShowDialog("options.update.complete"_lang, "options.update.end_desc"_lang, { "common.ok"_lang }, false);
+				mainApp->CreateShowDialog("options.update.complete"_lang, "options.update.end_desc"_lang, { "common.ok"_lang }, false, "romfs:/images/icons/update.png");
 			}
 			catch (...) {
-				mainApp->CreateShowDialog("options.update.failed"_lang, "options.update.end_desc"_lang, { "common.ok"_lang }, false);
+				mainApp->CreateShowDialog("options.update.failed"_lang, "options.update.end_desc"_lang, { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
 			}
 			mainApp->FadeOut();
 			mainApp->Close();
@@ -112,7 +112,7 @@ namespace inst::ui {
 	}
 
 	void thememessage() {
-		int ourResult = inst::ui::mainApp->CreateShowDialog("main.theme.title"_lang, "main.theme.desc"_lang, { "common.ok"_lang, "common.cancel"_lang }, true);
+		int ourResult = inst::ui::mainApp->CreateShowDialog("main.theme.title"_lang, "main.theme.desc"_lang, { "common.ok"_lang, "common.cancel"_lang }, true, "romfs:/images/icons/theme.png");
 		if (ourResult != 0) {
 			//
 		}
@@ -238,7 +238,7 @@ namespace inst::ui {
 						break;
 					case 1:
 						if (inst::config::validateNCAs) {
-							if (inst::ui::mainApp->CreateShowDialog("options.nca_warn.title"_lang, "options.nca_warn.desc"_lang, { "common.cancel"_lang, "options.nca_warn.opt1"_lang }, false) == 1) inst::config::validateNCAs = false;
+							if (inst::ui::mainApp->CreateShowDialog("options.nca_warn.title"_lang, "options.nca_warn.desc"_lang, { "common.cancel"_lang, "options.nca_warn.opt1"_lang }, false, "romfs:/images/icons/information.png") == 1) inst::config::validateNCAs = false;
 						}
 						else inst::config::validateNCAs = true;
 						inst::config::setConfig();
@@ -401,18 +401,18 @@ namespace inst::ui {
 						break;
 					case 15:
 						if (inst::util::getIPAddress() == "1.0.0.127") {
-							inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, { "common.ok"_lang }, true);
+							inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/update.png");
 							break;
 						}
 						downloadUrl = inst::util::checkForAppUpdate();
 						if (!downloadUrl.size()) {
-							mainApp->CreateShowDialog("options.update.title_check_fail"_lang, "options.update.desc_check_fail"_lang, { "common.ok"_lang }, false);
+							mainApp->CreateShowDialog("options.update.title_check_fail"_lang, "options.update.desc_check_fail"_lang, { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
 							break;
 						}
 						this->askToUpdate(downloadUrl);
 						break;
 					case 16:
-						inst::ui::mainApp->CreateShowDialog("options.credits.title"_lang, "options.credits.desc"_lang, { "common.close"_lang }, true);
+						inst::ui::mainApp->CreateShowDialog("options.credits.title"_lang, "options.credits.desc"_lang, { "common.close"_lang }, true, "romfs:/images/icons/credits.png");
 						break;
 					default:
 						break;

@@ -157,7 +157,7 @@ namespace inst::ui {
 
 		else if (this->ourUrls[0] == "supplyUrl") {
 			std::string keyboardResult;
-			switch (mainApp->CreateShowDialog("inst.net.src.title"_lang, "common.cancel_desc"_lang, { "inst.net.src.opt0"_lang, "inst.net.src.opt1"_lang }, false)) {
+			switch (mainApp->CreateShowDialog("inst.net.src.title"_lang, "common.cancel_desc"_lang, { "inst.net.src.opt0"_lang, "inst.net.src.opt1"_lang }, false, "romfs:/images/icons/update.png")) {
 			case 0:
 				keyboardResult = inst::util::softwareKeyboard("inst.net.url.hint"_lang, inst::config::httplastUrl, 500);
 				if (keyboardResult.size() > 0) {
@@ -172,7 +172,7 @@ namespace inst::ui {
 					}
 
 					if (inst::util::formatUrlString(keyboardResult) == "" || keyboardResult == "https://" || keyboardResult == "http://") {
-						mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false);
+						mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
 						break;
 					}
 					sourceString = "inst.net.url.source_string"_lang;
@@ -219,9 +219,9 @@ namespace inst::ui {
 			std::string ourUrlString;
 			if (this->alternativeNames.size() > 0) ourUrlString = inst::util::shortenString(this->alternativeNames[0], 32, true);
 			else ourUrlString = inst::util::shortenString(inst::util::formatUrlString(this->selectedUrls[0]), 32, true);
-			dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ourUrlString + "inst.target.desc1"_lang, "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false);
+			dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ":\n\n" + ourUrlString + "\n\n" + "inst.target.desc1"_lang, "\n\n\n\n\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, "romfs:/images/icons/install.png");
 		}
-		else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedUrls.size()) + "inst.target.desc01"_lang, "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false);
+		else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedUrls.size()) + "inst.target.desc01"_lang, "\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, "romfs:/images/icons/install.png");
 		if (dialogResult == -1 && !urlMode) return;
 		else if (dialogResult == -1 && urlMode) {
 			this->startNetwork();

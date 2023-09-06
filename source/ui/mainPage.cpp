@@ -126,7 +126,7 @@ namespace inst::ui {
 
 		std::string Info = ("System total size: " + sdsize2 + " GB" + "\nSystem free space: " + freespace2 + " GB" + "\nSystem percent used: " + percent2 + "%" + "\n\n" + "SD card total size: " + sdsize + " GB" + "\nSD card free space: " + freespace + " GB" + "\nSD card percent used: " + percent + "%");
 		//std::string Info = ("System total size: " + sdsize2 + " GB" + "\nSystem free space: " + freespace2 + " GB" + "\nSystem percent used: " + percent2 + "%" + "\n\n" + "SD card total size: " + sdsize + " GB" + "\nSD card free space: " + freespace + " GB" + "\nSD card percent used: " + percent + "%");
-		inst::ui::mainApp->CreateShowDialog("Space Usage Information", Info, { "common.ok"_lang }, true);
+		inst::ui::mainApp->CreateShowDialog("Space Usage Information", Info, { "common.ok"_lang }, true, "romfs:/images/icons/drive.png");
 	}
 
 	void mainMenuThread() {
@@ -135,7 +135,7 @@ namespace inst::ui {
 			tin::data::NUM_BUFFER_SEGMENTS = 2;
 			if (menuLoaded) {
 				inst::ui::appletFinished = true;
-				mainApp->CreateShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, { "common.ok"_lang }, true);
+				mainApp->CreateShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 			}
 		}
 		else if (!appletFinished) {
@@ -227,7 +227,7 @@ namespace inst::ui {
 
 	void MainPage::netInstallMenuItem_Click() {
 		if (inst::util::getIPAddress() == "1.0.0.127") {
-			inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, { "common.ok"_lang }, true);
+			inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 			return;
 		}
 		mainApp->netinstPage->startNetwork();
@@ -235,13 +235,13 @@ namespace inst::ui {
 
 	void MainPage::usbInstallMenuItem_Click() {
 		if (!inst::config::usbAck) {
-			if (mainApp->CreateShowDialog("main.usb.warn.title"_lang, "main.usb.warn.desc"_lang, { "common.ok"_lang, "main.usb.warn.opt1"_lang }, false) == 1) {
+			if (mainApp->CreateShowDialog("main.usb.warn.title"_lang, "main.usb.warn.desc"_lang, { "common.ok"_lang, "main.usb.warn.opt1"_lang }, false, "romfs:/images/icons/usb.png") == 1) {
 				inst::config::usbAck = true;
 				inst::config::setConfig();
 			}
 		}
 		if (inst::util::getUsbState() == 5) mainApp->usbinstPage->startUsb();
-		else mainApp->CreateShowDialog("main.usb.error.title"_lang, "main.usb.error.desc"_lang, { "common.ok"_lang }, false);
+		else mainApp->CreateShowDialog("main.usb.error.title"_lang, "main.usb.error.desc"_lang, { "common.ok"_lang }, false, "romfs:/images/icons/usb.png");
 	}
 
 	void MainPage::HdInstallMenuItem_Click() {
@@ -251,7 +251,7 @@ namespace inst::ui {
 			mainApp->LoadLayout(mainApp->HDinstPage);
 		}
 		else {
-			inst::ui::mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, { "common.ok"_lang }, true);
+			inst::ui::mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/drive.png");
 		}
 	}
 

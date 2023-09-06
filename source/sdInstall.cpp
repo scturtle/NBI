@@ -108,7 +108,7 @@ namespace nspInstStuff {
 				audioPath = "romfs:/audio/bark.wav";
 			}
 			std::thread audioThread(inst::util::playAudio, audioPath);
-			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + inst::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true) + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true);
+			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + inst::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true) + "!\n", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true);
 			audioThread.join();
 			nspInstalled = false;
 		}
@@ -136,19 +136,19 @@ namespace nspInstStuff {
 
 				if (ourTitleList.size() > 1) {
 					if (inst::config::deletePrompt) {
-						if (inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.sd.delete_info_multi"_lang, "inst.sd.delete_desc"_lang, { "common.no"_lang,"common.yes"_lang }, false) == 1) {
+						if (inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.sd.delete_info_multi"_lang + "\n", "\n\n\n" + "inst.sd.delete_desc"_lang, { "common.no"_lang,"common.yes"_lang }, false, "romfs:/images/icons/bin.png") == 1) {
 							for (long unsigned int i = 0; i < ourTitleList.size(); i++) {
 								if (std::filesystem::exists(ourTitleList[i])) std::filesystem::remove(ourTitleList[i]);
 							}
 						}
 					}
-					else inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true);
+					else inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 				}
 				else {
 					if (inst::config::deletePrompt) {
-						if (inst::ui::mainApp->CreateShowDialog(inst::util::shortenString(ourTitleList[0].filename().string(), 32, true) + "inst.sd.delete_info"_lang, "inst.sd.delete_desc"_lang, { "common.no"_lang,"common.yes"_lang }, false) == 1) if (std::filesystem::exists(ourTitleList[0])) std::filesystem::remove(ourTitleList[0]);
+						if (inst::ui::mainApp->CreateShowDialog(inst::util::shortenString(ourTitleList[0].filename().string(), 32, true) + "\n\n" + "inst.sd.delete_info"_lang, "\n\n\n" + "inst.sd.delete_desc"_lang + "\n\n", { "common.no"_lang,"common.yes"_lang }, false, "romfs:/images/icons/bin.png") == 1) if (std::filesystem::exists(ourTitleList[0])) std::filesystem::remove(ourTitleList[0]);
 					}
-					else inst::ui::mainApp->CreateShowDialog(inst::util::shortenString(ourTitleList[0].filename().string(), 42, true) + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true);
+					else inst::ui::mainApp->CreateShowDialog(inst::util::shortenString(ourTitleList[0].filename().string(), 42, true) + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 				}
 
 				audioThread.join();
@@ -157,19 +157,19 @@ namespace nspInstStuff {
 			else {
 				if (ourTitleList.size() > 1) {
 					if (inst::config::deletePrompt) {
-						if (inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.sd.delete_info_multi"_lang, "inst.sd.delete_desc"_lang, { "common.no"_lang,"common.yes"_lang }, false) == 1) {
+						if (inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.sd.delete_info_multi"_lang, "inst.sd.delete_desc"_lang, { "common.no"_lang,"common.yes"_lang }, false, "romfs:/images/icons/bin.png") == 1) {
 							for (long unsigned int i = 0; i < ourTitleList.size(); i++) {
 								if (std::filesystem::exists(ourTitleList[i])) std::filesystem::remove(ourTitleList[i]);
 							}
 						}
 					}
-					else inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true);
+					else inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
 				}
 				else {
 					if (inst::config::deletePrompt) {
-						if (inst::ui::mainApp->CreateShowDialog(inst::util::shortenString(ourTitleList[0].filename().string(), 32, true) + "inst.sd.delete_info"_lang, "inst.sd.delete_desc"_lang, { "common.no"_lang,"common.yes"_lang }, false) == 1) if (std::filesystem::exists(ourTitleList[0])) std::filesystem::remove(ourTitleList[0]);
+						if (inst::ui::mainApp->CreateShowDialog(inst::util::shortenString(ourTitleList[0].filename().string(), 32, true) + "inst.sd.delete_info"_lang, "inst.sd.delete_desc"_lang, { "common.no"_lang,"common.yes"_lang }, false, "romfs:/images/icons/bin.png") == 1) if (std::filesystem::exists(ourTitleList[0])) std::filesystem::remove(ourTitleList[0]);
 					}
-					else inst::ui::mainApp->CreateShowDialog(inst::util::shortenString(ourTitleList[0].filename().string(), 42, true) + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true);
+					else inst::ui::mainApp->CreateShowDialog(inst::util::shortenString(ourTitleList[0].filename().string(), 42, true) + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 				}
 			}
 		}

@@ -160,7 +160,7 @@ namespace netInstStuff {
 			close(m_serverSocket);
 			m_serverSocket = 0;
 		}
-		inst::ui::mainApp->CreateShowDialog("Failed to initialize server socket!", (std::string)e.what(), { "OK" }, true);
+		inst::ui::mainApp->CreateShowDialog("Failed to initialize server socket!", (std::string)e.what(), { "OK" }, true, "romfs:/images/icons/fail.png");
 	}
 
 	void OnUnwound()
@@ -246,7 +246,7 @@ namespace netInstStuff {
 				audioPath = "romfs:/audio/bark.wav";
 			}
 			std::thread audioThread(inst::util::playAudio, audioPath);
-			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + urlNames[urlItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true);
+			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + urlNames[urlItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
 			audioThread.join();
 			nspInstalled = false;
 		}
@@ -276,14 +276,14 @@ namespace netInstStuff {
 				}
 				std::thread audioThread(inst::util::playAudio, audioPath);
 
-				if (ourUrlList.size() > 1) inst::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true);
-				else inst::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true);
+				if (ourUrlList.size() > 1) inst::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
+				else inst::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
 				audioThread.join();
 			}
 
 			else {
-				if (ourUrlList.size() > 1) inst::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true);
-				else inst::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true);
+				if (ourUrlList.size() > 1) inst::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+				else inst::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
 			}
 		}
 
@@ -358,7 +358,7 @@ namespace netInstStuff {
 				}
 				if (kDown & HidNpadButton_X)
 				{
-					inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.desc"_lang, { "common.ok"_lang }, true);
+					inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 				}
 
 				if (kDown & HidNpadButton_Minus) {
@@ -377,7 +377,7 @@ namespace netInstStuff {
 
 					if (url == "") {
 						url = ("http://127.0.0.1");
-						inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.blank"_lang, { "common.ok"_lang }, true);
+						inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.blank"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 						inst::config::httpIndexUrl = url;
 						inst::config::setConfig();
 						//refresh options page
@@ -388,7 +388,7 @@ namespace netInstStuff {
 					else {
 						std::string response;
 						if (inst::util::formatUrlString(url) == "" || url == "https://" || url == "http://" || url == "HTTP://" || url == "HTTPS://")
-							inst::ui::mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false);
+							inst::ui::mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
 						else {
 							if (url[url.size() - 1] != '/')
 
@@ -509,7 +509,7 @@ namespace netInstStuff {
 
 						else {
 							LOG_DEBUG("Failed to fetch game list\n");
-							inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true);
+							inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
 						}
 					}
 				}
@@ -564,7 +564,7 @@ namespace netInstStuff {
 			LOG_DEBUG("Failed to perform remote install!\n");
 			LOG_DEBUG("%s", e.what());
 			fprintf(stdout, "%s", e.what());
-			inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), { "common.ok"_lang }, true);
+			inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
 			return {};
 		}
 	}
