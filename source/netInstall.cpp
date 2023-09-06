@@ -99,6 +99,7 @@ namespace netInstStuff {
 			ic = c;
 			// bodge code needed to prevernt encoded url changing forward slash to %2F
 			if (c == '/') new_str += '/';
+			else if (c == '.') new_str += '.';
 			else if (c == ':') new_str += ':';
 			else if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') new_str += c;
 			else {
@@ -423,22 +424,20 @@ namespace netInstStuff {
 									index = found + 6;
 									while (index < response.size()) {
 										if (response[index] == '"') {
-											if (link.find("../") == std::string::npos)
-												if (findCaseInsensitive(link, ".nsp") != std::string::npos || findCaseInsensitive(link, ".nsz") != std::string::npos || findCaseInsensitive(link, ".xci") != std::string::npos || findCaseInsensitive(link, ".xcz") != std::string::npos) {
-
-													/*
-													Try to see if the href links contain http - if not add the own url
-													defined in the settings page
-													*/
-													if (link.find("http") == std::string::npos) {
-														std::string before_strip = stripfilename(url);
+											if (findCaseInsensitive(link, ".nsp") != std::string::npos || findCaseInsensitive(link, ".nsz") != std::string::npos || findCaseInsensitive(link, ".xci") != std::string::npos || findCaseInsensitive(link, ".xcz") != std::string::npos) {
+												/*
+												Try to see if the href links contain http - if not add the own url
+												defined in the settings page
+												*/
+												if (link.find("http") == std::string::npos) {
+													std::string before_strip = stripfilename(url);
 														tmp_array.push_back(before_strip + "/" + link);
-													}
-													else {
-														tmp_array.push_back(link);
-													}
 												}
-											break;
+												else {
+													tmp_array.push_back(link);
+												}
+											}
+											break; //don't remove this or the net install screen will crash
 										}
 										link += response[index++];
 									}
@@ -452,16 +451,26 @@ namespace netInstStuff {
 										debug = urlencode(decoded);
 										urls.push_back(debug);
 									}
-
+									
 									/*
+									//debug for checking url before and after
 									FILE * fp;
-									fp = fopen ("links.txt", "a+");
-									for (unsigned long int i = 0; i < urls.size(); i++) {
-										std::string x = urls[i];
+									fp = fopen ("before.txt", "a+");
+									for (unsigned long int i = 0; i < tmp_array.size(); i++) {
+										std::string x = tmp_array[i];
 										const char *info = x.c_str();
 										fprintf(fp, "%s\n", info);
 									}
 									fclose(fp);
+									
+									FILE * fp2;
+									fp2 = fopen ("after.txt", "a+");
+									for (unsigned long int i = 0; i < urls.size(); i++) {
+										std::string y = urls[i];
+										const char *info2 = y.c_str();
+										fprintf(fp2, "%s\n", info2);
+									}
+									fclose(fp2);
 									*/
 
 									tmp_array.clear(); //we may as well clear this now as it's done it's job..
