@@ -71,15 +71,6 @@ namespace netInstStuff {
 			mystr = mystr.substr(0, pos);
 		}
 
-		/*
-		//Debug code
-		FILE * fp;
-			fp = fopen ("link log.txt", "a+");
-			const char *info = mystr.c_str();
-			fprintf(fp, "%s\n", info);
-			fclose(fp);
-			*/
-
 		return mystr;
 	}
 
@@ -122,45 +113,47 @@ namespace netInstStuff {
 		return new_str;
 	}
 
-	void InitializeServerSocket() try
+	void InitializeServerSocket()
 	{
-		// Create a socket
-		m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
+		try {
+			// Create a socket
+			m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
 
-		if (m_serverSocket < -1)
-		{
-			THROW_FORMAT("Failed to create a server socket. Error code: %u\n", errno);
+			if (m_serverSocket < -1)
+			{
+				THROW_FORMAT("Failed to create a server socket. Error code: %u\n", errno);
+			}
+
+			struct sockaddr_in server;
+			server.sin_family = AF_INET;
+			server.sin_port = htons(REMOTE_INSTALL_PORT);
+			server.sin_addr.s_addr = htonl(INADDR_ANY);
+
+			if (bind(m_serverSocket, (struct sockaddr*)&server, sizeof(server)) < 0)
+			{
+				THROW_FORMAT("Failed to bind server socket. Error code: %u\n", errno);
+			}
+
+			// Set as non-blocking
+			fcntl(m_serverSocket, F_SETFL, fcntl(m_serverSocket, F_GETFL, 0) | O_NONBLOCK);
+
+			if (listen(m_serverSocket, 5) < 0)
+			{
+				THROW_FORMAT("Failed to listen on server socket. Error code: %u\n", errno);
+			}
 		}
-
-		struct sockaddr_in server;
-		server.sin_family = AF_INET;
-		server.sin_port = htons(REMOTE_INSTALL_PORT);
-		server.sin_addr.s_addr = htonl(INADDR_ANY);
-
-		if (bind(m_serverSocket, (struct sockaddr*)&server, sizeof(server)) < 0)
+		catch (std::exception& e)
 		{
-			THROW_FORMAT("Failed to bind server socket. Error code: %u\n", errno);
-		}
+			LOG_DEBUG("Failed to initialize server socket!\n");
+			fprintf(stdout, "%s", e.what());
 
-		// Set as non-blocking
-		fcntl(m_serverSocket, F_SETFL, fcntl(m_serverSocket, F_GETFL, 0) | O_NONBLOCK);
-
-		if (listen(m_serverSocket, 5) < 0)
-		{
-			THROW_FORMAT("Failed to listen on server socket. Error code: %u\n", errno);
+			if (m_serverSocket != 0)
+			{
+				close(m_serverSocket);
+				m_serverSocket = 0;
+			}
+			inst::ui::mainApp->CreateShowDialog("Failed to initialize server socket!", (std::string)e.what(), { "OK" }, true, "romfs:/images/icons/fail.png");
 		}
-	}
-	catch (std::exception& e)
-	{
-		LOG_DEBUG("Failed to initialize server socket!\n");
-		fprintf(stdout, "%s", e.what());
-
-		if (m_serverSocket != 0)
-		{
-			close(m_serverSocket);
-			m_serverSocket = 0;
-		}
-		inst::ui::mainApp->CreateShowDialog("Failed to initialize server socket!", (std::string)e.what(), { "OK" }, true, "romfs:/images/icons/fail.png");
 	}
 
 	void OnUnwound()
@@ -232,6 +225,7 @@ namespace netInstStuff {
 
 			inst::ui::instPage::filecount("inst.info_page.queue"_lang + "0");
 		}
+
 		catch (std::exception& e) {
 			LOG_DEBUG("Failed to install");
 			LOG_DEBUG("%s", e.what());
@@ -459,7 +453,7 @@ namespace netInstStuff {
 											if (link.find("../") == std::string::npos)
 												if (findCaseInsensitive(link, ".nsp") != std::string::npos || findCaseInsensitive(link, ".nsz") != std::string::npos || findCaseInsensitive(link, ".xci") != std::string::npos || findCaseInsensitive(link, ".xcz") != std::string::npos) {
 													if (inst::config::encodeurl) {
-													  // if url encoded is set in options - url encode the link			
+														// if url encoded is set in options - url encode the link			
 														link = urlencode(link);
 														// if the link doesn't contain http in the url add the url from the settings page
 														if (link.find("http") == std::string::npos) {
@@ -505,7 +499,7 @@ namespace netInstStuff {
 									std::sort(urls.begin(), urls.end(), inst::util::ignoreCaseCompare);
 									return urls;
 								}
-								
+
 								else {
 									inst::ui::mainApp->CreateShowDialog("inst.net.url.nolinks"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
 								}
