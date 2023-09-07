@@ -400,16 +400,16 @@ namespace netInstStuff {
 						if (!response.empty()) {
 							if (response[0] == '{') {
 								try {
-								nlohmann::json j = nlohmann::json::parse(response);
-								for (const auto& file : j["files"]) {
-									urls.push_back(file["url"]);
-								}
+									nlohmann::json j = nlohmann::json::parse(response);
+									for (const auto& file : j["files"]) {
+										urls.push_back(file["url"]);
+									}
 
-								return urls;
-								response.clear();
+									return urls;
+									response.clear();
 								}
 								catch (const nlohmann::detail::exception& ex) {
-								LOG_DEBUG("Failed to parse JSON\n");
+									LOG_DEBUG("Failed to parse JSON\n");
 								}
 							}
 							else if (!response.empty()) {
@@ -431,7 +431,12 @@ namespace netInstStuff {
 												*/
 												if (link.find("http") == std::string::npos) {
 													std::string before_strip = stripfilename(url);
+													if (link[0] == '/'){
+														tmp_array.push_back(before_strip + link);
+													}
+													else{
 														tmp_array.push_back(before_strip + "/" + link);
+													}
 												}
 												else {
 													tmp_array.push_back(link);
@@ -451,7 +456,7 @@ namespace netInstStuff {
 										debug = urlencode(decoded);
 										urls.push_back(debug);
 									}
-									
+
 									/*
 									//debug for checking url before and after
 									FILE * fp;
@@ -462,7 +467,7 @@ namespace netInstStuff {
 										fprintf(fp, "%s\n", info);
 									}
 									fclose(fp);
-									
+
 									FILE * fp2;
 									fp2 = fopen ("after.txt", "a+");
 									for (unsigned long int i = 0; i < urls.size(); i++) {
@@ -486,7 +491,7 @@ namespace netInstStuff {
 								}
 								response.clear();
 							}
-							
+
 							else {
 								inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
 								break;

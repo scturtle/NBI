@@ -66,12 +66,13 @@ bool NcaBodyWriter::isOpen() const
 //https://www.w3schools.com/cpp/cpp_classes.asp
 //https://github.com/minetest/minetestmapper/blob/master/ZstdDecompressor.cpp
 //https://github.com/nicoboss/nsz/blob/master/nsz/BlockDecompressorReader.py
+//https://switchbrew.org/wiki/NCA
 
 class NczHeader
 {
 public:
-	static const u64 MAGIC = 0x4E544345535A434E;
-	static const u64 BLOCK = 0x4E435A424C4F434B; //at 0xD0 from magic address
+	static const u64 MAGIC = 0x4E544345535A434E; //NTCESZCN
+	static const u64 BLOCK = 0x4E435A424C4F434B; //NCZBLOCK at 0x40D0
 
 	class Section
 	{
