@@ -126,8 +126,6 @@ namespace inst::curl {
 	}
 
 	std::string html_to_buffer(const std::string ourUrl) {
-		//best to remove "temp.html if it already exists!"
-		if (std::filesystem::remove("temp.html"));
 		CURL* curl;
 		FILE* fp;
 		CURLcode res{};

@@ -19,6 +19,7 @@ namespace inst::config {
 	bool usbAck;
 	bool validateNCAs;
 	bool fixticket;
+	bool listoveride;
 	bool httpkeyboard;
 
 	void setConfig() {
@@ -37,6 +38,7 @@ namespace inst::config {
 			{"httpIndexUrl", httpIndexUrl},
 			{"httplastUrl", httplastUrl},
 			{"fixticket", fixticket},
+			{"listoveride", listoveride},
 			{"httpkeyboard", httpkeyboard}
 		};
 		std::ofstream file(inst::config::configPath);
@@ -50,6 +52,7 @@ namespace inst::config {
 			file >> j;
 			autoUpdate = j["autoUpdate"].get<bool>();
 			fixticket = j["fixticket"].get<bool>();
+			listoveride = j["listoveride"].get<bool>();
 			httpkeyboard = j["httpkeyboard"].get<bool>();
 			deletePrompt = j["deletePrompt"].get<bool>();
 			gAuthKey = j["gAuthKey"].get<std::string>();
@@ -76,6 +79,7 @@ namespace inst::config {
 			gayMode = false;
 			useSound = true;
 			fixticket = true;
+			listoveride = false;
 			httpkeyboard = false;
 			ignoreReqVers = true;
 			overClock = true;

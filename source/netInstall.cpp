@@ -101,6 +101,7 @@ namespace netInstStuff {
 			if (c == '/') new_str += '/';
 			else if (c == '.') new_str += '.';
 			else if (c == ':') new_str += ':';
+			else if (c == '\\') new_str += '/'; //windows paths break urls - change the path mod..
 			else if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') new_str += c;
 			else {
 				sprintf(bufHex, "%X", c);
@@ -356,7 +357,10 @@ namespace netInstStuff {
 				}
 
 				if (kDown & HidNpadButton_Minus) {
+					if (std::filesystem::remove("temp.html"));
 					std::string url;
+					unsigned short maxlist = 50;
+					unsigned short nowlist = 0;
 
 					if (inst::config::httpkeyboard) {
 						url = inst::util::softwareKeyboard("inst.net.url.hint"_lang, inst::config::httpIndexUrl, 500);
@@ -398,7 +402,7 @@ namespace netInstStuff {
 						}
 
 						if (!response.empty()) {
-							if (response[0] == '{') {
+							if (response[0] == '*') {
 								try {
 									nlohmann::json j = nlohmann::json::parse(response);
 									for (const auto& file : j["files"]) {
@@ -414,6 +418,9 @@ namespace netInstStuff {
 							}
 							else if (!response.empty()) {
 								std::size_t index = 0;
+								if (!inst::config::listoveride) {
+									inst::ui::mainApp->CreateShowDialog("inst.net.url.listwait"_lang + std::to_string(maxlist) + "inst.net.url.listwait2"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/wait.png");
+								}
 								while (index < response.size()) {
 									std::string link;
 									auto found = findCaseInsensitive(response, "href=\"", index);
@@ -429,17 +436,26 @@ namespace netInstStuff {
 												Try to see if the href links contain http - if not add the own url
 												defined in the settings page
 												*/
-												if (link.find("http") == std::string::npos) {
-													std::string before_strip = stripfilename(url);
-													if (link[0] == '/'){
-														tmp_array.push_back(before_strip + link);
-													}
-													else{
-														tmp_array.push_back(before_strip + "/" + link);
-													}
+												if (!inst::config::listoveride && nowlist >= maxlist) {
+														break;
 												}
 												else {
-													tmp_array.push_back(link);
+													if (link.find("http") == std::string::npos) {
+														std::string before_strip = stripfilename(url);
+														if (link[0] == '/') {
+															tmp_array.push_back(before_strip + link);
+															nowlist++;
+														}
+														else {
+															tmp_array.push_back(before_strip + "/" + link);
+															nowlist++;
+
+														}
+													}
+													else {
+														tmp_array.push_back(link);
+														nowlist++;
+													}
 												}
 											}
 											break; //don't remove this or the net install screen will crash

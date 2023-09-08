@@ -54,7 +54,9 @@
         "hint": "Укажите ссылку на файл",
         "invalid": "Указан неверный URL!",
         "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
-        "source_string": " из URL"
+        "source_string": " из URL",
+        "listwait": "Populating the list from a url can take some time.\nThe list default limit is purposely set to ",
+        "listwait2": " items.\nPress OK to load the list."
       },
       "gdrive": {
         "hint": "Введите ID файла из общедоступного Google Drive",
@@ -178,6 +180,7 @@
       "gay_option": "Использовать тему",
       "useSound": "Use sound notifications during installs",
       "fixticket": "Convert temporary tickets to permanent",
+      "listoveride": "Disable URL list warning and file limit",
       "usehttpkeyboard": "Use keyboard during http server installs",
       "sig_url": "URL для скачивания Signature patches: ",
       "http_url": "Http server source URL: ",

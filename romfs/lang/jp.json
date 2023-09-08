@@ -54,7 +54,9 @@
         "hint": "ファイルのインターネットアドレスを入力してください",
         "invalid": "指定されたURLは無効です！",
         "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
-        "source_string": " URLから"
+        "source_string": " URLから",
+        "listwait": "Populating the list from a url can take some time.\nThe list default limit is purposely set to ",
+        "listwait2": " items.\nPress OK to load the list."
       },
       "gdrive": {
         "hint": "Googleドライブの公開ファイルのファイルIDを入力してください",
@@ -178,6 +180,7 @@
       "gay_option": "テーマを使用する",
       "useSound": "インストール時にサウンドで通知する",
       "fixticket": "Convert temporary tickets to permanent",
+      "listoveride": "Disable URL list warning and file limit",
       "usehttpkeyboard": "Use keyboard during http server installs",
       "sig_url": "署名パッチのソースURL: ",
       "http_url": "Http server source URL: ",

@@ -54,7 +54,9 @@
         "hint": "請輸入檔案的URL網路位址",
         "invalid": "URL網路位址無效！",
         "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
-        "source_string": "來源為URL"
+        "source_string": "來源為URL",
+        "listwait": "Populating the list from a url can take some time.\nThe list default limit is purposely set to ",
+        "listwait2": " items.\nPress OK to load the list."
       },
       "gdrive": {
         "hint": "請輸入Google網路硬碟的共享檔案ID",
@@ -178,6 +180,7 @@
       "gay_option": "套用主題",
       "useSound": "在安裝過程中使用音效提醒進度",
       "fixticket": "Convert temporary tickets to permanent",
+      "listoveride": "Disable URL list warning and file limit",
       "usehttpkeyboard": "Use keyboard during http server installs",
       "sig_url": "簽名修補程式來源URL: ",
       "http_url": "Http server source URL: ",

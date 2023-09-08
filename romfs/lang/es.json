@@ -54,7 +54,9 @@
         "hint": "Ingrese la dirección de Internet de un archivo",
         "invalid": "¡La URL especificada no es válida!",
         "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
-        "source_string": "desde la URL"
+        "source_string": "desde la URL",
+        "listwait": "Populating the list from a url can take some time.\nThe list default limit is purposely set to ",
+        "listwait2": " items.\nPress OK to load the list."
       },
       "gdrive": {
         "hint": "Introduce el ID de un archivo público de Google Drive",
@@ -178,6 +180,7 @@
       "gay_option": "Usar tema",
       "useSound": "Usar notificaciones de sonido durante las instalaciones",
       "fixticket": "Convert temporary tickets to permanent",
+      "listoveride": "Disable URL list warning and file limit",
       "usehttpkeyboard": "Use keyboard during http server installs",
       "sig_url": "URL de origen de parches de firma: ",
       "http_url": "Http server source URL: ",
