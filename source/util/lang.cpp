@@ -11,18 +11,14 @@ namespace Language {
 		std::ifstream ifs;
 		std::string languagePath;
 		int langInt = inst::config::languageSetting;
-		if (langInt == 0) {
-			SetLanguage ourLang;
-			u64 lcode = 0;
-			setInitialize();
-			setGetSystemLanguage(&lcode);
-			setMakeLanguage(lcode, &ourLang);
-			setExit();
-			langInt = (int)ourLang;
-		}
 		switch (langInt) {
 		case 0:
-			languagePath = "romfs:/lang/en.json";
+			if (std::filesystem::exists(inst::config::appDir + "/lang/custom.json")) {
+				languagePath = (inst::config::appDir + "/lang/custom.json");
+			}
+			else {
+				languagePath = "romfs:/lang/en.json";
+			}
 			break;
 		case 1:
 			languagePath = "romfs:/lang/jp.json";
@@ -46,12 +42,8 @@ namespace Language {
 			languagePath = "romfs:/lang/tw.json";
 			break;
 		default:
-			if (std::filesystem::exists(inst::config::appDir + "/lang/custom.json")) {
-				languagePath = (inst::config::appDir + "/lang/custom.json");
-			}
-			else {
-				languagePath = "romfs:/lang/en.json";
-			}
+			languagePath = "romfs:/lang/en.json";
+			break;
 		}
 		if (std::filesystem::exists(languagePath)) ifs = std::ifstream(languagePath);
 		else ifs = std::ifstream("romfs:/lang/en.json");

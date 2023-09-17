@@ -20,6 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include <filesystem>
+#include <sstream>
+#include <switch.h>
 #include "nx/nca_writer.h"
 #include "util/error.hpp"
 #include <zstd.h>
@@ -28,6 +31,11 @@ SOFTWARE.
 #include "util/config.hpp"
 #include "util/title_util.hpp"
 #include "install/nca.hpp"
+
+//added for debugging messages on screen
+#include "util/lang.hpp"
+#include "ui/MainApplication.hpp"
+//
 
 void append(std::vector<u8>& buffer, const u8* ptr, u64 sz)
 {
@@ -67,6 +75,10 @@ bool NcaBodyWriter::isOpen() const
 //https://github.com/minetest/minetestmapper/blob/master/ZstdDecompressor.cpp
 //https://github.com/nicoboss/nsz/blob/master/nsz/BlockDecompressorReader.py
 //https://switchbrew.org/wiki/NCA
+
+namespace inst::ui {
+	extern MainApplication* mainApp;
+}
 
 class NczHeader
 {
@@ -249,7 +261,7 @@ public:
 		{
 			const size_t readChunkSz = std::min(sz, buffInSize);
 			ZSTD_inBuffer input = { ptr, readChunkSz, 0 };
-
+			
 			while (input.pos < input.size)
 			{
 				ZSTD_outBuffer output = { buffOut, buffOutSize, 0 };
@@ -300,6 +312,21 @@ public:
 			}
 
 			auto header = (NczHeader*)m_buffer.data();
+			
+			//debug code -- ignore....
+			/*
+			int x =0;
+			if (x == 0) {
+				char aByte = m_buffer.data()[0];
+				//aByte = 0x10+(aByte*0x40);
+				int one = sizeof(NczHeader);
+				std::ostringstream ss;
+				ss << "0x" << std::hex << one;
+				std::string result = ss.str();
+				inst::ui::mainApp->CreateShowDialog("Debug info", result, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+				x++;
+			}
+			*/
 
 			if (m_buffer.size() + sz > header->size())
 			{

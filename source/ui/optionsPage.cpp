@@ -103,7 +103,8 @@ namespace inst::ui {
 			return languageStrings[ourLangCode];
 		}
 		else {
-			return "options.language.system_language"_lang;
+			flag = "romfs:/images/flags/en.png";
+			return languageStrings[0];
 		}
 	}
 
@@ -356,7 +357,6 @@ namespace inst::ui {
 						break;
 					case 13:
 						languageList = languageStrings;
-						languageList.push_back("options.language.system_language"_lang);
 						rc = inst::ui::mainApp->CreateShowDialog("options.language.title"_lang, "options.language.desc"_lang, languageList, false, flag );
 						if (rc == -1) break;
 						switch (rc) {

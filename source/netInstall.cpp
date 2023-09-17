@@ -357,7 +357,7 @@ namespace netInstStuff {
 				}
 
 				if (kDown & HidNpadButton_Minus) {
-					if (std::filesystem::remove("temp.html"));
+					std::remove("temp.html");
 					std::string url;
 					unsigned short maxlist = 50;
 					unsigned short nowlist = 0;
@@ -398,6 +398,10 @@ namespace netInstStuff {
 							//If the above fails we probably have an html page - try to download it instead.
 							if (response.empty()) {
 								response = inst::curl::html_to_buffer(url);
+									if (response.empty()) {
+										inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+										break;
+									}
 							}
 						}
 
