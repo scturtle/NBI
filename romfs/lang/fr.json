@@ -11,7 +11,7 @@
     },
     "theme": {
       "title": "Utiliser le thème",
-      "desc": "Appuyer sur Ok pour quiter Tinwoo ou Annuler pour continuer.\n\nLe thème va être appliqué la prochaine fois que vous lancerez tinwoo."
+      "desc": "Les thèmes s'activeront ou se désactiveront au redémarrage de Tinwoo."
     },
     "hdd": {
       "title": "USB HDD",

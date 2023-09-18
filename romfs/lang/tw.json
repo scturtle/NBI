@@ -11,7 +11,7 @@
     },
     "theme": {
       "title": "套用主題",
-      "desc": "按確定後將關閉Tinwoo，或按取消返回繼續其他操作。\n\n套用的主題將會在下次啟動Tinwoo時生效"
+      "desc": "當 Tinwoo 重新啟動時，主題將啟用或停用。"
     },
     "hdd": {
       "title": "USB HDD",

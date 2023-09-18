@@ -11,7 +11,7 @@
     },
     "theme": {
       "title": "Design anwenden",
-      "desc": "Drück OK um Tinwoo zu beenden oder Abbrechen um fort zu fahren.\n\nDesigns werden das nächste Mal aktiviert wenn du Tinwoo startest."
+      "desc": "Themes werden aktiviert oder deaktiviert, wenn Tinwoo neu gestartet wird."
     },
     "hdd": {
       "title": "USB HDD",

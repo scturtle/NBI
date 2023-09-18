@@ -11,7 +11,7 @@
     },
     "theme": {
       "title": "Usar tema",
-      "desc": "Presiona OK para salir de TinWoo Installer o Cancelar para continuar.\n\nLos temas se activarán la próxima vez que inicies TinWoo Installer"
+      "desc": "Los temas se activarán o desactivarán cuando Tinwoo se reinicie."
     },
     "hdd": {
       "title": "HDD USB",

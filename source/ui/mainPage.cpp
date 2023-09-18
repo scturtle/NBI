@@ -241,7 +241,7 @@ namespace inst::ui {
 			}
 		}
 		if (inst::util::getUsbState() == 5) mainApp->usbinstPage->startUsb();
-		else mainApp->CreateShowDialog("main.usb.error.title"_lang, "main.usb.error.desc"_lang, { "common.ok"_lang }, false, "romfs:/images/icons/usb.png");
+		else mainApp->CreateShowDialog("main.usb.error.title"_lang, "main.usb.error.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/usb.png");
 	}
 
 	void MainPage::HdInstallMenuItem_Click() {

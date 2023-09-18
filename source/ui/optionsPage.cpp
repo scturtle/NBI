@@ -114,13 +114,20 @@ namespace inst::ui {
 	}
 
 	void thememessage() {
-		int ourResult = inst::ui::mainApp->CreateShowDialog("main.theme.title"_lang, "main.theme.desc"_lang, { "common.ok"_lang, "common.cancel"_lang }, true, "romfs:/images/icons/theme.png");
+		int ourResult = inst::ui::mainApp->CreateShowDialog("main.theme.title"_lang, "main.theme.desc"_lang, { "common.no"_lang, "common.yes"_lang }, true, "romfs:/images/icons/theme.png");
 		if (ourResult != 0) {
-			//
+			if (!inst::config::gayMode) {
+				inst::config::gayMode = true;
+				mainApp->FadeOut();
+				mainApp->Close();
+			}
 		}
 		else {
-			mainApp->FadeOut();
-			mainApp->Close();
+				if (inst::config::gayMode) {
+					inst::config::gayMode = false;
+					mainApp->FadeOut();
+					mainApp->Close();
+				}
 		}
 	}
 
@@ -279,17 +286,15 @@ namespace inst::ui {
 						break;
 					case 5:
 						if (inst::config::gayMode) {
-							inst::config::gayMode = false;
-							mainApp->mainPage->awooImage->SetVisible(false);
-						}
-						else {
-							inst::config::gayMode = true;
 							mainApp->mainPage->awooImage->SetVisible(true);
 						}
-						this->setMenuText();
-						this->menu->SetSelectedIndex(index);
+						else {
+							mainApp->mainPage->awooImage->SetVisible(false);
+						}
 						thememessage();
 						inst::config::setConfig();
+						this->setMenuText();
+						this->menu->SetSelectedIndex(index);
 						break;
 					case 6:
 						if (inst::config::useSound) {
