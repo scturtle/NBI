@@ -11,15 +11,14 @@ namespace Language {
 
 	void Load() {
 		//https://switchbrew.org/wiki/Settings_services#LanguageCode
-		//
+		//Get language from the switch system settings.
 		SetLanguage ourLang;
 		u64 lcode = 0;
 		setInitialize();
 		setGetSystemLanguage(&lcode);
 		setMakeLanguage(lcode, &ourLang);
 		setExit();
-		//int lang = (int)ourLang;
-		//
+		int syslang = (int)ourLang;
 		/*
 		0 Japanese
 		1 AmericanEnglish
@@ -40,13 +39,7 @@ namespace Language {
 		16 [4.0.0+] TraditionalChinese
 		17 [10.1.0+] BrazilianPortuguese
 		*/
-		/*
-		FILE * fp;
-		fp = fopen ("lang.txt", "a+");
-		fprintf(fp, "%i\n", (int)ourLang);
-		fclose(fp);
-		*/
-		//
+		//Get language int from config file
 		std::ifstream ifs;
 		std::string languagePath;
 		int langInt = inst::config::languageSetting;
@@ -78,6 +71,46 @@ namespace Language {
 				break;
 			case 7:
 				languagePath = "romfs:/lang/tw.json";
+				break;
+			case 8:
+				switch (syslang) {
+					case 0:
+						languagePath = "romfs:/lang/jp.json";
+						break;
+					case 1:
+						languagePath = "romfs:/lang/en.json";
+						break;
+					case 2:
+						languagePath = "romfs:/lang/fr.json";
+						break;
+					case 3:
+						languagePath = "romfs:/lang/de.json";
+						break;
+					case 4:
+						languagePath = "romfs:/lang/it.json";
+						break;
+					case 5:
+						languagePath = "romfs:/lang/es.json";
+						break;
+					case 6:
+						languagePath = "romfs:/lang/tw.json";
+						break;
+					case 10:
+						languagePath = "romfs:/lang/ru.json";
+						break;
+					case 11:
+						languagePath = "romfs:/lang/tw.json";
+						break;
+					case 12:
+						languagePath = "romfs:/lang/en.json";
+						break;
+					case 16:
+						languagePath = "romfs:/lang/tw.json";
+						break;
+					default:
+						languagePath = "romfs:/lang/en.json";
+						break;
+				}
 				break;
 			default:
 				languagePath = "romfs:/lang/en.json";

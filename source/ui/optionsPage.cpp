@@ -20,7 +20,7 @@ namespace inst::ui {
 	s32 prev_touchcount = 0;
 	std::string flag = "romfs:/images/flags/en.png";
 
-	std::vector<std::string> languageStrings = { "En", "Jpn", "Fr", "De", "It", "Ru", "Es", "Tw" };
+	std::vector<std::string> languageStrings = { "En", "Jpn", "Fr", "De", "It", "Ru", "Es", "Tw", "Sys" };
 
 	optionsPage::optionsPage() : Layout::Layout() {
 		this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#00000080"));
@@ -100,6 +100,7 @@ namespace inst::ui {
 			else if (ourLangCode == 5) flag = "romfs:/images/flags/ru.png";
 			else if (ourLangCode == 6) flag = "romfs:/images/flags/es.png";
 			else if (ourLangCode == 7) flag = "romfs:/images/flags/tw.png";
+			else if (ourLangCode == 8) flag = "romfs:/images/flags/sys.png";
 			return languageStrings[ourLangCode];
 		}
 		else {
@@ -383,6 +384,9 @@ namespace inst::ui {
 							break;
 						case 7:
 							inst::config::languageSetting = 7;
+							break;
+						case 8:
+							inst::config::languageSetting = 8;
 							break;
 						default:
 							inst::config::languageSetting = 0;
