@@ -20,7 +20,7 @@ namespace inst::ui {
 	s32 prev_touchcount = 0;
 	std::string flag = "romfs:/images/flags/en.png";
 
-	std::vector<std::string> languageStrings = { "En", "Jpn", "Fr", "De", "It", "Ru", "Es", "Tw", "Sys" };
+	std::vector<std::string> languageStrings = { "Sys", "En", "Jpn", "Fr", "De", "It", "Ru", "Es", "Tw" };
 
 	optionsPage::optionsPage() : Layout::Layout() {
 		this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#00000080"));
@@ -92,15 +92,15 @@ namespace inst::ui {
 
 	std::string optionsPage::getMenuLanguage(int ourLangCode) {
 		if (ourLangCode >= 0) {
-			if (ourLangCode == 0) flag = "romfs:/images/flags/en.png";
-			else if (ourLangCode == 1) flag = "romfs:/images/flags/jpn.png";
-			else if (ourLangCode == 2) flag = "romfs:/images/flags/fr.png";
-			else if (ourLangCode == 3) flag = "romfs:/images/flags/de.png";
-			else if (ourLangCode == 4) flag = "romfs:/images/flags/it.png";
-			else if (ourLangCode == 5) flag = "romfs:/images/flags/ru.png";
-			else if (ourLangCode == 6) flag = "romfs:/images/flags/es.png";
-			else if (ourLangCode == 7) flag = "romfs:/images/flags/tw.png";
-			else if (ourLangCode == 8) flag = "romfs:/images/flags/sys.png";
+			if (ourLangCode == 0) flag = "romfs:/images/flags/sys.png";
+			else if (ourLangCode == 1) flag = "romfs:/images/flags/en.png";
+			else if (ourLangCode == 2) flag = "romfs:/images/flags/jpn.png";
+			else if (ourLangCode == 3) flag = "romfs:/images/flags/fr.png";
+			else if (ourLangCode == 4) flag = "romfs:/images/flags/de.png";
+			else if (ourLangCode == 5) flag = "romfs:/images/flags/it.png";
+			else if (ourLangCode == 6) flag = "romfs:/images/flags/ru.png";
+			else if (ourLangCode == 7) flag = "romfs:/images/flags/es.png";
+			else if (ourLangCode == 8) flag = "romfs:/images/flags/tw.png";
 			return languageStrings[ourLangCode];
 		}
 		else {
@@ -358,6 +358,7 @@ namespace inst::ui {
 						break;
 					case 13:
 						languageList = languageStrings;
+						languageList[0] = "options.language.system_language"_lang; //replace "sys" with local language string 
 						rc = inst::ui::mainApp->CreateShowDialog("options.language.title"_lang, "options.language.desc"_lang, languageList, false, flag);
 						if (rc == -1) break;
 						switch (rc) {
