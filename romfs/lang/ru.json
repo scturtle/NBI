@@ -4,18 +4,18 @@
       "sd": "Установка из SD-карты",
       "net": "Установка по сети",
       "usb": "Установка через USB",
-      "hdd": "Install over USB HDD",
+      "hdd": "Установить через USB HDD",
       "sig": "Управление sig-patches",
       "set": "Настройки",
       "exit": "Выход"
     },
     "theme": {
-      "title": "Use Theme",
-      "desc": "Press OK to quit Tinwoo or Cancel to continue.\n\nThemes will activate the next time you start Tinwoo."
+      "title": "Использовать тему",
+      "desc": "Нажмите «ОК», чтобы выйти из Tinwoo, или «Отмена», чтобы продолжить.\n\nТемы активируются при следующем запуске Tinwoo."
     },
     "hdd": {
       "title": "USB HDD",
-      "notfound": "USB HDD is not connected."
+      "notfound": "Жесткий диск USB не подключен."
     },
     "net": {
       "title": "Сетевое подключение недоступно",
@@ -43,7 +43,7 @@
       "help": {
         "title": "Помощь",
         "desc": "Файлы могут быть установленны удалённо из другого вашего устройства используя такие утилиты как\nNS-USBloader в режиме Tinfoil. Чтобы передать файлы на Switch откройте одно из этих замечательных\nприложений на вашем ПК или мобильном устройстве, введите IP адрес вашего Switch (отображается на экране),\nвыберите файлы и затем загрузите их в вашу консоль! Если приложение которое вы используете не позволяет\nвыбрать определённый формат файла, попробуйте изменить его расширение.\nTinWoo Installer не чувствителен\nк расширениям файла при установке по сети!\n\nЕсли вы ничего не поняли, просто скопируйте файлы на SD-карту и выберите в главном меню опцию\n\"Установка из SD-карты\"!",
-        "blank": "The server address is currently blank. You need to enter a proper url.\n\nExample: http://192.168.0.51"
+        "blank": "Адрес сервера в настоящее время пуст. Вам необходимо ввести правильный URL.\n\nПример: http://192.168.0.51"
       },
       "src": {
         "title": "Откуда будем устанавливать?",
@@ -53,20 +53,20 @@
       "url": {
         "hint": "Укажите ссылку на файл",
         "invalid": "Указан неверный URL!",
-        "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
+        "nolinks": "Ссылки XCI, XCZ, NSP, NSZ не найдены!\nВы использовали правильный URL?",
         "source_string": " из URL",
-        "listwait": "Populating the list from a url can take some time.\nThe list default limit is purposely set to ",
-        "listwait2": " items.\nPress OK to load the list."
+        "listwait": "Заполнение списка по URL-адресу может занять некоторое время.\nОграничение списка по умолчанию намеренно установлено на",
+        "listwait2": " элементы.\nНажмите ОК, чтобы загрузить список."
       },
       "gdrive": {
         "hint": "Введите ID файла из общедоступного Google Drive",
         "alt_name": "Файл Google Drive",
         "source_string": " из Google Drive"
       },
-      "sd": "Free space on sd card: ",
-      "nand": "Free space on nand: ",
-      "index_error": "No games found!",
-      "index_error_info": "Did you enter the correct HTTP server source URL in the config page?",
+      "sd": "Свободное место на SD-карте:",
+      "nand": "Свободное место на NAND:",
+      "index_error": "Игры не найдены!",
+      "index_error_info": "Вы ввели правильный URL-адрес источника HTTP-сервера на странице конфигурации?",
       "top_info": "Выберите какие файлы вы хотите установить из сервера и нажмите \"+\"!",
       "top_info1": "Ожидание подключения... IP-адрес вашего Switch: ",
       "failed": "Не удалось выполнить установку из удалённого источника!",
@@ -89,15 +89,15 @@
     },
     "hd": {
       "help": {
-        "title": "Help",
-        "desc": "Copy your NSP, NSZ, XCI, or XCZ files to your hard drive, browse to and\nselect the ones you want to install, then press the Plus button."
+        "title": "Помощь",
+        "desc": "Скопируйте файлы NSP, NSZ, XCI или XCZ на жесткий диск, найдите и\nвыберите те, которые хотите установить, затем нажмите кнопку «Плюс»."
       },
-      "top_info": "Select the files you want to install, then press the Plus button!",
-      "source_string": " from hard drive",
-      "delete_info": " installed\nDelete it from the hard drive?",
-      "delete_info_multi": " files installed successfully!\nDelete them from the hard drive?",
-      "delete_desc": "The original files aren't needed anymore after they've been installed",
-      "buttons": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0e2 Help    \ue0e1 Cancel"
+      "top_info": "Выберите файлы, которые хотите установить, затем нажмите кнопку «Плюс»!",
+      "source_string": " с жесткого диска",
+      "delete_info": " установлен\nУдалить его с жесткого диска?",
+      "delete_info_multi": " файлы успешно установлены!\nУдалить их с жесткого диска?",
+      "delete_desc": "Исходные файлы больше не нужны после установки.",
+      "buttons": "\ue0e0 Выберите файл  \ue0e3 Выбрать все \ue0ef Установить файл(ы)  \ue0e2 Помощь  \ue0e1 Отмена"
     },
     "usb": {
       "help": {
@@ -109,7 +109,7 @@
       "error": "Передача через USB провалилась из-за ошибки или превышения времини ожидания",
       "source_string": " через USB",
       "buttons": "\ue0e2 (Удерж.) Помощь    \ue0e1 (Удерж.) Отмена",
-      "buttons2": "\ue0e0 Выбрать файл    \ue0e3 Выбрать всё    \ue0ef Установить файл(ы)    \ue0e1 Отмена"
+      "buttons2": "\ue0e0 Выбрать файл  \ue0e3 Выбрать всё  \ue0ef Установить файл(ы)  \ue0e1 Отмена"
     },
     "target": {
       "desc0": "Куда следует установить ",
@@ -178,12 +178,12 @@
       "ask_delete": "Спрашивать разрешения удалить исходные файлы после установки",
       "auto_update": "Автоматически проверять наличие обновлений",
       "gay_option": "Использовать тему",
-      "useSound": "Use sound notifications during installs",
-      "fixticket": "Convert temporary tickets to permanent",
-      "listoveride": "Disable URL list warning and file limit",
-      "usehttpkeyboard": "Use keyboard during http server installs",
+      "useSound": "Используйте звуковые уведомления во время установки",
+      "fixticket": "Превратить временные билеты в постоянные",
+      "listoveride": "Отключить предупреждение списка URL-адресов и ограничение количества файлов",
+      "usehttpkeyboard": "Используйте клавиатуру во время установки http-сервера",
       "sig_url": "URL для скачивания Signature patches: ",
-      "http_url": "Http server source URL: ",
+      "http_url": "URL-адрес источника HTTP-сервера:",
       "language": "Язык: ",
       "check_update": "Проверить наличие обновлений TinWoo Installer",
       "credits": "Благодарности"

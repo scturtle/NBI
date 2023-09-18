@@ -53,10 +53,10 @@
       "url": {
         "hint": "Entrez l'URL d'un fichier",
         "invalid": "L'URL spécifiée n'est pas valide !",
-        "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
+        "nolinks": "Aucun lien XCI, XCZ, NSP, NSZ trouvé !\nAvez-vous utilisé la bonne URL ?",
         "source_string": " à partir d'un URL",
-        "listwait": "Populating the list from a url can take some time.\nThe list default limit is purposely set to ",
-        "listwait2": " items.\nPress OK to load the list."
+        "listwait": "Remplir la liste à partir d'une URL peut prendre un certain temps.\nLa limite par défaut de la liste est volontairement définie sur ",
+        "listwait2": " articles.\nAppuyez sur OK pour charger la liste."
       },
       "gdrive": {
         "hint": "Saisissez l'ID d'un fichier Google Drive public",

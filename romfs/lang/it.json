@@ -4,18 +4,18 @@
       "sd": "Installa dalla SD",
       "net": "Installa via LAN o da internet",
       "usb": "Installa via USB",
-      "hdd": "Install over USB HDD",
+      "hdd": "Installa su HDD USB",
       "sig": "Gestisci le SigPatches",
       "set": "Impostazioni",
       "exit": "Esci"
     },
     "theme": {
-      "title": "Use Theme",
-      "desc": "Press OK to quit Tinwoo or Cancel to continue.\n\nThemes will activate the next time you start Tinwoo."
+      "title": "Usa tema",
+      "desc": "Premi OK per uscire da Tinwoo o Annulla per continuare.\n\nI temi verranno attivati ​​al successivo avvio di Tinwoo."
     },
     "hdd": {
       "title": "USB HDD",
-      "notfound": "USB HDD is not connected."
+      "notfound": "L'HDD USB non è collegato."
     },
     "net": {
       "title": "Connessione alla rete non disponibile",
@@ -43,7 +43,7 @@
       "help": {
         "title": "Aiuto",
         "desc": "I file possono essere installati via remoto da altri dispositivi utilizzando programmi come\nNS-USBloader in modialità \"Tinfoil\". Per inviare file, apri uno\ndi questi software sul tuo PC o sul tuo smartphone, inserisci\nl'indirizzo IP (mostrato sullo schermo), seleziona i file e poi inviali alla\nconsole! Se il software che usi non ti permette di selezionare file\nspecifici, prova a cambiare l'estensione del file in qualcosa che venga accettato dal software.\nTinWoo Installer non legge l'estensione del file durante l'installazione via internet!\n\nSe proprio non riesci, copia i file nella SD e seleziona\nl'opzione \"Installa dalla SD\" dal menù principale!",
-        "blank": "The server address is currently blank. You need to enter a proper url.\n\nExample: http://192.168.0.51"
+        "blank": "L'indirizzo del server è attualmente vuoto. È necessario inserire un URL corretto.\n\nEsempio: http://192.168.0.51"
       },
       "src": {
         "title": "Da dove vuoi installare?",
@@ -53,20 +53,20 @@
       "url": {
         "hint": "Inserisci l'URL del file",
         "invalid": "L'URL specificato non è valido!",
-        "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
+        "nolinks": "Nessun collegamento XCI, XCZ, NSP, NSZ trovato!\nHai utilizzato l'URL corretto?",
         "source_string": " da URL",
-        "listwait": "Populating the list from a url can take some time.\nThe list default limit is purposely set to ",
-        "listwait2": " items.\nPress OK to load the list."
+        "listwait": "Compilare l'elenco da un URL può richiedere del tempo.\nIl limite predefinito dell'elenco è impostato di proposito su",
+        "listwait2": " elementi.\nPremere OK per caricare l'elenco."
       },
       "gdrive": {
         "hint": "Inserisci l'ID di un file pubblico di Google Drive",
         "alt_name": "File Google Drive",
         "source_string": " da Google Drive"
       },
-      "sd": "Free space on sd card: ",
-      "nand": "Free space on nand: ",
-      "index_error": "No games found!",
-      "index_error_info": "Did you enter the correct HTTP server source URL in the config page?",
+      "sd": "Spazio libero sulla scheda SD: ",
+      "nand": "Spazio libero sulla NAND: ",
+      "index_error": "Nessun gioco trovato!",
+      "index_error_info": "Hai inserito l'URL di origine del server HTTP corretto nella pagina di configurazione?",
       "top_info": "Seleziona quali file vuoi installare dal server, poi premi il tasto Più!",
       "top_info1": "Aspettando una connnessione... L'indirizzo IP è: ",
       "failed": "Impossibile eseguire l'installazione remota!",
@@ -89,15 +89,15 @@
     },
     "hd": {
       "help": {
-        "title": "Help",
-        "desc": "Copy your NSP, NSZ, XCI, or XCZ files to your hard drive, browse to and\nselect the ones you want to install, then press the Plus button."
+        "title": "Aiuto",
+        "desc": "Copia i tuoi file NSP, NSZ, XCI o XCZ sul tuo disco rigido, cerca e selezion\na quelli che desideri installare, quindi premi il pulsante Più."
       },
-      "top_info": "Select the files you want to install, then press the Plus button!",
-      "source_string": " from hard drive",
-      "delete_info": " installed\nDelete it from the hard drive?",
-      "delete_info_multi": " files installed successfully!\nDelete them from the hard drive?",
-      "delete_desc": "The original files aren't needed anymore after they've been installed",
-      "buttons": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0e2 Help    \ue0e1 Cancel"
+      "top_info": "Seleziona i file che desideri installare, quindi premi il pulsante Più!",
+      "source_string": " dal disco rigido",
+      "delete_info": " installato\nEliminarlo dal disco rigido?",
+      "delete_info_multi": " file installati con successo!\nEliminarli dal disco rigido?",
+      "delete_desc": "I file originali non sono più necessari dopo l'installazione",
+      "buttons": "\ue0e0 Seleziona il file  \ue0e3 Seleziona tutto  \ue0ef Installa file  \ue0e2 Aiuto   \ue0e1 Annulla"
     },
     "usb": {
       "help": {
@@ -128,7 +128,7 @@
       "desc0": " file installati correttamente!",
       "desc1": " installato!",
       "downloading": "Sto scaricando ",
-      "queue": "Files in queue: ",
+      "queue": "File in coda: ",
       "at": " in "
     },
     "nca_verify": {
@@ -178,12 +178,12 @@
       "ask_delete": "Chiedi di cancellare i file originale dopo l'installazione",
       "auto_update": "Controlla aggiornamenti di TinWoo Installer automaticamente",
       "gay_option": "Usa tema",
-      "useSound": "Use sound notifications during installs",
-      "fixticket": "Convert temporary tickets to permanent",
-      "listoveride": "Disable URL list warning and file limit",
-      "usehttpkeyboard": "Use keyboard during http server installs",
+      "useSound": "Utilizza notifiche sonore durante le installazioni",
+      "fixticket": "Converti i biglietti temporanei in permanenti",
+      "listoveride": "Disabilita l'avviso dell'elenco degli URL e il limite dei file",
+      "usehttpkeyboard": "Utilizzare la tastiera durante le installazioni del server http",
       "sig_url": "Fonte URL SigPatches: ",
-      "http_url": "Http server source URL: ",
+      "http_url": "URL di origine del server HTTP: ",
       "language": "Lingua: ",
       "check_update": "Controlla aggiornamenti di TinWoo Installer ora",
       "credits": "Crediti"

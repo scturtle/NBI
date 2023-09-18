@@ -43,7 +43,7 @@
       "help": {
         "title": "說明",
         "desc": "在Tinfoil模式下，檔案可透過NS-USBloader這類工具來進行遠端安裝。\n要將檔案上傳到你的Switch，請輸入Switch的IP位址 (按照畫面上顯示)，\n並從電腦或手機上選定要傳輸的檔案，點擊等待檔案傳輸完成即可。\n如果遠端傳輸工具不支援某些檔案格式，可以嘗試修改為可接受的副檔名，\n透過網路遠端進行安裝時，Tinwoo Installer並不會檢查副檔名。\n\n如果不確定如何遠端操作，可以將檔案複製到記憶卡，從程式主畫面執行\"使用SD卡進行安裝\"",
-        "blank": "The server address is currently blank. You need to enter a proper url.\n\nExample: http://192.168.0.51"
+        "blank": "服務器地址當前為空。您需要輸入正確的 url。\n\n示例: http://192.168.0.51"
       },
       "src": {
         "title": "要從什麼路徑來源進行安裝？",
@@ -53,20 +53,20 @@
       "url": {
         "hint": "請輸入檔案的URL網路位址",
         "invalid": "URL網路位址無效！",
-        "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
+        "nolinks": "未找到 XCI、XCZ、NSP、NSZ 鏈接！\n您使用的 URL 是否正確？",
         "source_string": "來源為URL",
-        "listwait": "Populating the list from a url can take some time.\nThe list default limit is purposely set to ",
-        "listwait2": " items.\nPress OK to load the list."
+        "listwait": "從 url 填充列表可能需要一些時間。\n列表默認限制特意設置為",
+        "listwait2": " 項目。\n按“確定”加載列表。"
       },
       "gdrive": {
         "hint": "請輸入Google網路硬碟的共享檔案ID",
         "alt_name": "Google網路硬碟檔案",
         "source_string": "來源為Google網路硬碟"
       },
-      "sd": "Free space on sd card: ",
-      "nand": "Free space on nand: ",
-      "index_error": "No games found!",
-      "index_error_info": "Did you enter the correct HTTP server source URL in the config page?",
+      "sd": "SD 卡上的可用空間：",
+      "nand": "nand 上的可用空間：",
+      "index_error": "沒有找到遊戲！",
+      "index_error_info": "您是否在配置頁面中輸入了正確的 HTTP 服務器源 URL？",
       "top_info": "選定要從伺服器安裝的檔案後，請按+鈕",
       "top_info1": "正在等待連線中... 你的Switch主機IP是: ",
       "failed": "遠端安裝失敗！",
@@ -97,7 +97,7 @@
       "delete_info": " 安裝完成！\n是否將檔案從隨身硬碟刪除？",
       "delete_info_multi": " 所選的檔案均安裝完成！\n是否將所選的檔案從隨身硬碟刪除？",
       "delete_desc": "安裝完成後，不會再使用到原始檔案",
-      "buttons": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e2 說明    \ue0e1 取消"
+      "buttons": "\ue0e0 選擇檔案  \ue0e3 全選  \ue0ef 安裝所選的檔案  \ue0e2 說明  \ue0e1 取消"
     },
     "usb": {
       "help": {
@@ -109,7 +109,7 @@
       "error": "USB傳輸逾時或失敗",
       "source_string": " 透過USB",
       "buttons": "\ue0e2 (長按) 說明    \ue0e1 (長按) 取消",
-      "buttons2": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e1 取消"
+      "buttons2": "\ue0e0 選擇檔案  \ue0e3 全選  \ue0ef 安裝所選的檔案  \ue0e1 取消"
     },
     "target": {
       "desc0": "要將遊戲",
@@ -128,7 +128,7 @@
       "desc0": " 所選的檔案已全部安裝！",
       "desc1": " 已安裝！",
       "downloading": "正在下載 ",
-      "queue": "Files in queue: ",
+      "queue": "隊列中的文件：",
       "at": " 在 "
     },
     "nca_verify": {
@@ -179,9 +179,9 @@
       "auto_update": "自動檢查Tinwoo Installer的更新版本",
       "gay_option": "套用主題",
       "useSound": "在安裝過程中使用音效提醒進度",
-      "fixticket": "Convert temporary tickets to permanent",
-      "listoveride": "Disable URL list warning and file limit",
-      "usehttpkeyboard": "Use keyboard during http server installs",
+      "fixticket": "將臨時門票轉換為永久門票",
+      "listoveride": "禁用 URL 列表警告和文件限制",
+      "usehttpkeyboard": "在 http 服務器安裝期間使用鍵盤",
       "sig_url": "簽名修補程式來源URL: ",
       "http_url": "Http server source URL: ",
       "language": "介面語系： ",
