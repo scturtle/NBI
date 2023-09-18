@@ -180,7 +180,7 @@
       "gay_option": "Utiliser le thème",
       "useSound": "Utiliser les notifications sonores lors des installations",
       "fixticket": "Convertir des billets temporaires en billets permanents",
-      "listoveride": "Disable URL list warning and file limit",
+      "listoveride": "Désactiver l'avertissement de liste d'URL et la limite de fichiers",
       "usehttpkeyboard": "Utiliser le clavier lors des installations du serveur http",
       "sig_url": "Patchs de signatures URL: ",
       "http_url": "URL source du serveur HTTP: ",
