@@ -42,8 +42,8 @@
     "net": {
       "help": {
         "title": "Hilfe",
-        "desc": "Dateien können von anderen Geräten aus mit Tools wie NS-USBloader im\nTinfoil-Modus installiert werden. Um Dateien an deine Switch zu senden, öffne\neins dieser Programme auf deinem PC oder mobilen Gerät. Gebe die IP-Adresse\ndeiner Switches ein (auf dem Bildschirm aufgelistet), wähle die Dateien\naus und lade sie dann auf die Konsole hoch! Wenn die von dir verwendete\nSoftware dir nicht erlaubt, bestimmte Dateitypen auszuwählen.\nVersuche die Dateiendung in etwas umzubenennen, dass sie akzeptiert. Der TinWoo Installer\nprüft keine Dateiendungen bei Netzinstallationen!\n\nFalls das nicht klappt, kopiere einfach deine Dateien auf die SD-Karte\nund versuche die Option \"Von SD-Karte installieren\" im Hauptmenü!",
-        "blank": "The server address is currently blank. You need to enter a proper url.\n\nExample: http://192.168.0.51"
+        "desc": "Dateien können von anderen Geräten aus mit Tools wie NS-USBloader im\nTinfoil-Modus installiert werden. Um Dateien an deine Switch zu senden, öffne\neins dieser Programme auf deinem PC oder mobilen Gerät. Gib die IP-Adresse\ndeiner Switch ein (auf dem Bildschirm aufgelistet), wähle die Dateien\naus und lade sie dann auf die Konsole hoch! Wenn die von dir verwendete\nSoftware dir nicht erlaubt, bestimmte Dateitypen auszuwählen,\nversuche die Dateiendung in eine umzubenennen, die akzeptiert wird. Der TinWoo Installer\nprüft keine Dateiendungen bei Netzinstallationen!\n\nFalls das nicht klappt, kopiere einfach deine Dateien auf die SD-Karte\nund versuche die Option \"Von SD-Karte installieren\" im Hauptmenü!",
+        "blank": "Die Serveradresse ist derzeit leer. Sie müssen eine korrekte URL eingeben.\n\nBeispiel: http://192.168.0.51"
       },
       "src": {
         "title": "Von wo aus willst du installieren?",
@@ -51,22 +51,22 @@
         "opt1": "Google Drive"
       },
       "url": {
-        "hint": "Gebe eine URL zu einer Datei ein",
+        "hint": "Gib eine URL zu einer Datei ein",
         "invalid": "Die eingegebene URL ist ungültig",
         "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
         "source_string": " per URL",
-        "listwait": "Populating the list from a url can take some time.\nThe list default limit is purposely set to ",
-        "listwait2": " items.\nPress OK to load the list."
+        "listwait": "Das Auffüllen der Liste über eine URL kann einige Zeit dauern.\nDas Standardlimit der Liste ist absichtlich auf eingestellt ",
+        "listwait2": " artikel.\nDrücken Sie OK, um die Liste zu laden."
       },
       "gdrive": {
-        "hint": "Gebe die ID einer öffentlichen Google Drive Datei ein",
+        "hint": "Gib die ID einer öffentlichen Google Drive Datei ein",
         "alt_name": "Google Drive Datei",
         "source_string": " von Google Drive"
       },
-      "sd": "Free space on sd card: ",
-      "nand": "Free space on nand: ",
-      "index_error": "No games found!",
-      "index_error_info": "Did you enter the correct HTTP server source URL in the config page?",
+      "sd": "Freier Speicherplatz auf der SD-Karte: ",
+      "nand": "Freier Speicherplatz auf NAND: ",
+      "index_error": "Keine Spiele gefunden!",
+      "index_error_info": "Hast du die richtige URL eingegeben?",
       "top_info": "Wähle Dateien zur Installation vom Server aus und drücke dann \ue0b3 !",
       "top_info1": "Warte auf eine Verbindung... Die IP Adresse deiner Switch ist: ",
       "failed": "Ferninstallation fehlgeschlagen!",
@@ -90,7 +90,7 @@
     "hd": {
       "help": {
         "title": "Hilfe",
-        "desc": "Kopier NSP, NSZ, XCI, or XCZ files auf deine Festplatte, suche nach ihnen und\nwähle die zu installierenden, und drücke dann \ue0b3."
+        "desc": "Kopiere NSP, NSZ, XCI, or XCZ files auf deine Festplatte, suche nach ihnen und\nwähle die zu installierenden, und drücke dann \ue0b3."
       },
       "top_info": "Wähle Dateien zur Installation vom Server aus und drücke dann \ue0b3!",
       "source_string": " von der Festplatte",
@@ -128,22 +128,22 @@
       "desc0": " Dateien erfolgreich installiert!",
       "desc1": " installiert!",
       "downloading": "Lädt ",
-      "queue": "Files in queue: ",
+      "queue": "Dateien in der Warteschlange: ",
       "at": " herunter von "
     },
     "nca_verify": {
       "title": "Ungültige NCA-Signatur erkannt!",
-      "desc": "Unsachgemäß signierte Software sollte nur von vertrauenswürdigen Quellen\ninstalliert werden. Dateien von gepackten Spiele Modulen und DLC-Freischaltung enthalten,\nwerden immer diese Warnung anzeigen. Sie können diese Prüfung in den Einstellungen des TinWoo Installer deaktivieren.\nSind Sie sicher, dass Sie die Installation fortsetzen möchten?",
+      "desc": "Unsachgemäß signierte Software sollte nur von vertrauenswürdigen Quellen\ninstalliert werden. Dateien von Spiele Modulen (Repacks) und DLC-Unlocker,\nwerden immer diese Warnung anzeigen. Du kannst diese Prüfung in den Einstellungen des TinWoo Installer deaktivieren.\nBist du sicher, dass du die Installation fortsetzen möchten?",
       "opt1": "Ja, ich verstehe die Risiken",
       "error": "Die gewünschte NCA ist nicht richtig signiert: "
     },
     "finished": [
       "Genieße deine \"legalen Sicherheitskopien\"!",
-      "Ich bin mir sicher nachdem du das Spiel probiert hast wirst du Spaß dabei haben das Spiel tatsächlich zu kaufen, du Hurensohn!",
+      "Ich bin mir sicher nachdem du das Spiel ausprobiert hast wirst du Spaß dabei haben das Spiel tatsächlich zu kaufen.",
       "Du hast das Spiel sicher gekauft? Nintendo sagt danke für deinen Kauf!",
       "DRM zu umgehen ist toll, oder?",
-      "Du hast wahrscheinlich sechs Bäume gerettet. Dadurch dass du das Spiel nicht gekauft hast!\nAll das Plastik geht irgendwo hin!",
-      "Nintendo Ninjas wurden zu deinem Standort gesendet.",
+      "Du hast wahrscheinlich sechs Bäume gerettet, dadurch dass du das Spiel nicht gekauft hast!\nAll das Plastik geht irgendwo hin!",
+      "Nintendos Ninjas wurden zu deinem Standort gesendet.",
       "Und wir mussten dir nicht mal politische Ideologien in den Rachen stopfen!"
     ]
   },
@@ -179,21 +179,21 @@
       "auto_update": "Suche automatisch nach Updates für TinWoo",
       "gay_option": "Design verwenden",
       "useSound": "Nutzen von Benachrichtungstönen während Installation",
-      "fixticket": "Convert temporary tickets to permanent",
-      "listoveride": "Disable URL list warning and file limit",
-      "usehttpkeyboard": "Use keyboard during http server installs",
+      "fixticket": "Wandeln Sie temporäre Tickets in permanente Tickets um",
+      "listoveride": "Deaktivieren Sie die URL-Listenwarnung und die Dateibeschränkung",
+      "usehttpkeyboard": "Verwenden Sie die Tastatur während der Installation des HTTP-Servers",
       "sig_url": "Signatur Patches URL: ",
-      "http_url": "Http server source URL: ",
+      "http_url": "Quell-URL des HTTP-Servers: ",
       "language": "Sprache: ",
       "check_update": "Suche nach Updates für TinWoo Installer",
-      "credits": "Anerkennung"
+      "credits": "Danksagung"
     },
     "nca_warn": {
       "title": "Warnung!",
       "desc": "Einige installierbare Dateien können bösartige Inhalte enthalten! Deaktiviere\ndiese Funktion nur, wenn du absolut sicher bist, dass die zu installierende\nSoftware vertrauenswürdig ist! Willst du die NCA-Signaturprüfung immer noch deaktivieren?",
       "opt1": "Ja, ich möchte mein Gerät bricken"
     },
-    "sig_hint": "Gebe eine URL an, um Signatur Patches runterzuladen",
+    "sig_hint": "Gib eine URL an, um Signatur Patches runterzuladen",
     "update": {
       "title": "Neue Version verfügbar",
       "desc0": "TinWoo Installer ",
