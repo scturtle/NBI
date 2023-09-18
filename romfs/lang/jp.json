@@ -43,7 +43,7 @@
       "help": {
         "title": "ヘルプ",
         "desc": "TinfoilモードのNS-USBloaderなどのツールを使用して、他のデバイスからファイルをリモートでインストールできます。\nスイッチにファイルを送信するには、PCまたはモバイルデバイスでこれらのソフトウェアのいずれかを開き、\nスイッチのIPアドレス（画面に表示）を入力し、ファイルを選択して、コンソールにアップロードします！\n使用しているソフトウェアで特定のファイルタイプを選択できない場合は、\n拡張子の名前を受け入れ可能なものに変更してください。\nTinWooはネット経由のインストール中にファイル拡張子を気にしません！\n\n分からない場合は、ファイルをSDカードにコピーして\nメインメニューの[SDカードからインストール]オプションを試してください。",
-        "blank": "The server address is currently blank. You need to enter a proper url.\n\nExample: http://192.168.0.51"
+        "blank": "サーバーアドレスは現在空白です。適切な URL を入力する必要があります.\n\n例: http://192.168.0.51"
       },
       "src": {
         "title": "どこからインストールしますか？",
@@ -53,20 +53,20 @@
       "url": {
         "hint": "ファイルのインターネットアドレスを入力してください",
         "invalid": "指定されたURLは無効です！",
-        "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
+        "nolinks": "XCI、XCZ、NSP、NSZ リンクが見つかりません。\n正しい URL を使用しましたか?",
         "source_string": " URLから",
-        "listwait": "Populating the list from a url can take some time.\nThe list default limit is purposely set to ",
-        "listwait2": " items.\nPress OK to load the list."
+        "listwait": "URL からリストにデータを入力するには時間がかかる場合があります.\nリストのデフォルト制限は意図的に次のように設定されています。 ",
+        "listwait2": " アイテム.\nOKを押してリストをロードします."
       },
       "gdrive": {
         "hint": "Googleドライブの公開ファイルのファイルIDを入力してください",
         "alt_name": "Googleドライブファイル",
         "source_string": " Googleドライブから"
       },
-      "sd": "Free space on sd card: ",
-      "nand": "Free space on nand: ",
-      "index_error": "No games found!",
-      "index_error_info": "Did you enter the correct HTTP server source URL in the config page?",
+      "sd": "SDカードの空き容量: ",
+      "nand": "nandの空き容量: ",
+      "index_error": "該当するゲームがありません!",
+      "index_error_info": "正しいURLを入力しましたか?",
       "top_info": "サーバーからインストールするファイルを選択し、＋ボタンを押してください！",
       "top_info1": "接続を待機しています...スイッチのIPアドレスは次のとおりです。: ",
       "failed": "リモートインストールを実行できませんでした！",
@@ -128,7 +128,7 @@
       "desc0": " ファイルが正常にインストールされました!",
       "desc1": " インストール完了!",
       "downloading": "ダウンロード中 ",
-      "queue": "Files in queue: ",
+      "queue": "キュー内のファイル: ",
       "at": " に "
     },
     "nca_verify": {
@@ -179,11 +179,11 @@
       "auto_update": "TinWooのアップデートを自動的に確認する",
       "gay_option": "テーマを使用する",
       "useSound": "インストール時にサウンドで通知する",
-      "fixticket": "Convert temporary tickets to permanent",
-      "listoveride": "Disable URL list warning and file limit",
-      "usehttpkeyboard": "Use keyboard during http server installs",
+      "fixticket": "一時的なチケットを永続的なチケットに変換する",
+      "listoveride": "URL リストの警告とファイル制限を無効にする",
+      "usehttpkeyboard": "httpサーバーのインストール中にキーボードを使用する",
       "sig_url": "署名パッチのソースURL: ",
-      "http_url": "Http server source URL: ",
+      "http_url": "HTTPサーバーのソースURL: ",
       "language": "言語: ",
       "check_update": "TinWoo Installerのアップデートを確認",
       "credits": "クレジット"
