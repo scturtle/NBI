@@ -261,7 +261,7 @@ public:
 		{
 			const size_t readChunkSz = std::min(sz, buffInSize);
 			ZSTD_inBuffer input = { ptr, readChunkSz, 0 };
-			
+
 			while (input.pos < input.size)
 			{
 				ZSTD_outBuffer output = { buffOut, buffOutSize, 0 };
@@ -312,7 +312,7 @@ public:
 			}
 
 			auto header = (NczHeader*)m_buffer.data();
-			
+
 			//debug code -- ignore....
 			/*
 			int x =0;

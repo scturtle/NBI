@@ -125,77 +125,77 @@ namespace inst::ui {
 
 	void optionsPage::setMenuText() {
 		this->menu->ClearItems();
-		
+
 		auto ignoreFirmOption = pu::ui::elm::MenuItem::New("options.menu_items.ignore_firm"_lang);
 		ignoreFirmOption->SetColor(COLOR("#FFFFFFFF"));
 		ignoreFirmOption->SetIcon(this->getMenuOptionIcon(inst::config::ignoreReqVers));
 		this->menu->AddItem(ignoreFirmOption);
-		
+
 		auto validateOption = pu::ui::elm::MenuItem::New("options.menu_items.nca_verify"_lang);
 		validateOption->SetColor(COLOR("#FFFFFFFF"));
 		validateOption->SetIcon(this->getMenuOptionIcon(inst::config::validateNCAs));
 		this->menu->AddItem(validateOption);
-		
+
 		auto overclockOption = pu::ui::elm::MenuItem::New("options.menu_items.boost_mode"_lang);
 		overclockOption->SetColor(COLOR("#FFFFFFFF"));
 		overclockOption->SetIcon(this->getMenuOptionIcon(inst::config::overClock));
 		this->menu->AddItem(overclockOption);
-		
+
 		auto deletePromptOption = pu::ui::elm::MenuItem::New("options.menu_items.ask_delete"_lang);
 		deletePromptOption->SetColor(COLOR("#FFFFFFFF"));
 		deletePromptOption->SetIcon(this->getMenuOptionIcon(inst::config::deletePrompt));
 		this->menu->AddItem(deletePromptOption);
-		
+
 		auto autoUpdateOption = pu::ui::elm::MenuItem::New("options.menu_items.auto_update"_lang);
 		autoUpdateOption->SetColor(COLOR("#FFFFFFFF"));
 		autoUpdateOption->SetIcon(this->getMenuOptionIcon(inst::config::autoUpdate));
 		this->menu->AddItem(autoUpdateOption);
-		
+
 		auto gayModeOption = pu::ui::elm::MenuItem::New("options.menu_items.gay_option"_lang);
 		gayModeOption->SetColor(COLOR("#FFFFFFFF"));
 		gayModeOption->SetIcon(this->getMenuOptionIcon(inst::config::gayMode));
 		this->menu->AddItem(gayModeOption);
-		
+
 		auto useSoundOption = pu::ui::elm::MenuItem::New("options.menu_items.useSound"_lang);
 		useSoundOption->SetColor(COLOR("#FFFFFFFF"));
 		useSoundOption->SetIcon(this->getMenuOptionIcon(inst::config::useSound));
 		this->menu->AddItem(useSoundOption);
-		
+
 		auto fixticket = pu::ui::elm::MenuItem::New("options.menu_items.fixticket"_lang);
 		fixticket->SetColor(COLOR("#FFFFFFFF"));
 		fixticket->SetIcon(this->getMenuOptionIcon(inst::config::fixticket));
 		this->menu->AddItem(fixticket);
-		
+
 		auto listoveride = pu::ui::elm::MenuItem::New("options.menu_items.listoveride"_lang);
 		listoveride->SetColor(COLOR("#FFFFFFFF"));
 		listoveride->SetIcon(this->getMenuOptionIcon(inst::config::listoveride));
 		this->menu->AddItem(listoveride);
-		
+
 		auto httpkeyboard = pu::ui::elm::MenuItem::New("options.menu_items.usehttpkeyboard"_lang);
 		httpkeyboard->SetColor(COLOR("#FFFFFFFF"));
 		httpkeyboard->SetIcon(this->getMenuOptionIcon(inst::config::httpkeyboard));
 		this->menu->AddItem(httpkeyboard);
-		
+
 		auto SigPatch = pu::ui::elm::MenuItem::New("main.menu.sig"_lang);
 		SigPatch->SetColor(COLOR("#FFFFFFFF"));
 		this->menu->AddItem(SigPatch);
-		
+
 		auto sigPatchesUrlOption = pu::ui::elm::MenuItem::New("options.menu_items.sig_url"_lang + inst::util::shortenString(inst::config::sigPatchesUrl, 42, false));
 		sigPatchesUrlOption->SetColor(COLOR("#FFFFFFFF"));
 		this->menu->AddItem(sigPatchesUrlOption);
-		
+
 		auto httpServerUrlOption = pu::ui::elm::MenuItem::New("options.menu_items.http_url"_lang + inst::util::shortenString(inst::config::httpIndexUrl, 42, false));
 		httpServerUrlOption->SetColor(COLOR("#FFFFFFFF"));
 		this->menu->AddItem(httpServerUrlOption);
-		
+
 		auto languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang + this->getMenuLanguage(inst::config::languageSetting));
 		languageOption->SetColor(COLOR("#FFFFFFFF"));
 		this->menu->AddItem(languageOption);
-		
+
 		auto updateOption = pu::ui::elm::MenuItem::New("options.menu_items.check_update"_lang);
 		updateOption->SetColor(COLOR("#FFFFFFFF"));
 		this->menu->AddItem(updateOption);
-		
+
 		auto creditsOption = pu::ui::elm::MenuItem::New("options.menu_items.credits"_lang);
 		creditsOption->SetColor(COLOR("#FFFFFFFF"));
 		this->menu->AddItem(creditsOption);
@@ -311,7 +311,7 @@ namespace inst::ui {
 						this->setMenuText();
 						this->menu->SetSelectedIndex(index);
 						inst::config::setConfig();
-						break;					
+						break;
 					case 8:
 						if (inst::config::listoveride) {
 							inst::config::listoveride = false;
@@ -357,7 +357,7 @@ namespace inst::ui {
 						break;
 					case 13:
 						languageList = languageStrings;
-						rc = inst::ui::mainApp->CreateShowDialog("options.language.title"_lang, "options.language.desc"_lang, languageList, false, flag );
+						rc = inst::ui::mainApp->CreateShowDialog("options.language.title"_lang, "options.language.desc"_lang, languageList, false, flag);
 						if (rc == -1) break;
 						switch (rc) {
 						case 0:
