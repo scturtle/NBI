@@ -4,22 +4,22 @@
       "sd": "Installer à partir de la carte SD",
       "net": "Installer à partir d'un LAN ou d'internet",
       "usb": "Installer à partir d'un périphèrique USB",
-      "hdd": "Install over USB HDD",
+      "hdd": "Installer sur un disque dur USB",
       "sig": "Gérer les patchs de signatures",
       "set": " Paramètres",
       "exit": " Quitter"
     },
     "theme": {
-      "title": "Use Theme",
-      "desc": "Appuyez sur OK pour quitter Tinwoo ou sur Annuler pour continuer.\n\nLes thèmes s'activeront au prochain démarrage de Tinwoo."
+      "title": "Utiliser le thème",
+      "desc": "Appuyer sur Ok pour quiter Tinwoo ou Annuler pour continuer.\n\nLe thème va être appliqué la prochaine fois que vous lancerez tinwoo."
     },
     "hdd": {
       "title": "USB HDD",
-      "notfound": "Le disque dur USB n'est pas connecté."
+      "notfound": "USB HDD non connecté"
     },
     "net": {
       "title": "Connection au réseau impossible",
-      "desc": "Vérifiez  que le mode avion est désactivé et que vous êtes connecté à un réseau local."
+      "desc": "Vérifiez que le mode avion est désactivé et que vous êtes connecté à un réseau local."
     },
     "usb": {
       "warn": {
@@ -65,8 +65,8 @@
       },
       "sd": "Espace libre sur la carte SD: ",
       "nand": "Espace libre sur la NAND: ",
-      "index_error": "Aucun jeu trouvé !",
-      "index_error_info": "Avez-vous entré la bonne URL source du serveur HTTP dans la page de configuration ?",
+      "index_error": "Aucun jeu trouvé!",
+      "index_error_info": "Avez vous tapez une url correcte?",
       "top_info": "Sélectionnez les fichiers que vous voulez installer à partir du serveur, puis appuyez sur le bouton Plus !",
       "top_info1": "En attente d'une connexion... L'adresse IP de votre switch est : ",
       "failed": "Echec de l'installation à distance !",
@@ -78,7 +78,7 @@
     "sd": {
       "help": {
         "title": "Aide",
-        "desc": "Copiez vos fichiers NSP, NSZ, XCI ou XCZ sur votre carte SD, recherchez et\nsélectionnez ceux que vous voulez installer, puis appuyez sur le bouton Plus."
+        "desc": "Copier vos fichiers NSP, NSZ, XCI ou XCZ sur votre carte SD, naviguer et\nsélectionnez celui que vous voulez installer, puis presser le bouton plus."
       },
       "top_info": "Sélectionnez les fichiers que vous voulez installer, puis appuyez sur le bouton Plus !",
       "source_string": " à partir de la carte SD",
@@ -92,12 +92,12 @@
         "title": "Aide",
         "desc": "Copiez vos fichiers NSP, NSZ, XCI ou XCZ sur votre disque dur, recherchez et \nsélectionnez ceux que vous souhaitez installer, puis appuyez sur le bouton Plus."
       },
-      "top_info": "Sélectionnez les fichiers que vous souhaitez installer, puis appuyez sur le bouton Plus !",
-      "source_string": " du disque dur",
-      "delete_info": " Installée\nLe supprimer du disque dur ?",
-      "delete_info_multi": " fichiers installés avec succès ! \nLes supprimer du disque dur ?",
-      "delete_desc": "Les fichiers originaux ne sont plus nécessaires une fois installés",
-      "buttons": "\ue0e0 Choisir le dossier  \ue0e3 Tout sélectionner \ue0ef Installer le fichier(s)  \ue0e2 Aide  \ue0e1 Annuler"
+      "top_info": "Sélectionnez les fichiers que vous voulez installer, puis pressez le bouton plus!",
+      "source_string": " depuis un disque dur",
+      "delete_info": " nstallé\nLe supprimer du disque dur?",
+      "delete_info_multi": " fichiers installés avec succès ! Les supprimer du disque dur?",
+      "delete_desc": "Les fichiers originaux ne sont plus nécessaires une fois qu'ils ont été installés.",
+      "buttons": "\ue0e0 Sélectionnez un fichier    \ue0e3 Tout sélectionner    \ue0ef Installer un/des fichier(s)    \ue0e2 Aide    \ue0e1 Annuler"
     },
     "usb": {
       "help": {
