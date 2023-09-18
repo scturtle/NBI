@@ -183,7 +183,7 @@
       "listoveride": "禁用 URL 列表警告和文件限制",
       "usehttpkeyboard": "在 http 服務器安裝期間使用鍵盤",
       "sig_url": "簽名修補程式來源URL: ",
-      "http_url": "Http server source URL: ",
+      "http_url": "HTTP服務器源URL：",
       "language": "介面語系： ",
       "check_update": "檢查Tinwoo Installer的更新版本",
       "credits": "感謝名單"
@@ -210,7 +210,7 @@
     },
     "credits": {
       "title": "感謝所有幫助過我們的人",
-      "desc": "TinWoo - MrDude\nXorTroll - Plutonium\nTinleaf - BlaWar\nAwoo Installer - Huntereb\nHard Drive Support - DarkMatterCore\n\n\nhttps://github.com/Huntereb/Awoo-Installer\nhttps://github.com/blawar/tinleaf\nhttps://github.com/DarkMatterCore/libusbhsfs\n\nThanks for testing - LyuboA"
+      "desc": "TinWoo - MrDude\nXorTroll - Plutonium\nTinleaf - BlaWar\nAwoo Installer - Huntereb\n硬盤支持 - DarkMatterCore\n\n\nhttps://github.com/Huntereb/Awoo-Installer\nhttps://github.com/blawar/tinleaf\nhttps://github.com/DarkMatterCore/libusbhsfs\n\n感謝您的測試 - LyuboA"
     },
     "language": {
       "title": "設定Tinwoo Installer的介面語系",
