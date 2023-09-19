@@ -19,7 +19,7 @@ namespace inst::config {
 	extern bool deletePrompt;
 	extern bool autoUpdate;
 	extern bool usbAck;
-	extern bool gayMode;
+	extern bool useTheme;
 	extern bool useSound;
 	extern bool fixticket;
 	extern bool listoveride;

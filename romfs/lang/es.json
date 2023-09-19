@@ -177,7 +177,7 @@
       "boost_mode": "Habilitar \"modo empuje\" durante las instalaciones",
       "ask_delete": "Solicitar eliminar los archivos originales después de la instalación",
       "auto_update": "Busca actualizaciones para TinWoo Installer automáticamente",
-      "gay_option": "Usar tema",
+      "theme_option": "Usar tema",
       "useSound": "Usar notificaciones de sonido durante las instalaciones",
       "fixticket": "Convertir tiquetes temporales en permanentes",
       "listoveride": "Deshabilitar advertencia de limite de elementos en el listado de un  URL",

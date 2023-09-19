@@ -14,7 +14,7 @@ namespace inst::config {
 	bool deletePrompt;
 	bool ignoreReqVers;
 	bool overClock;
-	bool gayMode;
+	bool useTheme;
 	bool useSound;
 	bool usbAck;
 	bool validateNCAs;
@@ -27,7 +27,7 @@ namespace inst::config {
 			{"autoUpdate", autoUpdate},
 			{"deletePrompt", deletePrompt},
 			{"gAuthKey", gAuthKey},
-			{"gayMode", gayMode},
+			{"useTheme", useTheme},
 			{"useSound", useSound},
 			{"ignoreReqVers", ignoreReqVers},
 			{"languageSetting", languageSetting},
@@ -56,7 +56,7 @@ namespace inst::config {
 			httpkeyboard = j["httpkeyboard"].get<bool>();
 			deletePrompt = j["deletePrompt"].get<bool>();
 			gAuthKey = j["gAuthKey"].get<std::string>();
-			gayMode = j["gayMode"].get<bool>();
+			useTheme = j["useTheme"].get<bool>();
 			useSound = j["useSound"].get<bool>();
 			ignoreReqVers = j["ignoreReqVers"].get<bool>();
 			languageSetting = j["languageSetting"].get<int>();
@@ -76,7 +76,7 @@ namespace inst::config {
 			httplastUrl = "http://";
 			autoUpdate = true;
 			deletePrompt = true;
-			gayMode = false;
+			useTheme = false;
 			useSound = true;
 			fixticket = true;
 			listoveride = false;

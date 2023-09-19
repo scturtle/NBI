@@ -177,7 +177,7 @@
       "boost_mode": "Enable \"boost mode\" during installations",
       "ask_delete": "Ask to delete original files after installation",
       "auto_update": "Check for updates to TinWoo Installer automatically",
-      "gay_option": "Use Theme",
+      "theme_option": "Use Theme",
       "useSound": "Use sound notifications during installs",
       "fixticket": "Convert temporary tickets to permanent",
       "listoveride": "Disable URL list warning and file limit",

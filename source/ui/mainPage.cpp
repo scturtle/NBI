@@ -155,7 +155,7 @@ namespace inst::ui {
 		this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
 		this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (inst::config::gayMode) {
+		if (inst::config::useTheme) {
 			if (std::filesystem::exists(inst::config::appDir + "/images/Main.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/images/Main.png"));
 			else
 				this->titleImage = Image::New(0, 0, "romfs:/images/Main.png");
@@ -190,7 +190,7 @@ namespace inst::ui {
 		this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
 		this->exitMenuItem->SetColor(COLOR("#FFFFFFFF"));
 		this->exitMenuItem->SetIcon("romfs:/images/icons/exit-run.png");
-		if (inst::config::gayMode) {
+		if (inst::config::useTheme) {
 			if (std::filesystem::exists(inst::config::appDir + "/images/Main.png")) this->awooImage = Image::New(0, 0, inst::config::appDir + "/images/Main.png");
 			else this->awooImage = Image::New(0, 0, "romfs:/images/Main.png");
 		}
@@ -214,7 +214,7 @@ namespace inst::ui {
 		}
 		this->Add(this->awooImage);
 		this->Add(this->eggImage);
-		this->awooImage->SetVisible(!inst::config::gayMode);
+		this->awooImage->SetVisible(!inst::config::useTheme);
 		this->Add(this->optionMenu);
 		this->AddRenderCallback(mainMenuThread);
 	}
@@ -314,7 +314,7 @@ namespace inst::ui {
 
 		if (Up & HidNpadButton_A) {
 			this->eggImage->SetVisible(false);
-			if (!inst::config::gayMode) this->awooImage->SetVisible(true);
+			if (!inst::config::useTheme) this->awooImage->SetVisible(true);
 		}
 
 		if (Down & HidNpadButton_Y) {

@@ -22,7 +22,7 @@ namespace inst::ui {
 		this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
 		this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (inst::config::gayMode) {
+		if (inst::config::useTheme) {
 			if (std::filesystem::exists(inst::config::appDir + "/images/Sd.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/images/Sd.png"));
 			else this->titleImage = Image::New(0, 0, "romfs:/images/Sd.png");
 			if (std::filesystem::exists(inst::config::appDir + "/images/Background.png")) this->SetBackgroundImage(inst::config::appDir + "/images/Background.png");

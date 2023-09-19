@@ -28,7 +28,7 @@ namespace inst::ui {
 		this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
 		this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (inst::config::gayMode) {
+		if (inst::config::useTheme) {
 			if (std::filesystem::exists(inst::config::appDir + "/images/Settings.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/images/Settings.png"));
 			else this->titleImage = Image::New(0, 0, "romfs:/images/Settings.png");
 			if (std::filesystem::exists(inst::config::appDir + "/images/Background.png")) this->SetBackgroundImage(inst::config::appDir + "/images/Background.png");
@@ -116,15 +116,15 @@ namespace inst::ui {
 	void thememessage() {
 		int ourResult = inst::ui::mainApp->CreateShowDialog("main.theme.title"_lang, "main.theme.desc"_lang, { "common.no"_lang, "common.yes"_lang }, true, "romfs:/images/icons/theme.png");
 		if (ourResult != 0) {
-			if (!inst::config::gayMode) {
-				inst::config::gayMode = true;
+			if (!inst::config::useTheme) {
+				inst::config::useTheme = true;
 				mainApp->FadeOut();
 				mainApp->Close();
 			}
 		}
 		else {
-				if (inst::config::gayMode) {
-					inst::config::gayMode = false;
+				if (inst::config::useTheme) {
+					inst::config::useTheme = false;
 					mainApp->FadeOut();
 					mainApp->Close();
 				}
@@ -159,10 +159,10 @@ namespace inst::ui {
 		autoUpdateOption->SetIcon(this->getMenuOptionIcon(inst::config::autoUpdate));
 		this->menu->AddItem(autoUpdateOption);
 
-		auto gayModeOption = pu::ui::elm::MenuItem::New("options.menu_items.gay_option"_lang);
-		gayModeOption->SetColor(COLOR("#FFFFFFFF"));
-		gayModeOption->SetIcon(this->getMenuOptionIcon(inst::config::gayMode));
-		this->menu->AddItem(gayModeOption);
+		auto useThemeOption = pu::ui::elm::MenuItem::New("options.menu_items.theme_option"_lang);
+		useThemeOption->SetColor(COLOR("#FFFFFFFF"));
+		useThemeOption->SetIcon(this->getMenuOptionIcon(inst::config::useTheme));
+		this->menu->AddItem(useThemeOption);
 
 		auto useSoundOption = pu::ui::elm::MenuItem::New("options.menu_items.useSound"_lang);
 		useSoundOption->SetColor(COLOR("#FFFFFFFF"));
@@ -285,7 +285,7 @@ namespace inst::ui {
 						this->menu->SetSelectedIndex(index);
 						break;
 					case 5:
-						if (inst::config::gayMode) {
+						if (inst::config::useTheme) {
 							mainApp->mainPage->awooImage->SetVisible(true);
 						}
 						else {
