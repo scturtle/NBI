@@ -85,7 +85,6 @@ namespace tin::install::nsp
 			std::string name(this->GetFileEntryName(fileEntry));
 
 			// fix cert filname extension becoming corrupted when xcz/nsz is installing certs/ticks.
-			FILE* fp;
 			int pos = 0;
 			std::string mystr = name;
 			pos = mystr.find_last_of('.');
