@@ -137,6 +137,7 @@ namespace usbInstStuff {
 				inst::ui::instPage::setInstInfoText("inst.info_page.preparing"_lang);
 				inst::ui::instPage::setInstBarPerc(0);
 				installTask->Prepare();
+				installTask->InstallTicketCert();
 				installTask->Begin();
 				togo = (togo - 1);
 			}

@@ -87,7 +87,8 @@ namespace nspInstStuff {
 				inst::ui::instPage::setInstInfoText("inst.info_page.preparing"_lang);
 				inst::ui::instPage::setInstBarPerc(0);
 				installTask->Prepare();
-				installTask->Begin();
+				installTask->InstallTicketCert();
+				installTask->Begin(); //install nca files
 				togo = (togo - 1);
 			}
 

@@ -69,15 +69,6 @@ namespace tin::install::nsp
 
 			size_t fileEntryOffset = sizeof(PFS0BaseHeader) + index * sizeof(PFS0FileEntry);
 
-		/*
-		//print fileEntryOffset
-		FILE * fp;
-		fp = fopen ("offset.txt", "a+");
-		size_t debug = fileEntryOffset;
-		fprintf(fp, "%zu\n", debug);
-		fclose(fp);
-		*/
-
 		if (m_headerBytes.size() < fileEntryOffset + sizeof(PFS0FileEntry))
 			THROW_FORMAT("Header bytes is too small to get file entry!");
 
@@ -92,7 +83,15 @@ namespace tin::install::nsp
 		{
 			const PFS0FileEntry* fileEntry = this->GetFileEntry(i);
 			std::string name(this->GetFileEntryName(fileEntry));
-			auto foundExtension = name.substr(name.find(".") + 1);
+
+			// fix cert filname extension becoming corrupted when xcz/nsz is installing certs/ticks.
+			FILE* fp;
+			int pos = 0;
+			std::string mystr = name;
+			pos = mystr.find_last_of('.');
+			mystr = mystr.substr(5, pos);
+			//auto foundExtension = name.substr(name.find(".") + 1);
+			auto foundExtension = mystr.substr(mystr.find(".") + 1);
 
 			if (foundExtension == extension)
 				entryList.push_back(fileEntry);
@@ -103,13 +102,26 @@ namespace tin::install::nsp
 
 	const PFS0FileEntry* NSP::GetFileEntryByName(std::string name)
 	{
+		//returns only the .nca and .cnmt.nca filenames
 		for (unsigned int i = 0; i < this->GetBaseHeader()->numFiles; i++)
 		{
 			const PFS0FileEntry* fileEntry = this->GetFileEntry(i);
 			std::string foundName(this->GetFileEntryName(fileEntry));
 
-			if (foundName == name)
+
+			if (foundName == name) {
+				/*
+				//Debug code
+				FILE * fp;
+				fp = fopen ("name.txt", "a+");
+				std::string x = foundName;
+				const char *info = x.c_str();
+				fprintf(fp, "%s\n", info);
+				fclose(fp);
+				*/
+
 				return fileEntry;
+			}
 		}
 
 		return nullptr;
@@ -140,6 +152,17 @@ namespace tin::install::nsp
 	const char* NSP::GetFileEntryName(const PFS0FileEntry* fileEntry)
 	{
 		u64 stringTableStart = sizeof(PFS0BaseHeader) + this->GetBaseHeader()->numFiles * sizeof(PFS0FileEntry);
+
+		//check for messed up filenames in our table.... usually when instaling xcz/xci
+		/*
+		FILE * fp;
+		fp = fopen ("st.txt", "a+");
+		std::string x = reinterpret_cast<const char*>(m_headerBytes.data() + stringTableStart + fileEntry->stringTableOffset);
+		const char *info = x.c_str();
+		fprintf(fp, "%s\n", info);
+		fclose(fp);
+		*/
+
 		return reinterpret_cast<const char*>(m_headerBytes.data() + stringTableStart + fileEntry->stringTableOffset);
 	}
 
@@ -155,16 +178,6 @@ namespace tin::install::nsp
 	{
 		if (m_headerBytes.empty())
 			THROW_FORMAT("Cannot get data offset as header is empty. Have you retrieved it yet?\n");
-
-		/*
-		//print size of header
-		FILE * fp;
-		fp = fopen ("file.txt", "a+");
-		u64 debug = m_headerBytes.size();
-		fprintf(fp, "%lu\n", debug);
-		fclose(fp);
-		*/
-
 		return m_headerBytes.size();
 	}
 }

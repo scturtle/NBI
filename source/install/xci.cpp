@@ -158,7 +158,15 @@ namespace tin::install::xci
 		{
 			const HFS0FileEntry* fileEntry = this->GetFileEntry(i);
 			std::string name(this->GetFileEntryName(fileEntry));
-			auto foundExtension = name.substr(name.find(".") + 1);
+
+			// fix cert filname extension becoming corrupted when xcz/nsz is installing certs/ticks.
+			FILE* fp;
+			int pos = 0;
+			std::string mystr = name;
+			pos = mystr.find_last_of('.');
+			mystr = mystr.substr(5, pos);
+			//auto foundExtension = name.substr(name.find(".") + 1);
+			auto foundExtension = mystr.substr(mystr.find(".") + 1);
 
 			if (foundExtension == extension)
 				entryList.push_back(fileEntry);

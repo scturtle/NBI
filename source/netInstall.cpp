@@ -228,6 +228,7 @@ namespace netInstStuff {
 				inst::ui::instPage::setInstInfoText("inst.info_page.preparing"_lang);
 				inst::ui::instPage::setInstBarPerc(0);
 				installTask->Prepare();
+				installTask->InstallTicketCert();
 				installTask->Begin();
 				togo = (togo - 1);
 			}
@@ -398,10 +399,10 @@ namespace netInstStuff {
 							//If the above fails we probably have an html page - try to download it instead.
 							if (response.empty()) {
 								response = inst::curl::html_to_buffer(url);
-									if (response.empty()) {
-										inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
-										break;
-									}
+								if (response.empty()) {
+									inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+									break;
+								}
 							}
 						}
 
@@ -441,7 +442,7 @@ namespace netInstStuff {
 												defined in the settings page
 												*/
 												if (!inst::config::listoveride && nowlist >= maxlist) {
-														break;
+													break;
 												}
 												else {
 													if (link.find("http") == std::string::npos) {

@@ -101,6 +101,8 @@ public:
 	class SectionContext : public Section
 	{
 	public:
+		Crypto::Aes128Ctr crypto;
+		
 		SectionContext(const Section& s) : Section(s), crypto(s.cryptoKey, Crypto::AesCtr(Crypto::swapEndian(((u64*)&s.cryptoCounter)[0])))
 		{
 		}
@@ -111,27 +113,27 @@ public:
 
 		void decrypt(void* p, u64 sz, u64 offset)
 		{
-			if (this->cryptoType != 3)
+			if (this->cryptoType == 3 || this->cryptoType == 4)
 			{
+				crypto.seek(offset);
+				crypto.decrypt(p, p, sz);
+			}
+			else {
 				return;
 			}
-
-			crypto.seek(offset);
-			crypto.decrypt(p, p, sz);
 		}
 
 		void encrypt(void* p, u64 sz, u64 offset)
 		{
-			if (this->cryptoType != 3)
+			if (this->cryptoType == 3 || this->cryptoType == 4)
 			{
+				crypto.seek(offset);
+				crypto.encrypt(p, p, sz);
+			}
+			else {
 				return;
 			}
-
-			crypto.seek(offset);
-			crypto.encrypt(p, p, sz);
 		}
-
-		Crypto::Aes128Ctr crypto;
 	};
 
 	const bool isValid()

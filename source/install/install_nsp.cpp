@@ -75,7 +75,6 @@ namespace tin::install::nsp
 
 			CNMTList.push_back({ tin::util::GetContentMetaFromNCA(cnmtNCAFullPath), cnmtContentInfo });
 		}
-
 		return CNMTList;
 	}
 
@@ -150,17 +149,8 @@ namespace tin::install::nsp
 
 	void NSPInstall::InstallTicketCert()
 	{
-		u16 ECDSA = 0;
-		u16 RSA_2048 = 0;
-		u16 RSA_4096 = 0;
-		// Read the tik files and put it into a buffer
 		std::vector<const PFS0FileEntry*> tikFileEntries = m_NSP->GetFileEntriesByExtension("tik");
 		std::vector<const PFS0FileEntry*> certFileEntries = m_NSP->GetFileEntriesByExtension("cert");
-
-		// https://switchbrew.org/wiki/Ticket#Certificate_chain
-		ECDSA = (0x4 + 0x3C + 0x40 + 0x146);
-		RSA_2048 = (0x4 + 0x100 + 0x3C + 0x146);
-		RSA_4096 = (0x4 + 0x200 + 0x3C + 0x146);
 
 		for (size_t i = 0; i < tikFileEntries.size(); i++)
 		{
@@ -186,8 +176,16 @@ namespace tin::install::nsp
 			m_NSP->BufferData(certBuf.get(), m_NSP->GetDataOffset() + certFileEntries[i]->dataOffset, certSize);
 
 			// try to fix a temp ticket and change it t a permanent one
+			// https://switchbrew.org/wiki/Ticket#Certificate_chain
 			if (inst::config::fixticket) {
-				//ECDSA SHA256
+				u16 ECDSA = 0;
+				u16 RSA_2048 = 0;
+				u16 RSA_4096 = 0;
+
+				ECDSA = (0x4 + 0x3C + 0x40 + 0x146);
+				RSA_2048 = (0x4 + 0x100 + 0x3C + 0x146);
+				RSA_4096 = (0x4 + 0x200 + 0x3C + 0x146);
+
 				if (tikBuf.get()[0x0] == 0x5 && (tikBuf.get()[ECDSA] == 0x10 || tikBuf.get()[ECDSA] == 0x30))
 				{
 					tikBuf.get()[ECDSA] = 0x0;
@@ -229,9 +227,7 @@ namespace tin::install::nsp
 					tikBuf.get()[RSA_4096 - 1] = 0x10;
 				}
 
-			}
-
-			//printout the cert and ticket to a file in the tinwoo directory for testing.
+				//printout the cert and ticket to a file in the tinwoo directory for testing.
 			/*
 			FILE * pFile;
 			pFile = fopen ("cert.hxd", "wb");
@@ -242,6 +238,7 @@ namespace tin::install::nsp
 			fwrite (tikBuf.get(), sizeof(char), tikSize, pFile);
 			fclose (pFile);
 			*/
+			}
 
 			// Finally, let's actually import the ticket
 			ASSERT_OK(esImportTicket(tikBuf.get(), tikSize, certBuf.get(), certSize), "Failed to import ticket");

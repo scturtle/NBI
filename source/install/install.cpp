@@ -160,16 +160,6 @@ namespace tin::install
 
 	void Install::Begin()
 	{
-		LOG_DEBUG("Installing ticket and cert...\n");
-		try
-		{
-			this->InstallTicketCert();
-		}
-		catch (std::runtime_error& e)
-		{
-			LOG_DEBUG("WARNING: Ticket installation failed! This may not be an issue, depending on your use case.\nProceed with caution!\n");
-		}
-
 		for (nx::ncm::ContentMeta contentMeta : m_contentMeta) {
 			LOG_DEBUG("Installing NCAs...\n");
 			for (auto& record : contentMeta.GetContentInfos())
@@ -178,6 +168,10 @@ namespace tin::install
 				this->InstallNCA(record.content_id);
 			}
 		}
+	}
+
+	void Install::InstallTicketCert() {
+		this->InstallTicketCert();
 	}
 
 	u64 Install::GetTitleId(int i)

@@ -145,20 +145,12 @@ namespace tin::install::xci
 		catch (...) {}
 	}
 
+	//xci files don't have a ticket or cert - so this is useful when installing a converted nsp to xci
 	void XCIInstallTask::InstallTicketCert()
 	{
-		u16 ECDSA = 0;
-		u16 RSA_2048 = 0;
-		u16 RSA_4096 = 0;
-
 		// Read the tik files and put it into a buffer
 		std::vector<const HFS0FileEntry*> tikFileEntries = m_xci->GetFileEntriesByExtension("tik");
 		std::vector<const HFS0FileEntry*> certFileEntries = m_xci->GetFileEntriesByExtension("cert");
-
-		// https://switchbrew.org/wiki/Ticket#Certificate_chain
-		ECDSA = (0x4 + 0x3C + 0x40 + 0x146);
-		RSA_2048 = (0x4 + 0x100 + 0x3C + 0x146);
-		RSA_4096 = (0x4 + 0x200 + 0x3C + 0x146);
 
 		for (size_t i = 0; i < tikFileEntries.size(); i++)
 		{
@@ -186,6 +178,15 @@ namespace tin::install::xci
 
 			// try to fix a temp ticket and change it t a permanent one
 			if (inst::config::fixticket) {
+				u16 ECDSA = 0;
+				u16 RSA_2048 = 0;
+				u16 RSA_4096 = 0;
+
+				// https://switchbrew.org/wiki/Ticket#Certificate_chain
+				ECDSA = (0x4 + 0x3C + 0x40 + 0x146);
+				RSA_2048 = (0x4 + 0x100 + 0x3C + 0x146);
+				RSA_4096 = (0x4 + 0x200 + 0x3C + 0x146);
+
 				//ECDSA SHA256
 				if (tikBuf.get()[0x0] == 0x5 && (tikBuf.get()[ECDSA] == 0x10 || tikBuf.get()[ECDSA] == 0x30))
 				{
