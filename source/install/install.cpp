@@ -23,7 +23,9 @@ SOFTWARE.
 #include "install/install.hpp"
 
 #include <switch.h>
+#include <iostream>
 #include <cstring>
+#include <sstream>
 #include <memory>
 #include "util/error.hpp"
 

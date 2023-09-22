@@ -86,8 +86,8 @@ namespace inst::ui {
 	}
 
 	std::string optionsPage::getMenuOptionIcon(bool ourBool) {
-		if (ourBool) return "romfs:/images/icons/check-box-outline.png";
-		else return "romfs:/images/icons/checkbox-blank-outline.png";
+		if (ourBool) return "romfs:/images/icons/checked.png";
+		else return "romfs:/images/icons/unchecked.png";
 	}
 
 	std::string optionsPage::getMenuLanguage(int ourLangCode) {
@@ -186,26 +186,32 @@ namespace inst::ui {
 
 		auto SigPatch = pu::ui::elm::MenuItem::New("main.menu.sig"_lang);
 		SigPatch->SetColor(COLOR("#FFFFFFFF"));
+		SigPatch->SetIcon("romfs:/images/icons/plaster.png");
 		this->menu->AddItem(SigPatch);
 
 		auto sigPatchesUrlOption = pu::ui::elm::MenuItem::New("options.menu_items.sig_url"_lang + inst::util::shortenString(inst::config::sigPatchesUrl, 42, false));
 		sigPatchesUrlOption->SetColor(COLOR("#FFFFFFFF"));
+		sigPatchesUrlOption->SetIcon("romfs:/images/icons/keyboard.png");
 		this->menu->AddItem(sigPatchesUrlOption);
 
 		auto httpServerUrlOption = pu::ui::elm::MenuItem::New("options.menu_items.http_url"_lang + inst::util::shortenString(inst::config::httpIndexUrl, 42, false));
 		httpServerUrlOption->SetColor(COLOR("#FFFFFFFF"));
+		httpServerUrlOption->SetIcon("romfs:/images/icons/url.png");
 		this->menu->AddItem(httpServerUrlOption);
 
 		auto languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang + this->getMenuLanguage(inst::config::languageSetting));
 		languageOption->SetColor(COLOR("#FFFFFFFF"));
+		languageOption->SetIcon("romfs:/images/icons/speak.png");
 		this->menu->AddItem(languageOption);
 
 		auto updateOption = pu::ui::elm::MenuItem::New("options.menu_items.check_update"_lang);
 		updateOption->SetColor(COLOR("#FFFFFFFF"));
+		updateOption->SetIcon("romfs:/images/icons/update2.png");
 		this->menu->AddItem(updateOption);
 
 		auto creditsOption = pu::ui::elm::MenuItem::New("options.menu_items.credits"_lang);
 		creditsOption->SetColor(COLOR("#FFFFFFFF"));
+		creditsOption->SetIcon("romfs:/images/icons/credits2.png");
 		this->menu->AddItem(creditsOption);
 	}
 

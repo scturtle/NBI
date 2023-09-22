@@ -58,7 +58,7 @@ CFLAGS	:=	-g -Wall -O2 -ffunction-sections \
 
 CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wno-deprecated -Wall #-D__DEBUG__ -DNXLINK_DEBUG
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++17 -Wall
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++20 -Wall
 
 
 ASFLAGS	:=	-g $(ARCH)

@@ -85,7 +85,7 @@ namespace tin::install::nsp
 			std::string name(this->GetFileEntryName(fileEntry));
 			auto foundExtension = name.substr(name.find(".") + 1);
 				
-			// fix cert filname extension becoming corrupted when xcz/nsz is installing certs/ticks.
+			// fix cert filename extension becoming corrupted when xcz/nsz is installing certs.
 			std::string cert ("cert");
 			std::size_t found = name.find(cert);
 			if (found!=std::string::npos){
