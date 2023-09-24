@@ -12,6 +12,7 @@
 #include "ui/instPage.hpp"
 #include <sstream>
 #include <cstring>
+#include <iostream>
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
@@ -125,6 +126,19 @@ namespace inst::ui {
 	void ThemeInstPage::setInstBarPerc(double ourPercent) {
 		mainApp->ThemeinstPage->installBar->SetVisible(true);
 		mainApp->ThemeinstPage->installBar->SetProgress(ourPercent);
+		//
+		if (installing == 1){
+			std::stringstream x;
+			x << ourPercent;
+			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("Downloading theme: " + x.str() + " % complete");
+			if (x.str() == "100"){
+				inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("Extracting theme - please wait!");
+			}
+		}
+		else{
+			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("inst.net.theme_top_info"_lang);
+		}
+		//
 		mainApp->CallForRender();
 	}
 	
@@ -160,7 +174,6 @@ namespace inst::ui {
 	void ThemeInstPage::selectTitle(int selectedIndex) {
 		if (installing != 1) {
   		for (long unsigned int i = 0; i < this->selectedUrls.size(); i++) {
-  			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("Downloading theme, Please wait!");
   			inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
   			ourPath = inst::config::appDir + "/temp_download.zip";
   			installing = 1;
