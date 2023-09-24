@@ -159,11 +159,6 @@ namespace inst::ui {
 		autoUpdateOption->SetIcon(this->getMenuOptionIcon(inst::config::autoUpdate));
 		this->menu->AddItem(autoUpdateOption);
 
-		auto useThemeOption = pu::ui::elm::MenuItem::New("options.menu_items.theme_option"_lang);
-		useThemeOption->SetColor(COLOR("#FFFFFFFF"));
-		useThemeOption->SetIcon(this->getMenuOptionIcon(inst::config::useTheme));
-		this->menu->AddItem(useThemeOption);
-
 		auto useSoundOption = pu::ui::elm::MenuItem::New("options.menu_items.useSound"_lang);
 		useSoundOption->SetColor(COLOR("#FFFFFFFF"));
 		useSoundOption->SetIcon(this->getMenuOptionIcon(inst::config::useSound));
@@ -183,6 +178,23 @@ namespace inst::ui {
 		httpkeyboard->SetColor(COLOR("#FFFFFFFF"));
 		httpkeyboard->SetIcon(this->getMenuOptionIcon(inst::config::httpkeyboard));
 		this->menu->AddItem(httpkeyboard);
+		
+		auto useThemeOption = pu::ui::elm::MenuItem::New("options.menu_items.theme_option"_lang);
+		useThemeOption->SetColor(COLOR("#FFFFFFFF"));
+		useThemeOption->SetIcon(this->getMenuOptionIcon(inst::config::useTheme));
+		this->menu->AddItem(useThemeOption);
+		
+		auto ThemeMenuOption = pu::ui::elm::MenuItem::New("options.menu_items.theme_menu"_lang);
+		ThemeMenuOption->SetColor(COLOR("#FFFFFFFF"));
+		ThemeMenuOption->SetIcon("romfs:/images/icons/thememenu.png");
+		this->menu->AddItem(ThemeMenuOption);
+		
+		//
+		auto ThemeUrlOption = pu::ui::elm::MenuItem::New("options.menu_items.theme_url"_lang + inst::util::shortenString(inst::config::httplastUrl2, 42, false));
+		ThemeUrlOption->SetColor(COLOR("#FFFFFFFF"));
+		ThemeUrlOption->SetIcon("romfs:/images/icons/themeurl.png");
+		this->menu->AddItem(ThemeUrlOption);
+		//
 
 		auto SigPatch = pu::ui::elm::MenuItem::New("main.menu.sig"_lang);
 		SigPatch->SetColor(COLOR("#FFFFFFFF"));
@@ -291,6 +303,50 @@ namespace inst::ui {
 						this->menu->SetSelectedIndex(index);
 						break;
 					case 5:
+						if (inst::config::useSound) {
+							inst::config::useSound = false;
+						}
+						else {
+							inst::config::useSound = true;
+						}
+						this->setMenuText();
+						this->menu->SetSelectedIndex(index);
+						inst::config::setConfig();
+						break;
+					case 6:
+						if (inst::config::fixticket) {
+							inst::config::fixticket = false;
+						}
+						else {
+							inst::config::fixticket = true;
+						}
+						this->setMenuText();
+						this->menu->SetSelectedIndex(index);
+						inst::config::setConfig();
+						break;
+					case 7:
+						if (inst::config::listoveride) {
+							inst::config::listoveride = false;
+						}
+						else {
+							inst::config::listoveride = true;
+						}
+						this->setMenuText();
+						this->menu->SetSelectedIndex(index);
+						inst::config::setConfig();
+						break;
+					case 8:
+						if (inst::config::httpkeyboard) {
+							inst::config::httpkeyboard = false;
+						}
+						else {
+							inst::config::httpkeyboard = true;
+						}
+						this->setMenuText();
+						this->menu->SetSelectedIndex(index);
+						inst::config::setConfig();
+						break;
+					case 9:
 						if (inst::config::useTheme) {
 							mainApp->mainPage->awooImage->SetVisible(true);
 						}
@@ -302,54 +358,26 @@ namespace inst::ui {
 						this->setMenuText();
 						this->menu->SetSelectedIndex(index);
 						break;
-					case 6:
-						if (inst::config::useSound) {
-							inst::config::useSound = false;
-						}
-						else {
-							inst::config::useSound = true;
-						}
-						this->setMenuText();
-						this->menu->SetSelectedIndex(index);
-						inst::config::setConfig();
-						break;
-					case 7:
-						if (inst::config::fixticket) {
-							inst::config::fixticket = false;
-						}
-						else {
-							inst::config::fixticket = true;
-						}
-						this->setMenuText();
-						this->menu->SetSelectedIndex(index);
-						inst::config::setConfig();
-						break;
-					case 8:
-						if (inst::config::listoveride) {
-							inst::config::listoveride = false;
-						}
-						else {
-							inst::config::listoveride = true;
-						}
-						this->setMenuText();
-						this->menu->SetSelectedIndex(index);
-						inst::config::setConfig();
-						break;
-					case 9:
-						if (inst::config::httpkeyboard) {
-							inst::config::httpkeyboard = false;
-						}
-						else {
-							inst::config::httpkeyboard = true;
-						}
-						this->setMenuText();
-						this->menu->SetSelectedIndex(index);
-						inst::config::setConfig();
-						break;
 					case 10:
-						sigPatchesMenuItem_Click();
+						if (inst::util::getIPAddress() == "1.0.0.127") {
+							inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+							break;
+						}
+						mainApp->ThemeinstPage->startNetwork();					
 						break;
 					case 11:
+						keyboardResult = inst::util::softwareKeyboard("inst.net.url.hint"_lang, inst::config::httplastUrl2.c_str(), 500);
+						if (keyboardResult.size() > 0) {
+							inst::config::httplastUrl2 = keyboardResult;
+							inst::config::setConfig();
+							this->setMenuText();
+							this->menu->SetSelectedIndex(index);
+						}
+						break;
+					case 12:
+						sigPatchesMenuItem_Click();
+						break;
+					case 13:
 						keyboardResult = inst::util::softwareKeyboard("options.sig_hint"_lang, inst::config::sigPatchesUrl.c_str(), 500);
 						if (keyboardResult.size() > 0) {
 							inst::config::sigPatchesUrl = keyboardResult;
@@ -358,7 +386,7 @@ namespace inst::ui {
 							this->menu->SetSelectedIndex(index);
 						}
 						break;
-					case 12:
+					case 14:
 						keyboardResult = inst::util::softwareKeyboard("inst.net.url.hint"_lang, inst::config::httpIndexUrl.c_str(), 500);
 						if (keyboardResult.size() > 0) {
 							inst::config::httpIndexUrl = keyboardResult;
@@ -367,7 +395,7 @@ namespace inst::ui {
 							this->menu->SetSelectedIndex(index);
 						}
 						break;
-					case 13:
+					case 15:
 						languageList = languageStrings;
 						languageList[0] = "options.language.system_language"_lang; //replace "sys" with local language string 
 						rc = inst::ui::mainApp->CreateShowDialog("options.language.title"_lang, "options.language.desc"_lang, languageList, false, flag);
@@ -407,7 +435,7 @@ namespace inst::ui {
 						mainApp->FadeOut();
 						mainApp->Close();
 						break;
-					case 14:
+					case 16:
 						if (inst::util::getIPAddress() == "1.0.0.127") {
 							inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/update.png");
 							break;
@@ -419,7 +447,7 @@ namespace inst::ui {
 						}
 						this->askToUpdate(downloadUrl);
 						break;
-					case 15:
+					case 17:
 						inst::ui::mainApp->CreateShowDialog("options.credits.title"_lang, "options.credits.desc"_lang, { "common.close"_lang }, true, "romfs:/images/icons/credits.png");
 						break;
 					default:

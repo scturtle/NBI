@@ -52,8 +52,10 @@
       },
       "url": {
         "hint": "Enter the Internet address of a file",
+        "hint_theme": "Enter a valid address to download a theme",
         "invalid": "The URL specified is invalid!",
         "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
+        "no_themes": "No themes found!\nDid you use the correct URL?",
         "source_string": " from URL",
         "listwait": "Populating the list from a url can take some time.\nThe list default limit is purposely set to ",
         "listwait2": " items.\nPress OK to load the list."
@@ -66,21 +68,26 @@
       "sd": "Free space on sd card: ",
       "nand": "Free space on nand: ",
       "index_error": "No games found!",
+      "theme_error": "No themes found!",
       "index_error_info": "Did you enter the correct HTTP server source URL in the config page?",
-      "top_info": "Select what files you want to install from the server, then press the Plus button!",
+      "theme_error_info": "Did you enter the correct theme server source URL in the config page?",
+      "top_info": "Select which files you want to install from the server, then press the \ue0ef button!",
+      "theme_top_info": "Select which theme you want to install, then press the \ue0ef button!",
       "top_info1": "Waiting for a connection... Your Switch's IP Address is: ",
       "failed": "Failed to perform remote install!",
       "transfer_interput": "An error occured during data transfer. Check your network connection.",
       "source_string": " over a network",
       "buttons": "\ue0e3 Install Over Internet    \ue0f0 Install From HTTP Directory    \ue0e2 Help    \ue0e1 Cancel",
-      "buttons1": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0e1 Cancel"
+      "buttons1": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0e1 Cancel",
+      "buttons2": "\ue0e0 Select File    \ue0ef Install File    \ue0e1 Cancel",
+      "please_wait": "Please wait - I'm trying to connect to the server!"
     },
     "sd": {
       "help": {
         "title": "Help",
-        "desc": "Copy your NSP, NSZ, XCI, or XCZ files to your SD card, browse to and\nselect the ones you want to install, then press the Plus button."
+        "desc": "Copy your NSP, NSZ, XCI, or XCZ files to your SD card, browse to and\nselect the ones you want to install, then press the \ue0ef button."
       },
-      "top_info": "Select what files you want to install, then press the Plus button!",
+      "top_info": "Select what files you want to install, then press the \ue0ef button!",
       "source_string": " from SD card",
       "delete_info": "installed, Delete it from the SD card?",
       "delete_info_multi": " files installed successfully!\n\nDelete them from the SD card?",
@@ -90,9 +97,9 @@
     "hd": {
       "help": {
         "title": "Help",
-        "desc": "Copy your NSP, NSZ, XCI, or XCZ files to your hard drive, browse to and\nselect the ones you want to install, then press the Plus button."
+        "desc": "Copy your NSP, NSZ, XCI, or XCZ files to your hard drive, browse to and\nselect the ones you want to install, then press the \ue0ef button."
       },
-      "top_info": "Select the files you want to install, then press the Plus button!",
+      "top_info": "Select the files you want to install, then press the \ue0ef button!",
       "source_string": " from hard drive",
       "delete_info": " installed\nDelete it from the hard drive?",
       "delete_info_multi": " files installed successfully!\nDelete them from the hard drive?",
@@ -105,7 +112,7 @@
         "desc": "Files can be installed over USB from other devices using tools such as\nNS-USBloader in Tinfoil mode. To send files to your Switch, open one of\nthese pieces of software on your PC, select your files, then upload to\nyour console!\n\nUnfortunately USB installations require a specific setup on some\nplatforms, and can be rather buggy at times. If you can't figure it out,\ngive LAN/internet installs a try, or copy your files to your SD card and\ntry the \"Install from SD Card\" option on the main menu!"
       },
       "top_info": "USB connection successful! Waiting for list of files to be sent...",
-      "top_info2": "Select what files you want to install over USB, then press the Plus button!",
+      "top_info2": "Select what files you want to install over USB, then press the \ue0ef button!",
       "error": "USB transfer timed out or failed",
       "source_string": " over USB",
       "buttons": "\ue0e2 (Hold) Help    \ue0e1 (Hold) Cancel",
@@ -183,10 +190,13 @@
       "listoveride": "Disable URL list warning and file limit",
       "usehttpkeyboard": "Use keyboard during http server installs",
       "sig_url": "Signature patches source URL: ",
-      "http_url": "Http server source URL: ",
+      "http_url": "Network server source URL: ",
+      "theme_url": "Theme server source URL: ",
       "language": "Language: ",
       "check_update": "Check for updates to TinWoo Installer",
-      "credits": "Credits"
+      "credits": "Credits",
+      "theme_menu": "Download themes",
+      "theme_fail": "Did you enter a correct theme URL?"
     },
     "nca_warn": {
       "title": "Warning!",

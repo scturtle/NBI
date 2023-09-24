@@ -52,8 +52,10 @@
       },
       "url": {
         "hint": "ファイルのインターネットアドレスを入力してください",
+        "hint_theme": "Enter a valid address to download a theme",
         "invalid": "指定されたURLは無効です！",
         "nolinks": "XCI、XCZ、NSP、NSZ リンクが見つかりません。\n正しい URL を使用しましたか?",
+        "no_themes": "No themes found!\nDid you use the correct URL?",
         "source_string": " URLから",
         "listwait": "URL からリストにデータを入力するには時間がかかる場合があります.\nリストのデフォルト制限は意図的に次のように設定されています。 ",
         "listwait2": " アイテム.\nOKを押してリストをロードします."
@@ -66,14 +68,19 @@
       "sd": "SDカードの空き容量: ",
       "nand": "nandの空き容量: ",
       "index_error": "該当するゲームがありません!",
+      "theme_error": "No themes found!",
       "index_error_info": "正しいURLを入力しましたか?",
+      "theme_error_info": "Did you enter the correct theme server source URL in the config page?",
       "top_info": "サーバーからインストールするファイルを選択し、＋ボタンを押してください！",
+      "theme_top_info": "Select which theme you want to install, then press the \ue0ef button!",
       "top_info1": "接続を待機しています...スイッチのIPアドレスは次のとおりです。: ",
       "failed": "リモートインストールを実行できませんでした！",
       "transfer_interput": "データ転送中にエラーが発生しました。ネットワーク接続を確認してください。",
       "source_string": " ローカルネットワーク経由",
       "buttons": "\ue0e3 インターネット経由でインストールする    \ue0e2 ヘルプ    \ue0e1 キャンセル",
-      "buttons1": "\ue0e0 ファイルを選択    \ue0e3 すべて選択    \ue0ef ファイルをインストール    \ue0e1 キャンセル"
+      "buttons1": "\ue0e0 ファイルを選択    \ue0e3 すべて選択    \ue0ef ファイルをインストール    \ue0e1 キャンセル",
+      "buttons2": "\ue0e0 Select File    \ue0ef Install File    \ue0e1 Cancel",
+      "please_wait": "Please wait - I'm trying to connect to the server!"
     },
     "sd": {
       "help": {
@@ -184,9 +191,12 @@
       "usehttpkeyboard": "httpサーバーのインストール中にキーボードを使用する",
       "sig_url": "署名パッチのソースURL: ",
       "http_url": "HTTPサーバーのソースURL: ",
+      "theme_url": "Theme server source URL: ",
       "language": "言語: ",
       "check_update": "TinWoo Installerのアップデートを確認",
-      "credits": "クレジット"
+      "credits": "クレジット",
+      "theme_menu": "Download themes",
+      "theme_fail": "Did you enter a correct theme URL?"
     },
     "nca_warn": {
       "title": "警告!",

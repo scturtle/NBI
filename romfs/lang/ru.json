@@ -52,8 +52,10 @@
       },
       "url": {
         "hint": "Укажите ссылку на файл",
+        "hint_theme": "Enter a valid address to download a theme",
         "invalid": "Указан неверный URL!",
         "nolinks": "Ссылки XCI, XCZ, NSP, NSZ не найдены!\nВы использовали правильный URL?",
+        "no_themes": "No themes found!\nDid you use the correct URL?",
         "source_string": " из URL",
         "listwait": "Заполнение списка по URL-адресу может занять некоторое время.\nОграничение списка по умолчанию намеренно установлено на",
         "listwait2": " элементы.\nНажмите ОК, чтобы загрузить список."
@@ -66,14 +68,19 @@
       "sd": "Свободное место на SD-карте:",
       "nand": "Свободное место на NAND:",
       "index_error": "Игры не найдены!",
+      "theme_error": "No themes found!",
       "index_error_info": "Вы ввели правильный URL-адрес источника HTTP-сервера на странице конфигурации?",
+      "theme_error_info": "Did you enter the correct theme server source URL in the config page?",
       "top_info": "Выберите какие файлы вы хотите установить из сервера и нажмите \"+\"!",
+      "theme_top_info": "Select which theme you want to install, then press the \ue0ef button!",
       "top_info1": "Ожидание подключения... IP-адрес вашего Switch: ",
       "failed": "Не удалось выполнить установку из удалённого источника!",
       "transfer_interput": "Во время передачи возникла ошибка. Проверьте ваши настройки сети.",
       "source_string": " по локальной сети",
       "buttons": "\ue0e3 Установка через интернет    \ue0e2 Помощь    \ue0e1 Отмена",
-      "buttons1": "\ue0e0 Выбрать файл    \ue0e3 Выбрать всё    \ue0ef Установить файл(ы)    \ue0e1 Отмена"
+      "buttons1": "\ue0e0 Выбрать файл    \ue0e3 Выбрать всё    \ue0ef Установить файл(ы)    \ue0e1 Отмена",
+      "buttons2": "\ue0e0 Select File    \ue0ef Install File    \ue0e1 Cancel",
+      "please_wait": "Please wait - I'm trying to connect to the server!"
     },
     "sd": {
       "help": {
@@ -184,9 +191,12 @@
       "usehttpkeyboard": "Используйте клавиатуру во время установки http-сервера",
       "sig_url": "URL для скачивания Signature patches: ",
       "http_url": "URL-адрес источника HTTP-сервера:",
+      "theme_url": "Theme server source URL: ",
       "language": "Язык: ",
       "check_update": "Проверить наличие обновлений TinWoo Installer",
-      "credits": "Благодарности"
+      "credits": "Благодарности",
+      "theme_menu": "Download themes",
+      "theme_fail": "Did you enter a correct theme URL?"
     },
     "nca_warn": {
       "title": "Внимание!",

@@ -52,8 +52,10 @@
       },
       "url": {
         "hint": "Gib eine URL zu einer Datei ein",
+        "hint_theme": "Enter a valid address to download a theme",
         "invalid": "Die eingegebene URL ist ungültig",
         "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
+        "no_themes": "No themes found!\nDid you use the correct URL?",
         "source_string": " per URL",
         "listwait": "Das Auffüllen der Liste über eine URL kann einige Zeit dauern.\nDas Standardlimit der Liste ist absichtlich auf eingestellt ",
         "listwait2": " artikel.\nDrücken Sie OK, um die Liste zu laden."
@@ -66,14 +68,19 @@
       "sd": "Freier Speicherplatz auf der SD-Karte: ",
       "nand": "Freier Speicherplatz auf NAND: ",
       "index_error": "Keine Spiele gefunden!",
+      "theme_error": "No themes found!",
       "index_error_info": "Hast du die richtige URL eingegeben?",
+      "theme_error_info": "Did you enter the correct theme server source URL in the config page?",
       "top_info": "Wähle Dateien zur Installation vom Server aus und drücke dann \ue0b3 !",
+      "theme_top_info": "Select which theme you want to install, then press the \ue0ef button!",
       "top_info1": "Warte auf eine Verbindung... Die IP Adresse deiner Switch ist: ",
       "failed": "Ferninstallation fehlgeschlagen!",
       "transfer_interput": "Bei der Dateiübertragung ist ein Fehler aufgetreten.",
       "source_string": " über das Netzwerk",
       "buttons": "\ue0e3 Installation über das Internet    \ue0e2 Hilfe    \ue0e1 Abbrechen",
-      "buttons1": "\ue0e0 Datei auswählen    \ue0e3 Alle auswählen    \ue0ef Datei(en) installieren    \ue0e1 Abbrechen"
+      "buttons1": "\ue0e0 Datei auswählen    \ue0e3 Alle auswählen    \ue0ef Datei(en) installieren    \ue0e1 Abbrechen",
+      "buttons2": "\ue0e0 Select File    \ue0ef Install File    \ue0e1 Cancel",
+      "please_wait": "Please wait - I'm trying to connect to the server!"
     },
     "sd": {
       "help": {
@@ -184,9 +191,12 @@
       "usehttpkeyboard": "Verwenden Sie die Tastatur während der Installation des HTTP-Servers",
       "sig_url": "Signatur Patches URL: ",
       "http_url": "Quell-URL des HTTP-Servers: ",
+      "theme_url": "Theme server source URL: ",
       "language": "Sprache: ",
       "check_update": "Suche nach Updates für TinWoo Installer",
-      "credits": "Danksagung"
+      "credits": "Danksagung",
+      "theme_menu": "Download themes",
+      "theme_fail": "Did you enter a correct theme URL?"
     },
     "nca_warn": {
       "title": "Warnung!",

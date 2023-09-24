@@ -52,8 +52,10 @@
       },
       "url": {
         "hint": "Inserisci l'URL del file",
+        "hint_theme": "Enter a valid address to download a theme",
         "invalid": "L'URL specificato non è valido!",
         "nolinks": "Nessun collegamento XCI, XCZ, NSP, NSZ trovato!\nHai utilizzato l'URL corretto?",
+        "no_themes": "No themes found!\nDid you use the correct URL?",
         "source_string": " da URL",
         "listwait": "Compilare l'elenco da un URL può richiedere del tempo.\nIl limite predefinito dell'elenco è impostato di proposito su",
         "listwait2": " elementi.\nPremere OK per caricare l'elenco."
@@ -66,14 +68,19 @@
       "sd": "Spazio libero sulla scheda SD: ",
       "nand": "Spazio libero sulla NAND: ",
       "index_error": "Nessun gioco trovato!",
+      "theme_error": "No themes found!",
       "index_error_info": "Hai inserito l'URL di origine del server HTTP corretto nella pagina di configurazione?",
+      "theme_error_info": "Did you enter the correct theme server source URL in the config page?",
       "top_info": "Seleziona quali file vuoi installare dal server, poi premi il tasto Più!",
+      "theme_top_info": "Select which theme you want to install, then press the \ue0ef button!",
       "top_info1": "Aspettando una connnessione... L'indirizzo IP è: ",
       "failed": "Impossibile eseguire l'installazione remota!",
       "transfer_interput": "Si è verificato un errore durante il trasferimento dei dati. Controlla la tua connessione.",
       "source_string": " via rete",
       "buttons": "\ue0e3 Installa via internet    \ue0e2 Aiuto    \ue0e1 Annulla",
-      "buttons1": "\ue0e0 Seleziona File    \ue0e3 Seleziona tutto    \ue0ef Installa i File    \ue0e1 Annulla"
+      "buttons1": "\ue0e0 Seleziona File    \ue0e3 Seleziona tutto    \ue0ef Installa i File    \ue0e1 Annulla",
+      "buttons2": "\ue0e0 Select File    \ue0ef Install File    \ue0e1 Cancel",
+      "please_wait": "Please wait - I'm trying to connect to the server!"
     },
     "sd": {
       "help": {
@@ -184,9 +191,12 @@
       "usehttpkeyboard": "Utilizzare la tastiera durante le installazioni del server http",
       "sig_url": "Fonte URL SigPatches: ",
       "http_url": "URL di origine del server HTTP: ",
+      "theme_url": "Theme server source URL: ",
       "language": "Lingua: ",
       "check_update": "Controlla aggiornamenti di TinWoo Installer ora",
-      "credits": "Crediti"
+      "credits": "Crediti",
+      "theme_menu": "Download themes",
+      "theme_fail": "Did you enter a correct theme URL?"
     },
     "nca_warn": {
       "title": "Attenzione!",

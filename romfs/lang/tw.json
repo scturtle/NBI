@@ -53,7 +53,9 @@
       "url": {
         "hint": "請輸入檔案的URL網路位址",
         "invalid": "URL網路位址無效！",
+        "hint_theme": "Enter a valid address to download a theme",
         "nolinks": "未找到 XCI、XCZ、NSP、NSZ 鏈接！\n您使用的 URL 是否正確？",
+        "no_themes": "No themes found!\nDid you use the correct URL?",
         "source_string": "來源為URL",
         "listwait": "從 url 填充列表可能需要一些時間。\n列表默認限制特意設置為",
         "listwait2": " 項目。\n按“確定”加載列表。"
@@ -66,14 +68,19 @@
       "sd": "SD 卡上的可用空間：",
       "nand": "nand 上的可用空間：",
       "index_error": "沒有找到遊戲！",
+      "theme_error": "No themes found!",
       "index_error_info": "您是否在配置頁面中輸入了正確的 HTTP 服務器源 URL？",
+      "theme_error_info": "Did you enter the correct theme server source URL in the config page?",
       "top_info": "選定要從伺服器安裝的檔案後，請按+鈕",
+      "theme_top_info": "Select which theme you want to install, then press the \ue0ef button!",
       "top_info1": "正在等待連線中... 你的Switch主機IP是: ",
       "failed": "遠端安裝失敗！",
       "transfer_interput": "檔案傳輸時發生錯誤，請檢查網路連線狀態是否正常",
       "source_string": " 透過區網進行安裝",
       "buttons": "\ue0e3 透過網路安裝    \ue0e2 說明    \ue0e1 取消",
-      "buttons1": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e1 取消"
+      "buttons1": "\ue0e0 選擇檔案    \ue0e3 全選    \ue0ef 安裝所選的檔案    \ue0e1 取消",
+      "buttons2": "\ue0e0 Select File    \ue0ef Install File    \ue0e1 Cancel",
+      "please_wait": "Please wait - I'm trying to connect to the server!"
     },
     "sd": {
       "help": {
@@ -184,9 +191,12 @@
       "usehttpkeyboard": "在 http 服務器安裝期間使用鍵盤",
       "sig_url": "簽名修補程式來源URL: ",
       "http_url": "HTTP服務器源URL：",
+      "theme_url": "Theme server source URL: ",
       "language": "介面語系： ",
       "check_update": "檢查Tinwoo Installer的更新版本",
-      "credits": "感謝名單"
+      "credits": "感謝名單",
+      "theme_menu": "Download themes",
+      "theme_fail": "Did you enter a correct theme URL?"
     },
     "nca_warn": {
       "title": "注意！",

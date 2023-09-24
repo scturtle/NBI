@@ -11,6 +11,7 @@ namespace inst::config {
 	extern std::string sigPatchesUrl;
 	extern std::string httpIndexUrl;
 	extern std::string httplastUrl;
+	extern std::string httplastUrl2;
 	extern std::vector<std::string> updateInfo;
 	extern int languageSetting;
 	extern bool ignoreReqVers;

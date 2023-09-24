@@ -2,6 +2,7 @@
 #include <pu/Plutonium>
 #include "ui/mainPage.hpp"
 #include "ui/netInstPage.hpp"
+#include "ui/ThemeInstPage.hpp"
 #include "ui/sdInstPage.hpp"
 #include "ui/HDInstPage.hpp"
 #include "ui/usbInstPage.hpp"
@@ -16,6 +17,7 @@ namespace inst::ui {
 			void OnLoad() override;
 		MainPage::Ref mainPage;
 		netInstPage::Ref netinstPage;
+		ThemeInstPage::Ref ThemeinstPage;
 		sdInstPage::Ref sdinstPage;
 		HDInstPage::Ref HDinstPage;
 		usbInstPage::Ref usbinstPage;

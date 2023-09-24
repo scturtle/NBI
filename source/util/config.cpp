@@ -8,6 +8,7 @@ namespace inst::config {
 	std::string sigPatchesUrl;
 	std::string httpIndexUrl;
 	std::string httplastUrl;
+	std::string httplastUrl2;
 	std::vector<std::string> updateInfo;
 	int languageSetting;
 	bool autoUpdate;
@@ -37,6 +38,7 @@ namespace inst::config {
 			{"validateNCAs", validateNCAs},
 			{"httpIndexUrl", httpIndexUrl},
 			{"httplastUrl", httplastUrl},
+			{"httplastUrl2", httplastUrl2},
 			{"fixticket", fixticket},
 			{"listoveride", listoveride},
 			{"httpkeyboard", httpkeyboard}
@@ -64,6 +66,7 @@ namespace inst::config {
 			sigPatchesUrl = j["sigPatchesUrl"].get<std::string>();
 			httpIndexUrl = j["httpIndexUrl"].get<std::string>();
 			httplastUrl = j["httplastUrl"].get<std::string>();
+			httplastUrl2 = j["httplastUrl2"].get<std::string>();
 			usbAck = j["usbAck"].get<bool>();
 			validateNCAs = j["validateNCAs"].get<bool>();
 		}
@@ -74,6 +77,7 @@ namespace inst::config {
 			languageSetting = 0;
 			httpIndexUrl = "http://";
 			httplastUrl = "http://";
+			httplastUrl2 = "https://pastebin.com/raw/huBQFYWP";
 			autoUpdate = true;
 			deletePrompt = true;
 			useTheme = false;
