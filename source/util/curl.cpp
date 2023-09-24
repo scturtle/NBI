@@ -8,6 +8,8 @@
 #include "util/config.hpp"
 #include "util/error.hpp"
 #include "ui/instPage.hpp"
+//
+#include "ui/ThemeinstPage.hpp"
 
 static size_t writeDataFile(void* ptr, size_t size, size_t nmemb, void* stream) {
 	size_t written = fwrite(ptr, size, nmemb, (FILE*)stream);
@@ -25,10 +27,12 @@ int progress_callback(void* clientp, curl_off_t dltotal, curl_off_t dlnow, curl_
 	if (ultotal) {
 		int uploadProgress = (int)(((double)ulnow / (double)ultotal) * 100.0);
 		inst::ui::instPage::setInstBarPerc(uploadProgress);
+		inst::ui::ThemeInstPage::setInstBarPerc(uploadProgress);
 	}
 	else if (dltotal) {
 		int downloadProgress = (int)(((double)dlnow / (double)dltotal) * 100.0);
 		inst::ui::instPage::setInstBarPerc(downloadProgress);
+		inst::ui::ThemeInstPage::setInstBarPerc(downloadProgress);
 	}
 	return 0;
 }

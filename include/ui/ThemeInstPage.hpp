@@ -10,6 +10,8 @@ namespace inst::ui {
 		PU_SMART_CTOR(ThemeInstPage)
 		void startNetwork();
 		void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_pos);
+		static void setInstBarPerc(double ourPercent);
+		pu::ui::elm::ProgressBar::Ref installBar;
 		TextBlock::Ref pageInfoText;
 	private:
 		std::vector<std::string> ourUrls;

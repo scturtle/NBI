@@ -9,6 +9,7 @@
 #include "util/lang.hpp"
 #include "ThemeInstall.hpp"
 #include "util/unzip.hpp"
+#include "ui/instPage.hpp"
 #include <sstream>
 #include <cstring>
 
@@ -62,6 +63,10 @@ namespace inst::ui {
 		this->Add(this->pageInfoText);
 		this->Add(this->menu);
 		this->Add(this->infoImage);
+		this->installBar = pu::ui::elm::ProgressBar::New(10, 675, 1260, 35, 100.0f);
+		this->installBar->SetBackgroundColor(COLOR("#000000FF"));
+		this->installBar->SetProgressColor(COLOR("#00FF00FF"));
+		this->Add(this->installBar);
 	}
 
 	void ThemeInstPage::drawMenuItems_withext(bool clearItems) {
@@ -84,6 +89,8 @@ namespace inst::ui {
 			}
 			this->menu->AddItem(ourEntry);
 			this->menu->SetSelectedIndex(myindex); //jump to the index we saved from above
+			mainApp->ThemeinstPage->installBar->SetProgress(0);
+			mainApp->ThemeinstPage->installBar->SetVisible(false);
 		}
 	}
 
@@ -115,6 +122,12 @@ namespace inst::ui {
 		}
 	}
 	
+	void ThemeInstPage::setInstBarPerc(double ourPercent) {
+		mainApp->ThemeinstPage->installBar->SetVisible(true);
+		mainApp->ThemeinstPage->installBar->SetProgress(ourPercent);
+		mainApp->CallForRender();
+	}
+	
 	void ThemeInstPage::startNetwork() {
 		this->butText->SetText("inst.net.please_wait"_lang);
 		this->menu->SetVisible(false);
@@ -122,6 +135,7 @@ namespace inst::ui {
 		this->infoImage->SetVisible(true);
 		mainApp->LoadLayout(mainApp->ThemeinstPage);
 		this->ourUrls = ThemeInstStuff::OnSelected();
+		mainApp->ThemeinstPage->installBar->SetVisible(false);
 
 		if (!this->ourUrls.size()) {
 			mainApp->LoadLayout(mainApp->optionspage);
@@ -147,6 +161,7 @@ namespace inst::ui {
 		if (installing != 1) {
   		for (long unsigned int i = 0; i < this->selectedUrls.size(); i++) {
   			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("Downloading theme, Please wait!");
+  			inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
   			ourPath = inst::config::appDir + "/temp_download.zip";
   			installing = 1;
     		bool didDownload = inst::curl::downloadFile(selectedUrls[0], ourPath.c_str(), 0, true);
@@ -163,14 +178,17 @@ namespace inst::ui {
     		else {
     			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("Downloading failed - try again?");
     			installing = 0;
+    			inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
+    			mainApp->ThemeinstPage->installBar->SetVisible(false);
     			inst::ui::mainApp->CreateShowDialog("inst.net.theme_error"_lang, "inst.net.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
     			return;
     		}
     		std::filesystem::remove(ourPath);
     		if (didExtract) {
     			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("Theme Extracted, restart Tinwoo to see the changes");
-    			installing = 0;
     			int close = inst::ui::mainApp->CreateShowDialog("Theme installed", "Restart Tinwoo to see the changes", { "sig.later"_lang, "sig.restart"_lang }, false, "romfs:/images/icons/good.png");
+    			inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
+    			mainApp->ThemeinstPage->installBar->SetVisible(false);
     			if (close != 0) {
     				mainApp->FadeOut();
     				mainApp->Close();
@@ -179,11 +197,15 @@ namespace inst::ui {
     		else {
     			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("Theme Extracted failed, try again?");
     			installing = 0;
+    			inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
+    			mainApp->ThemeinstPage->installBar->SetVisible(false);
     			inst::ui::mainApp->CreateShowDialog("Extraction failed", "Ooops", { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
     			return;
     			
     		}
     		installing = 0;
+    		inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
+    		mainApp->ThemeinstPage->installBar->SetVisible(false);
     		return;
     	}
     }
