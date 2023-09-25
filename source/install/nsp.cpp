@@ -30,6 +30,14 @@ SOFTWARE.
 #include "util/error.hpp"
 #include "util/debug.h"
 
+//
+#include "util/lang.hpp"
+#include "ui/MainApplication.hpp"
+namespace inst::ui {
+	extern MainApplication* mainApp;
+}
+//
+
 namespace tin::install::nsp
 {
 	NSP::NSP() {}
@@ -84,7 +92,7 @@ namespace tin::install::nsp
 			const PFS0FileEntry* fileEntry = this->GetFileEntry(i);
 			std::string name(this->GetFileEntryName(fileEntry));
 			auto foundExtension = name.substr(name.find(".") + 1);
-				
+
 			// fix cert filename extension becoming corrupted when xcz/nsz is installing certs.
 			std::string cert ("cert");
 			std::size_t found = name.find(cert);
@@ -165,6 +173,8 @@ namespace tin::install::nsp
 		fprintf(fp, "%s\n", info);
 		fclose(fp);
 		*/
+		
+		//inst::ui::mainApp->CreateShowDialog("No cert found", "yikes", { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 
 		return reinterpret_cast<const char*>(m_headerBytes.data() + stringTableStart + fileEntry->stringTableOffset);
 	}

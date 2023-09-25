@@ -230,7 +230,7 @@
     "no_themes": "Keine Themen gefunden!\nHaben Sie die richtige URL verwendet?",
     "theme_error": "Keine Themen gefunden!",
     "theme_error_info": "Haben Sie auf der Konfigurationsseite die richtige Quell-URL des Theme-Servers eingegeben?",
-    "theme_top_info": "Wählen Sie das Theme aus, das Sie installieren möchten, und klicken Sie dann auf die Schaltfläche \ue0ef!",
+    "theme_top_info": "Wählen Sie eine zum Installieren aus und drücken Sie dann die \ue0ef Taste!",
     "buttons2": "\ue0e0 Datei auswählen \ue0ef Datei installieren \ue0e1 Abbrechen",
     "please_wait": "Bitte warten Sie, ich versuche, eine Verbindung zum Server herzustellen!",
     "theme_option": "Verwenden Sie ein Thema",

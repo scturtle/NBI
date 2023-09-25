@@ -32,7 +32,7 @@
       "title": "Applet Mode non è supportata",
       "desc": "Puoi incontrare problemi utilizzando TinWoo Installer in Applet Mode. Se\nriscontri problemi, ti prego di utilizzare TinWoo Installer avviandolo attraverso un gioco\ngià installato (tieni premuto R mentre avvii un gioco)!"
     },
-    "buttons": "\ue0e0 Seleziona    \ue0e3 Spazio libero    \ue0e4+\ue0e5 o \ue0ef o \ue0f0 Esci"
+    "buttons": "\ue0e0 Seleziona  \ue0e3 Spazio libero  \ue0e4+\ue0e5 o \ue0ef o \ue0f0 Esci"
   },
   "inst": {
     "net": {
@@ -224,29 +224,29 @@
     "cancel_desc": "Premi B per annullare"
   },
   "theme": {
-    "title": "Use Theme",
-    "desc": "Themes will activate or deactivate when Tinwoo restarts.",
-    "hint_theme": "Enter a valid address to download a theme",
-    "no_themes": "No themes found!\nDid you use the correct URL?",
-    "theme_error": "No themes found!",
-    "theme_error_info": "Did you enter the correct theme server source URL in the config page?",
-    "theme_top_info": "Select which theme you want to install, then press the \ue0ef button!",
-    "buttons2": "\ue0e0 Select File    \ue0ef Install File    \ue0e1 Cancel",
-    "please_wait": "Please wait, I'm trying to connect to the server!",
-    "theme_option": "Use Theme",
-    "theme_url": "Theme server source URL: ",
-    "theme_menu": "Download themes",
-    "theme_fail": "Did you enter a correct theme URL?",
-    "downloading": "Downloading theme: ",
-    "percent": " % complete",
-    "extracting": "Extracting theme, please wait!",
-    "complete": "Downloading complete, extracting theme, Please wait!",
-    "failed": "Downloading failed, try again?",
-    "extracted": "Theme Extracted, restart Tinwoo to see the changes",
-    "installed": "Theme installed",
-    "restart": "Restart Tinwoo to see the changes",
-    "retry": "Theme Extraction failed, try again?",
-    "wait": "Please Wait!",
-    "trying": "I'm currently tryng to install a theme"
+    "title": "Usa tema",
+    "desc": "I temi verranno attivati ​​o disattivati ​​al riavvio di Tinwoo.",
+    "hint_theme": "Inserisci un indirizzo valido per scaricare un tema",
+    "no_themes": "Nessun tema trovato!\nHai utilizzato l'URL corretto?",
+    "theme_error": "Nessun tema trovato!",
+    "theme_error_info": "Hai inserito l'URL di origine del server dei temi corretto nella pagina di configurazione?",
+    "theme_top_info": "Seleziona il tema che desideri installare, quindi premi il pulsante \ue0ef!",
+    "buttons2": "\ue0e0 Seleziona file \ue0ef Installa file \ue0e1 Annulla",
+    "please_wait": "Per favore aspetta, sto cercando di connettermi al server!",
+    "theme_option": "Usa tema",
+    "theme_url": "URL di origine del server dei temi: ",
+    "theme_menu": "Scarica temi",
+    "theme_fail": "Hai inserito l'URL del tema corretto?",
+    "downloading": "Download del tema: ",
+    "percent": " % di completamento",
+    "extracting": "Estrazione del tema, attendere per favore!",
+    "complete": "Download completo, estrazione del tema, attendere per favore!",
+    "failed": "Download non riuscito, riprovare?",
+    "extracted": "Tema estratto, riavvia Tinwoo per vedere le modifiche",
+    "installed": "Tema installato",
+    "restart": "Riavvia Tinwoo per vedere le modifiche",
+    "retry": "Estrazione del tema non riuscita, riprovare?",
+    "wait": "Attendere prego!",
+    "trying": "Attualmente sto provando a installare un tema"
   }
 }
