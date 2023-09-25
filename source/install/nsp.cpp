@@ -163,7 +163,7 @@ namespace tin::install::nsp
 	const char* NSP::GetFileEntryName(const PFS0FileEntry* fileEntry)
 	{
 		u64 stringTableStart = sizeof(PFS0BaseHeader) + this->GetBaseHeader()->numFiles * sizeof(PFS0FileEntry);
-
+		
 		//check for messed up filenames in our table.... usually when instaling xcz/xci
 		/*
 		FILE * fp;
@@ -173,8 +173,6 @@ namespace tin::install::nsp
 		fprintf(fp, "%s\n", info);
 		fclose(fp);
 		*/
-		
-		//inst::ui::mainApp->CreateShowDialog("No cert found", "yikes", { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 
 		return reinterpret_cast<const char*>(m_headerBytes.data() + stringTableStart + fileEntry->stringTableOffset);
 	}

@@ -24,6 +24,9 @@ SOFTWARE.
 
 #include <machine/endian.h>
 #include <thread>
+#include <iostream>
+#include <vector>
+#include <sstream>
 
 #include "install/nca.hpp"
 #include "nx/fs.hpp"
@@ -149,8 +152,23 @@ namespace tin::install::nsp
 
 	void NSPInstall::InstallTicketCert()
 	{
+		//int cal = 0;
 		std::vector<const PFS0FileEntry*> tikFileEntries = m_NSP->GetFileEntriesByExtension("tik");
 		std::vector<const PFS0FileEntry*> certFileEntries = m_NSP->GetFileEntriesByExtension("cert");
+			
+		//check if ticket exists - if not exit function and warn user
+		std::stringstream ss;
+		for(auto it =tikFileEntries.begin();it!=tikFileEntries.end();it++) {
+			if(it != tikFileEntries.begin()) {
+				ss<<" ";
+			}
+			ss << *it;
+    }
+    if (ss.str().length() == 0) {
+    	inst::ui::mainApp->CreateShowDialog("main.usb.warn.title"_lang, "inst.nca_verify.ticket_missing"_lang, { "common.ok"_lang }, false, "romfs:/images/icons/information.png");
+    	return; //don't bother trying to install the ticket or cert if it doesn't exist.
+    }
+    // end of ticket check
 
 		for (size_t i = 0; i < tikFileEntries.size(); i++)
 		{

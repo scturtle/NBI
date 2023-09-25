@@ -131,7 +131,8 @@
       "title": "¡Se detectó firma NCA inválida!",
       "desc": "El software firmado incorrectamente solo debe instalarse si fue obtenido de fuentes confiables.\nLos archivos que contienen reempaquetado de cartuchos y desbloqueadores de DLC siempre\nmostrarán esta advertencia.  Puede deshabilitar esta verificación en la configuración de TinWoo Installer.\n\n¿Está seguro de que desea continuar con la instalación?",
       "opt1": "Sí, entiendo los riesgos",
-      "error": "La NCA solicitada no está debidamente firmada: "
+      "error": "La NCA solicitada no está debidamente firmada: ",
+      "ticket_missing": "No se ha encontrado ningún ticket.\n\nSi el juego no se inicia después de la instalación, intenta descargarlo nuevamente con un ticket válido."
     },
     "finished": [
       "¡Disfruta de tus \"copias de seguridad legales\"!",
