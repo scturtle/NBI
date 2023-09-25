@@ -14,7 +14,6 @@
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
-
 namespace inst::ui {
 	extern MainApplication* mainApp;
 	s32 prev_touchcount = 0;
@@ -114,7 +113,7 @@ namespace inst::ui {
 	}
 
 	void thememessage() {
-		int ourResult = inst::ui::mainApp->CreateShowDialog("main.theme.title"_lang, "main.theme.desc"_lang, { "common.no"_lang, "common.yes"_lang }, true, "romfs:/images/icons/theme.png");
+		int ourResult = inst::ui::mainApp->CreateShowDialog("theme.title"_lang, "theme.desc"_lang, { "common.no"_lang, "common.yes"_lang }, true, "romfs:/images/icons/theme.png");
 		if (ourResult != 0) {
 			if (!inst::config::useTheme) {
 				inst::config::useTheme = true;
@@ -179,18 +178,18 @@ namespace inst::ui {
 		httpkeyboard->SetIcon(this->getMenuOptionIcon(inst::config::httpkeyboard));
 		this->menu->AddItem(httpkeyboard);
 		
-		auto useThemeOption = pu::ui::elm::MenuItem::New("options.menu_items.theme_option"_lang);
+		auto useThemeOption = pu::ui::elm::MenuItem::New("theme.theme_option"_lang);
 		useThemeOption->SetColor(COLOR("#FFFFFFFF"));
 		useThemeOption->SetIcon(this->getMenuOptionIcon(inst::config::useTheme));
 		this->menu->AddItem(useThemeOption);
 		
-		auto ThemeMenuOption = pu::ui::elm::MenuItem::New("options.menu_items.theme_menu"_lang);
+		auto ThemeMenuOption = pu::ui::elm::MenuItem::New("theme.theme_menu"_lang);
 		ThemeMenuOption->SetColor(COLOR("#FFFFFFFF"));
 		ThemeMenuOption->SetIcon("romfs:/images/icons/thememenu.png");
 		this->menu->AddItem(ThemeMenuOption);
 		
 		//
-		auto ThemeUrlOption = pu::ui::elm::MenuItem::New("options.menu_items.theme_url"_lang + inst::util::shortenString(inst::config::httplastUrl2, 42, false));
+		auto ThemeUrlOption = pu::ui::elm::MenuItem::New("theme.theme_url"_lang + inst::util::shortenString(inst::config::httplastUrl2, 42, false));
 		ThemeUrlOption->SetColor(COLOR("#FFFFFFFF"));
 		ThemeUrlOption->SetIcon("romfs:/images/icons/themeurl.png");
 		this->menu->AddItem(ThemeUrlOption);

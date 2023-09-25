@@ -71,9 +71,11 @@ namespace inst::ui {
 	}
 
 	void ThemeInstPage::drawMenuItems_withext(bool clearItems) {
-		int myindex = this->menu->GetSelectedIndex(); //store index so when page redraws we can get the last item we checked.
+		myindex = this->menu->GetSelectedIndex(); //store index so when page redraws we can get the last item we checked.
 		if (clearItems) this->selectedUrls = {};
 		if (clearItems) this->alternativeNames = {};
+		mainApp->ThemeinstPage->installBar->SetProgress(0);
+		mainApp->ThemeinstPage->installBar->SetVisible(false);
 		std::string itm;
 
 		this->menu->ClearItems();
@@ -90,16 +92,16 @@ namespace inst::ui {
 			}
 			this->menu->AddItem(ourEntry);
 			this->menu->SetSelectedIndex(myindex); //jump to the index we saved from above
-			mainApp->ThemeinstPage->installBar->SetProgress(0);
-			mainApp->ThemeinstPage->installBar->SetVisible(false);
 		}
 	}
 
 	void ThemeInstPage::drawMenuItems(bool clearItems) {
-		int myindex = this->menu->GetSelectedIndex(); //store index so when page redraws we can get the last item we checked.
+		myindex = this->menu->GetSelectedIndex(); //store index so when page redraws we can get the last item we checked.
 		if (clearItems) this->selectedUrls = {};
 		if (clearItems) this->alternativeNames = {};
 		std::string itm;
+		mainApp->ThemeinstPage->installBar->SetProgress(0);
+		mainApp->ThemeinstPage->installBar->SetVisible(false);
 
 		this->menu->ClearItems();
 		for (auto& urls : this->ourUrls) {
@@ -124,26 +126,31 @@ namespace inst::ui {
 	}
 	
 	void ThemeInstPage::setInstBarPerc(double ourPercent) {
-		mainApp->ThemeinstPage->installBar->SetVisible(true);
 		mainApp->ThemeinstPage->installBar->SetProgress(ourPercent);
+		if (ourPercent >= 1 && ourPercent != 100) {
+			mainApp->ThemeinstPage->installBar->SetVisible(true);
+		}
+		else {
+			mainApp->ThemeinstPage->installBar->SetVisible(false);
+		}
 		//
 		if (installing == 1){
 			std::stringstream x;
 			x << ourPercent;
-			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("Downloading theme: " + x.str() + " % complete");
+			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.downloading"_lang + x.str() + "theme.percent"_lang);
 			if (x.str() == "100"){
-				inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("Extracting theme - please wait!");
+				inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.extracting"_lang);
 			}
 		}
 		else{
-			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("inst.net.theme_top_info"_lang);
+			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.theme_top_info"_lang);
 		}
 		//
 		mainApp->CallForRender();
 	}
 	
 	void ThemeInstPage::startNetwork() {
-		this->butText->SetText("inst.net.please_wait"_lang);
+		this->butText->SetText("theme.please_wait"_lang);
 		this->menu->SetVisible(false);
 		this->menu->ClearItems();
 		this->infoImage->SetVisible(true);
@@ -160,8 +167,8 @@ namespace inst::ui {
 			mainApp->CallForRender(); // If we re-render a few times during this process the main screen won't flicker
 			sourceString2 = "inst.net.source_string"_lang;
 			netConnected2 = true;
-			this->pageInfoText->SetText("inst.net.theme_top_info"_lang);
-			this->butText->SetText("inst.net.buttons2"_lang);
+			this->pageInfoText->SetText("theme.theme_top_info"_lang);
+			this->butText->SetText("theme.buttons2"_lang);
 			this->drawMenuItems(true);
 			mainApp->CallForRender();
 			this->infoImage->SetVisible(false); //
@@ -180,7 +187,7 @@ namespace inst::ui {
     		bool didDownload = inst::curl::downloadFile(selectedUrls[0], ourPath.c_str(), 0, true);
     		bool didExtract = false;
     		if (didDownload) {
-    			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("Downloading complete - extracting theme, Please wait!");
+    			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.complete"_lang);
     			try {
     				didExtract = inst::zip::extractFile(ourPath, "sdmc:/");
     			}
@@ -189,17 +196,17 @@ namespace inst::ui {
 					}
     		}
     		else {
-    			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("Downloading failed - try again?");
+    			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.failed"_lang);
     			installing = 0;
     			inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
     			mainApp->ThemeinstPage->installBar->SetVisible(false);
-    			inst::ui::mainApp->CreateShowDialog("inst.net.theme_error"_lang, "inst.net.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+    			inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
     			return;
     		}
     		std::filesystem::remove(ourPath);
     		if (didExtract) {
-    			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("Theme Extracted, restart Tinwoo to see the changes");
-    			int close = inst::ui::mainApp->CreateShowDialog("Theme installed", "Restart Tinwoo to see the changes", { "sig.later"_lang, "sig.restart"_lang }, false, "romfs:/images/icons/good.png");
+    			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.extracted"_lang);
+    			int close = inst::ui::mainApp->CreateShowDialog("theme.installed"_lang, "theme.restart"_lang, { "sig.later"_lang, "sig.restart"_lang }, false, "romfs:/images/icons/good.png");
     			inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
     			mainApp->ThemeinstPage->installBar->SetVisible(false);
     			if (close != 0) {
@@ -208,11 +215,10 @@ namespace inst::ui {
     			}
     		}
     		else {
-    			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("Theme Extracted failed, try again?");
+    			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.retry"_lang);
     			installing = 0;
     			inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
     			mainApp->ThemeinstPage->installBar->SetVisible(false);
-    			inst::ui::mainApp->CreateShowDialog("Extraction failed", "Ooops", { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
     			return;
     			
     		}
@@ -223,7 +229,7 @@ namespace inst::ui {
     	}
     }
     else {
-    	inst::ui::mainApp->CreateShowDialog("Please Wait!", "I'm currently tryng to install a theme", { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+    	inst::ui::mainApp->CreateShowDialog("theme.wait"_lang, "theme.trying"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
     }
 		installing = 0;
 	}
@@ -235,7 +241,7 @@ namespace inst::ui {
 				mainApp->LoadLayout(mainApp->optionspage);
 			}
 			else {
-				inst::ui::mainApp->CreateShowDialog("Please Wait!", "I'm currently tryng to install a theme", { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+				inst::ui::mainApp->CreateShowDialog("theme.wait"_lang, "theme.trying"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 			}
 		}
 
@@ -290,12 +296,16 @@ namespace inst::ui {
 
 		//don't show file extensions
 		if (Down & HidNpadButton_Left) {
-			this->drawMenuItems(true);
+			if (installing != 1) {
+				this->drawMenuItems(true);
+			}
 		}
 
 		//show file extensions
 		if (Down & HidNpadButton_Right) {
-			this->drawMenuItems_withext(true);
+			if (installing != 1) {
+				this->drawMenuItems_withext(true);
+			}
 		}
 	}
 }

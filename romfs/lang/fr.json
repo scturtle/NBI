@@ -9,10 +9,6 @@
       "set": " Paramètres",
       "exit": " Quitter"
     },
-    "theme": {
-      "title": "Utiliser le thème",
-      "desc": "Les thèmes s'activeront ou se désactiveront au redémarrage de Tinwoo."
-    },
     "hdd": {
       "title": "USB HDD",
       "notfound": "USB HDD non connecté"
@@ -52,10 +48,8 @@
       },
       "url": {
         "hint": "Entrez l'URL d'un fichier",
-        "hint_theme": "Enter a valid address to download a theme",
         "invalid": "L'URL spécifiée n'est pas valide !",
         "nolinks": "Aucun lien XCI, XCZ, NSP, NSZ trouvé !\nAvez-vous utilisé la bonne URL ?",
-        "no_themes": "No themes found!\nDid you use the correct URL?",
         "source_string": " à partir d'un URL",
         "listwait": "Remplir la liste à partir d'une URL peut prendre un certain temps.\nLa limite par défaut de la liste est volontairement définie sur ",
         "listwait2": " articles.\nAppuyez sur OK pour charger la liste."
@@ -68,19 +62,14 @@
       "sd": "Espace libre sur la carte SD: ",
       "nand": "Espace libre sur la NAND: ",
       "index_error": "Aucun jeu trouvé!",
-      "theme_error": "No themes found!",
       "index_error_info": "Avez vous tapez une url correcte?",
-      "theme_error_info": "Did you enter the correct theme server source URL in the config page?",
       "top_info": "Sélectionnez les fichiers que vous voulez installer à partir du serveur, puis appuyez sur le bouton Plus !",
-      "theme_top_info": "Select which theme you want to install, then press the \ue0ef button!",
       "top_info1": "En attente d'une connexion... L'adresse IP de votre switch est : ",
       "failed": "Echec de l'installation à distance !",
       "transfer_interput": "Une erreur s'est produite pendant le transfert des données. Vérifiez votre connexion réseau.",
       "source_string": " à partir d'un réeseau",
       "buttons": "\ue0e3 Installer via Internet  \ue0e2 Aide  \ue0e1 Annuler",
-      "buttons1": "\ue0e0 Sélectionnez un fichier  \ue0e3 Tout sélectionner  \ue0ef Installer un/des fichier(s)  \ue0e1 Annuler",
-      "buttons2": "\ue0e0 Select File    \ue0ef Install File    \ue0e1 Cancel",
-      "please_wait": "Please wait - I'm trying to connect to the server!"
+      "buttons1": "\ue0e0 Sélectionnez un fichier  \ue0e3 Tout sélectionner  \ue0ef Installer un/des fichier(s)  \ue0e1 Annuler"
     },
     "sd": {
       "help": {
@@ -184,19 +173,15 @@
       "boost_mode": "Activer le  \"boost mode\" pendant l'installation",
       "ask_delete": "Demande de suppression des fichiers originaux après l'installation",
       "auto_update": "Vérifier les mises à jour de l'installateur TinWoo automatiquement",
-      "theme_option": "Utiliser le thème",
       "useSound": "Utiliser les notifications sonores lors des installations",
       "fixticket": "Convertir des billets temporaires en billets permanents",
       "listoveride": "Désactiver l'avertissement de liste d'URL et la limite de fichiers",
       "usehttpkeyboard": "Utiliser le clavier lors des installations du serveur http",
       "sig_url": "Patchs de signatures URL: ",
       "http_url": "URL source du serveur HTTP: ",
-      "theme_url": "Theme server source URL: ",
       "language": "Langue: ",
       "check_update": "Vérifiez les mises à jour de l'installateur TinWoo",
-      "credits": "Crédits",
-      "theme_menu": "Download themes",
-      "theme_fail": "Did you enter a correct theme URL?"
+      "credits": "Crédits"
     },
     "nca_warn": {
       "title": "Avertissement!",
@@ -237,5 +222,31 @@
     "yes": "Oui",
     "no": "Non",
     "cancel_desc": "Appuyez sur B pour annuler"
+  },
+  "theme": {
+    "title": "Use Theme",
+    "desc": "Themes will activate or deactivate when Tinwoo restarts.",
+    "hint_theme": "Enter a valid address to download a theme",
+    "no_themes": "No themes found!\nDid you use the correct URL?",
+    "theme_error": "No themes found!",
+    "theme_error_info": "Did you enter the correct theme server source URL in the config page?",
+    "theme_top_info": "Select which theme you want to install, then press the \ue0ef button!",
+    "buttons2": "\ue0e0 Select File    \ue0ef Install File    \ue0e1 Cancel",
+    "please_wait": "Please wait, I'm trying to connect to the server!",
+    "theme_option": "Use Theme",
+    "theme_url": "Theme server source URL: ",
+    "theme_menu": "Download themes",
+    "theme_fail": "Did you enter a correct theme URL?",
+    "downloading": "Downloading theme: ",
+    "percent": " % complete",
+    "extracting": "Extracting theme, please wait!",
+    "complete": "Downloading complete, extracting theme, Please wait!",
+    "failed": "Downloading failed, try again?",
+    "extracted": "Theme Extracted, restart Tinwoo to see the changes",
+    "installed": "Theme installed",
+    "restart": "Restart Tinwoo to see the changes",
+    "retry": "Theme Extraction failed, try again?",
+    "wait": "Please Wait!",
+    "trying": "I'm currently tryng to install a theme"
   }
 }

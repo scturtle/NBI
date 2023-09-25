@@ -2,16 +2,12 @@
   "main": {
     "menu": {
       "sd": "Install from SD card",
-      "net": "Install over LAN or internet",
-      "usb": "Install over USB",
-      "hdd": "Install over USB HDD",
+      "net": "Install via Network",
+      "usb": "Install via USB",
+      "hdd": "Install via USB HDD",
       "sig": "Manage signature patches",
       "set": "Settings",
       "exit": "Exit"
-    },
-    "theme": {
-      "title": "Use Theme",
-      "desc": "Themes will activate or deactivate when Tinwoo restarts."
     },
     "hdd": {
       "title": "USB HDD",
@@ -24,7 +20,7 @@
     "usb": {
       "warn": {
         "title": "Warning!",
-        "desc": "USB installations may not \"just werk\" on some devices and setups.\nIf you experience issues with USB installations, please don't pull your\nhair out! It's advised to use NS-USBloader for USB installations, or\nLAN/Internet installations instead for remote installation, especially\nwhen paired with an ethernet adapter!\n\nYou have been warned...",
+        "desc": "USB installations may not \"work\" on some devices and setups.\nIf you experience issues with USB installations, please don't pull your\nhair out! It's advised to use NS-USBloader for USB installations, or\nLAN/Internet installations instead for remote installation, especially\nwhen paired with an ethernet adapter!\n\nYou have been warned...",
         "opt1": "Don't tell me again"
       },
       "error": {
@@ -52,10 +48,8 @@
       },
       "url": {
         "hint": "Enter the Internet address of a file",
-        "hint_theme": "Enter a valid address to download a theme",
         "invalid": "The URL specified is invalid!",
         "nolinks": "No XCI, XCZ, NSP, NSZ links found!\nDid you use the correct URL?",
-        "no_themes": "No themes found!\nDid you use the correct URL?",
         "source_string": " from URL",
         "listwait": "Populating the list from a url can take some time.\nThe list default limit is purposely set to ",
         "listwait2": " items.\nPress OK to load the list."
@@ -68,19 +62,14 @@
       "sd": "Free space on sd card: ",
       "nand": "Free space on nand: ",
       "index_error": "No games found!",
-      "theme_error": "No themes found!",
       "index_error_info": "Did you enter the correct HTTP server source URL in the config page?",
-      "theme_error_info": "Did you enter the correct theme server source URL in the config page?",
       "top_info": "Select which files you want to install from the server, then press the \ue0ef button!",
-      "theme_top_info": "Select which theme you want to install, then press the \ue0ef button!",
       "top_info1": "Waiting for a connection... Your Switch's IP Address is: ",
       "failed": "Failed to perform remote install!",
       "transfer_interput": "An error occured during data transfer. Check your network connection.",
       "source_string": " over a network",
-      "buttons": "\ue0e3 Install Over Internet    \ue0f0 Install From HTTP Directory    \ue0e2 Help    \ue0e1 Cancel",
-      "buttons1": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0e1 Cancel",
-      "buttons2": "\ue0e0 Select File    \ue0ef Install File    \ue0e1 Cancel",
-      "please_wait": "Please wait - I'm trying to connect to the server!"
+      "buttons": "\ue0e3 Install via URL    \ue0f0 Install via HTTP Server    \ue0e2 Help    \ue0e1 Cancel",
+      "buttons1": "\ue0e0 Select File    \ue0e3 Select All    \ue0ef Install File(s)    \ue0e1 Cancel"
     },
     "sd": {
       "help": {
@@ -184,19 +173,15 @@
       "boost_mode": "Enable \"boost mode\" during installations",
       "ask_delete": "Ask to delete original files after installation",
       "auto_update": "Check for updates to TinWoo Installer automatically",
-      "theme_option": "Use Theme",
       "useSound": "Use sound notifications during installs",
       "fixticket": "Convert temporary tickets to permanent",
       "listoveride": "Disable URL list warning and file limit",
       "usehttpkeyboard": "Use keyboard during http server installs",
       "sig_url": "Signature patches source URL: ",
       "http_url": "Network server source URL: ",
-      "theme_url": "Theme server source URL: ",
       "language": "Language: ",
       "check_update": "Check for updates to TinWoo Installer",
-      "credits": "Credits",
-      "theme_menu": "Download themes",
-      "theme_fail": "Did you enter a correct theme URL?"
+      "credits": "Credits"
     },
     "nca_warn": {
       "title": "Warning!",
@@ -237,5 +222,31 @@
     "yes": "Yes",
     "no": "No",
     "cancel_desc": "Press B to cancel"
+  },
+  "theme": {
+    "title": "Use Theme",
+    "desc": "Themes will activate or deactivate when Tinwoo restarts.",
+    "hint_theme": "Enter a valid address to download a theme",
+    "no_themes": "No themes found!\nDid you use the correct URL?",
+    "theme_error": "No themes found!",
+    "theme_error_info": "Did you enter the correct theme server source URL in the config page?",
+    "theme_top_info": "Select which theme you want to install, then press the \ue0ef button!",
+    "buttons2": "\ue0e0 Select File    \ue0ef Install File    \ue0e1 Cancel",
+    "please_wait": "Please wait, I'm trying to connect to the server!",
+    "theme_option": "Use Theme",
+    "theme_url": "Theme server source URL: ",
+    "theme_menu": "Download themes",
+    "theme_fail": "Did you enter a correct theme URL?",
+    "downloading": "Downloading theme: ",
+    "percent": " % complete",
+    "extracting": "Extracting theme, please wait!",
+    "complete": "Downloading complete, extracting theme, Please wait!",
+    "failed": "Downloading failed, try again?",
+    "extracted": "Theme Extracted, restart Tinwoo to see the changes",
+    "installed": "Theme installed",
+    "restart": "Restart Tinwoo to see the changes",
+    "retry": "Theme Extraction failed, try again?",
+    "wait": "Please Wait!",
+    "trying": "I'm currently tryng to install a theme"
   }
 }

@@ -161,7 +161,7 @@ namespace ThemeInstStuff {
 					unsigned short nowlist = 0;
 
 					if (inst::config::httpkeyboard) {
-						url = inst::util::softwareKeyboard("inst.net.url.hint_theme"_lang, inst::config::httplastUrl2, 500);
+						url = inst::util::softwareKeyboard("theme.hint_theme"_lang, inst::config::httplastUrl2, 500);
 						inst::config::httplastUrl2 = url;
 						inst::config::setConfig();
 						//refresh options page
@@ -173,7 +173,7 @@ namespace ThemeInstStuff {
 
 					if (url == "") {
 						url = ("http://127.0.0.1");
-						inst::ui::mainApp->CreateShowDialog("options.menu_items.theme_fail"_lang, "inst.net.help.blank"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+						inst::ui::mainApp->CreateShowDialog("theme.theme_fail"_lang, "inst.net.help.blank"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 						inst::config::httplastUrl2 = url;
 						inst::config::setConfig();
 						//refresh options page
@@ -197,7 +197,7 @@ namespace ThemeInstStuff {
 							if (response.empty()) {
 								response = inst::curl::html_to_buffer(url);
 								if (response.empty()) {
-									inst::ui::mainApp->CreateShowDialog("inst.net.theme_error"_lang, "inst.net.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+									inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
 									break;
 								}
 							}
@@ -282,7 +282,7 @@ namespace ThemeInstStuff {
 								}
 
 								else {
-									inst::ui::mainApp->CreateShowDialog("inst.net.url.no_themes"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
+									inst::ui::mainApp->CreateShowDialog("theme.no_themes"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
 									LOG_DEBUG("Failed to parse themes from HTML\n");
 									break;
 								}
@@ -290,14 +290,14 @@ namespace ThemeInstStuff {
 							}
 
 							else {
-								inst::ui::mainApp->CreateShowDialog("inst.net.theme_error"_lang, "inst.net.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+								inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
 								break;
 							}
 						}
 
 						else {
 							LOG_DEBUG("Failed to fetch theme list\n");
-							inst::ui::mainApp->CreateShowDialog("inst.net.theme_error"_lang, "inst.net.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+							inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
 							break;
 						}
 					}

@@ -9,10 +9,6 @@
       "set": "設定",
       "exit": "終了"
     },
-    "theme": {
-      "title": "使用テーマ",
-      "desc": "Tinwoo が再起動すると、テーマがアクティブ化または非アクティブ化されます。"
-    },
     "hdd": {
       "title": "USB HDD",
       "notfound": "USB HDDが接続されていません。"
@@ -52,10 +48,8 @@
       },
       "url": {
         "hint": "ファイルのインターネットアドレスを入力してください",
-        "hint_theme": "Enter a valid address to download a theme",
         "invalid": "指定されたURLは無効です！",
         "nolinks": "XCI、XCZ、NSP、NSZ リンクが見つかりません。\n正しい URL を使用しましたか?",
-        "no_themes": "No themes found!\nDid you use the correct URL?",
         "source_string": " URLから",
         "listwait": "URL からリストにデータを入力するには時間がかかる場合があります.\nリストのデフォルト制限は意図的に次のように設定されています。 ",
         "listwait2": " アイテム.\nOKを押してリストをロードします."
@@ -68,19 +62,14 @@
       "sd": "SDカードの空き容量: ",
       "nand": "nandの空き容量: ",
       "index_error": "該当するゲームがありません!",
-      "theme_error": "No themes found!",
       "index_error_info": "正しいURLを入力しましたか?",
-      "theme_error_info": "Did you enter the correct theme server source URL in the config page?",
       "top_info": "サーバーからインストールするファイルを選択し、＋ボタンを押してください！",
-      "theme_top_info": "Select which theme you want to install, then press the \ue0ef button!",
       "top_info1": "接続を待機しています...スイッチのIPアドレスは次のとおりです。: ",
       "failed": "リモートインストールを実行できませんでした！",
       "transfer_interput": "データ転送中にエラーが発生しました。ネットワーク接続を確認してください。",
       "source_string": " ローカルネットワーク経由",
       "buttons": "\ue0e3 インターネット経由でインストールする    \ue0e2 ヘルプ    \ue0e1 キャンセル",
-      "buttons1": "\ue0e0 ファイルを選択    \ue0e3 すべて選択    \ue0ef ファイルをインストール    \ue0e1 キャンセル",
-      "buttons2": "\ue0e0 Select File    \ue0ef Install File    \ue0e1 Cancel",
-      "please_wait": "Please wait - I'm trying to connect to the server!"
+      "buttons1": "\ue0e0 ファイルを選択    \ue0e3 すべて選択    \ue0ef ファイルをインストール    \ue0e1 キャンセル"
     },
     "sd": {
       "help": {
@@ -184,19 +173,15 @@
       "boost_mode": "インストール中に「ブーストモード」を有効にする",
       "ask_delete": "インストール後に元のファイルを削除する",
       "auto_update": "TinWooのアップデートを自動的に確認する",
-      "theme_option": "テーマを使用する",
       "useSound": "インストール時にサウンドで通知する",
       "fixticket": "一時的なチケットを永続的なチケットに変換する",
       "listoveride": "URL リストの警告とファイル制限を無効にする",
       "usehttpkeyboard": "httpサーバーのインストール中にキーボードを使用する",
       "sig_url": "署名パッチのソースURL: ",
       "http_url": "HTTPサーバーのソースURL: ",
-      "theme_url": "Theme server source URL: ",
       "language": "言語: ",
       "check_update": "TinWoo Installerのアップデートを確認",
-      "credits": "クレジット",
-      "theme_menu": "Download themes",
-      "theme_fail": "Did you enter a correct theme URL?"
+      "credits": "クレジット"
     },
     "nca_warn": {
       "title": "警告!",
@@ -237,5 +222,31 @@
     "yes": "はい",
     "no": "いいえ",
     "cancel_desc": "Bを押してキャンセル"
+  },
+  "theme": {
+    "title": "Use Theme",
+    "desc": "Themes will activate or deactivate when Tinwoo restarts.",
+    "hint_theme": "Enter a valid address to download a theme",
+    "no_themes": "No themes found!\nDid you use the correct URL?",
+    "theme_error": "No themes found!",
+    "theme_error_info": "Did you enter the correct theme server source URL in the config page?",
+    "theme_top_info": "Select which theme you want to install, then press the \ue0ef button!",
+    "buttons2": "\ue0e0 Select File    \ue0ef Install File    \ue0e1 Cancel",
+    "please_wait": "Please wait, I'm trying to connect to the server!",
+    "theme_option": "Use Theme",
+    "theme_url": "Theme server source URL: ",
+    "theme_menu": "Download themes",
+    "theme_fail": "Did you enter a correct theme URL?",
+    "downloading": "Downloading theme: ",
+    "percent": " % complete",
+    "extracting": "Extracting theme, please wait!",
+    "complete": "Downloading complete, extracting theme, Please wait!",
+    "failed": "Downloading failed, try again?",
+    "extracted": "Theme Extracted, restart Tinwoo to see the changes",
+    "installed": "Theme installed",
+    "restart": "Restart Tinwoo to see the changes",
+    "retry": "Theme Extraction failed, try again?",
+    "wait": "Please Wait!",
+    "trying": "I'm currently tryng to install a theme"
   }
 }
