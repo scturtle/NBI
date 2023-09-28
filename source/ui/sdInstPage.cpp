@@ -22,10 +22,10 @@ namespace inst::ui {
 		this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
 		this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/images/Sd.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/images/Sd.png"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/images/Sd.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/theme/images/Sd.png"));
 		else this->titleImage = Image::New(0, 0, "romfs:/images/Sd.png");
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/images/Background.png")) this->SetBackgroundImage(inst::config::appDir + "/images/Background.png");
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/images/Background.png")) this->SetBackgroundImage(inst::config::appDir + "/theme/images/Background.png");
 		else this->SetBackgroundImage("romfs:/images/Background.png");
 
 		this->pageInfoText = TextBlock::New(10, 109, "inst.sd.top_info"_lang);

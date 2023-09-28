@@ -151,12 +151,12 @@ namespace usbInstStuff {
 			inst::ui::instPage::setInstInfoText("inst.info_page.failed"_lang + fileNames[fileItr]);
 			inst::ui::instPage::setInstBarPerc(0);
 			std::string audioPath = "";
-			if (std::filesystem::exists(inst::config::appDir + "/sounds/OHNO.WAV")) {
-				audioPath = (inst::config::appDir + "/sounds/OHNO.WAV");
+			
+			if (inst::config::useSound) {
+				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/sounds/failed.wav")) audioPath = (inst::config::appDir + "/theme/sounds/failed.wav");
+				else audioPath = "romfs:/audio/ohno.wav";
 			}
-			else {
-				audioPath = "romfs:/audio/bark.wav";
-			}
+				
 			std::thread audioThread(inst::util::playAudio, audioPath);
 			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + fileNames[fileItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
 			audioThread.join();
@@ -176,12 +176,8 @@ namespace usbInstStuff {
 			std::string audioPath = "";
 
 			if (inst::config::useSound) {
-				if (std::filesystem::exists(inst::config::appDir + "/sounds/YIPPEE.WAV")) {
-					audioPath = (inst::config::appDir + "/sounds/YIPPEE.WAV");
-				}
-				else {
-					audioPath = "romfs:/audio/ameizing.mp3";
-				}
+				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/sounds/complete.wav")) audioPath = (inst::config::appDir + "/theme/sounds/complete.wav");
+				else audioPath = "romfs:/audio/yipee.wav";
 				std::thread audioThread(inst::util::playAudio, audioPath);
 
 				if (ourTitleList.size() > 1) inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
