@@ -15,7 +15,6 @@ namespace inst::ui {
 		void settingsMenuItem_Click();
 		void exitMenuItem_Click();
 		void onInput(u64 Down, u64 Up, const u64 Held, pu::ui::TouchPoint touch_pos);
-		Image::Ref awooImage;
 
 	private:
 		bool appletFinished;
@@ -32,7 +31,6 @@ namespace inst::ui {
 		pu::ui::elm::MenuItem::Ref HdInstallMenuItem;
 		pu::ui::elm::MenuItem::Ref settingsMenuItem;
 		pu::ui::elm::MenuItem::Ref exitMenuItem;
-		Image::Ref eggImage;
 		Image::Ref hdd;
 	};
 }

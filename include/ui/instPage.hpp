@@ -14,7 +14,6 @@ namespace inst::ui {
 		TextBlock::Ref sdInfoText;
 		TextBlock::Ref nandInfoText;
 		TextBlock::Ref countText;
-		Image::Ref awooImage;
 		pu::ui::elm::ProgressBar::Ref installBar;
 		static void setTopInstInfoText(std::string ourText);
 		static void setInstInfoText(std::string ourText);
@@ -26,6 +25,5 @@ namespace inst::ui {
 		Rectangle::Ref infoRect;
 		Rectangle::Ref topRect;
 		Image::Ref titleImage;
-		TextBlock::Ref appVersionText;
 	};
 }

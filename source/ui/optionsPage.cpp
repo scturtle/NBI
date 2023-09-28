@@ -27,18 +27,13 @@ namespace inst::ui {
 		this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
 		this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (inst::config::useTheme) {
-			if (std::filesystem::exists(inst::config::appDir + "/images/Settings.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/images/Settings.png"));
-			else this->titleImage = Image::New(0, 0, "romfs:/images/Settings.png");
-			if (std::filesystem::exists(inst::config::appDir + "/images/Background.png")) this->SetBackgroundImage(inst::config::appDir + "/images/Background.png");
-			else this->SetBackgroundImage("romfs:/images/Background.png");
-			this->appVersionText = TextBlock::New(1200, 680, "v" + inst::config::appVersion);
-		}
-		else {
-			this->SetBackgroundImage("romfs:/images/Background.png");
-			this->titleImage = Image::New(0, 0, "romfs:/images/Settings.png");
-			this->appVersionText = TextBlock::New(1200, 680, "v" + inst::config::appVersion);
-		}
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/images/Settings.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/images/Settings.png"));
+		else this->titleImage = Image::New(0, 0, "romfs:/images/Settings.png");
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/images/Background.png")) this->SetBackgroundImage(inst::config::appDir + "/images/Background.png");
+		else this->SetBackgroundImage("romfs:/images/Background.png");
+
+		this->appVersionText = TextBlock::New(1200, 680, "v" + inst::config::appVersion);
 		this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
 		this->appVersionText->SetFont(pu::ui::MakeDefaultFontName(20));
 		this->pageInfoText = TextBlock::New(10, 109, "options.title"_lang);
@@ -346,12 +341,6 @@ namespace inst::ui {
 						inst::config::setConfig();
 						break;
 					case 9:
-						if (inst::config::useTheme) {
-							mainApp->mainPage->awooImage->SetVisible(true);
-						}
-						else {
-							mainApp->mainPage->awooImage->SetVisible(false);
-						}
 						thememessage();
 						inst::config::setConfig();
 						this->setMenuText();

@@ -18,19 +18,12 @@ namespace inst::ui {
 		this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
 		this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (inst::config::useTheme) {
-			if (std::filesystem::exists(inst::config::appDir + "/images/Usb.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/images/Usb.png"));
-			else this->titleImage = Image::New(0, 0, "romfs:/images/Usb.png");
-			if (std::filesystem::exists(inst::config::appDir + "/images/Background.png")) this->SetBackgroundImage(inst::config::appDir + "/images/Background.png");
-			else this->SetBackgroundImage("romfs:/images/Background.png");
-			this->appVersionText = TextBlock::New(0, 0, "");
-		}
-		else {
-			this->SetBackgroundImage("romfs:/images/Background.png");
-			this->titleImage = Image::New(0, 0, "romfs:/images/Usb.png");
-			this->appVersionText = TextBlock::New(0, 0, "");
-		}
-		this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/images/Usb.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/images/Usb.png"));
+		else this->titleImage = Image::New(0, 0, "romfs:/images/Usb.png");
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/images/Background.png")) this->SetBackgroundImage(inst::config::appDir + "/images/Background.png");
+		else this->SetBackgroundImage("romfs:/images/Background.png");
+
 		this->pageInfoText = TextBlock::New(10, 109, "");
 		this->pageInfoText->SetColor(COLOR("#FFFFFFFF"));
 		this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
@@ -44,7 +37,6 @@ namespace inst::ui {
 		this->Add(this->infoRect);
 		this->Add(this->botRect);
 		this->Add(this->titleImage);
-		this->Add(this->appVersionText);
 		this->Add(this->butText);
 		this->Add(this->pageInfoText);
 		this->Add(this->menu);

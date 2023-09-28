@@ -154,18 +154,12 @@ namespace inst::ui {
 		this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
 		this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (inst::config::useTheme) {
-			if (std::filesystem::exists(inst::config::appDir + "/images/Main.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/images/Main.png"));
-			else
-				this->titleImage = Image::New(0, 0, "romfs:/images/Main.png");
-			if (std::filesystem::exists(inst::config::appDir + "/images/Background.png")) this->SetBackgroundImage(inst::config::appDir + "/images/Background.png");
-			else
-				this->SetBackgroundImage("romfs:/images/Background.png");
-		}
-		else {
-			this->SetBackgroundImage("romfs:/images/Background.png");
-			this->titleImage = Image::New(0, 0, "romfs:/images/Main.png");
-		}
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/images/Main.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/images/Main.png"));
+		else this->titleImage = Image::New(0, 0, "romfs:/images/Main.png");
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/images/Background.png")) this->SetBackgroundImage(inst::config::appDir + "/images/Background.png");
+		else this->SetBackgroundImage("romfs:/images/Background.png");
+
 		this->butText = TextBlock::New(10, 678, "main.buttons"_lang);
 		this->butText->SetColor(COLOR("#FFFFFFFF"));
 		this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1280, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 94, 6);
@@ -189,14 +183,6 @@ namespace inst::ui {
 		this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
 		this->exitMenuItem->SetColor(COLOR("#FFFFFFFF"));
 		this->exitMenuItem->SetIcon("romfs:/images/icons/exit-run.png");
-		if (inst::config::useTheme) {
-			if (std::filesystem::exists(inst::config::appDir + "/images/Main.png")) this->awooImage = Image::New(0, 0, inst::config::appDir + "/images/Main.png");
-			else this->awooImage = Image::New(0, 0, "romfs:/images/Main.png");
-		}
-		else {
-			this->awooImage = Image::New(0, 0, "romfs:/images/Main.png");
-		}
-		this->eggImage = Image::New(0, 0, "");
 		this->Add(this->topRect);
 		this->Add(this->botRect);
 		this->Add(this->titleImage);
@@ -211,9 +197,6 @@ namespace inst::ui {
 			this->hdd = Image::New(1156, 669, "romfs:/images/icons/usb-hd-connected.png");
 			this->Add(this->hdd);
 		}
-		this->Add(this->awooImage);
-		this->Add(this->eggImage);
-		this->awooImage->SetVisible(!inst::config::useTheme);
 		this->Add(this->optionMenu);
 		this->AddRenderCallback(mainMenuThread);
 	}
@@ -307,13 +290,9 @@ namespace inst::ui {
 		}
 
 		if (Down & HidNpadButton_X) {
-			this->awooImage->SetVisible(false);
-			this->eggImage->SetVisible(true);
 		}
 
 		if (Up & HidNpadButton_A) {
-			this->eggImage->SetVisible(false);
-			if (!inst::config::useTheme) this->awooImage->SetVisible(true);
 		}
 
 		if (Down & HidNpadButton_Y) {
