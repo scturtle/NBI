@@ -249,5 +249,17 @@
     "retry": "Error al extraer el tema, ¿inténtalo de nuevo?",
     "wait": "¡Espere por favor!",
     "trying": "Actualmente estoy intentando instalar un tema."
+  },
+  "usage": {
+    "system_size": "Tamaño total del sistema: ",
+    "gb": " GB",
+    "freespace": "\nEspacio libre del sistema: ",
+    "percent_used": "\nPorcentaje de uso del sistema: ",
+    "percent": "%\n\n",
+    "percent_symbol": "%",
+    "sd_size": "Tamaño total de la tarjeta SD: ",
+    "sd_space": "\nEspacio libre en la tarjeta SD: ",
+    "sd_used": "\nPorcentaje de tarjeta SD utilizada: ",
+    "space_info": "Información de uso del espacio"
   }
 }

@@ -124,9 +124,8 @@ namespace inst::ui {
 		//unmount user now as we already know how much space we have	
 		fsdevUnmountDevice("user");
 
-		std::string Info = ("System total size: " + sdsize2 + " GB" + "\nSystem free space: " + freespace2 + " GB" + "\nSystem percent used: " + percent2 + "%" + "\n\n" + "SD card total size: " + sdsize + " GB" + "\nSD card free space: " + freespace + " GB" + "\nSD card percent used: " + percent + "%");
-		//std::string Info = ("System total size: " + sdsize2 + " GB" + "\nSystem free space: " + freespace2 + " GB" + "\nSystem percent used: " + percent2 + "%" + "\n\n" + "SD card total size: " + sdsize + " GB" + "\nSD card free space: " + freespace + " GB" + "\nSD card percent used: " + percent + "%");
-		inst::ui::mainApp->CreateShowDialog("Space Usage Information", Info, { "common.ok"_lang }, true, "romfs:/images/icons/drive.png");
+		std::string Info = ("usage.system_size"_lang + sdsize2 + "usage.gb"_lang + "usage.freespace"_lang + freespace2 + "usage.gb"_lang + "usage.percent_used"_lang + percent2 + "usage.percent"_lang + "usage.sd_size"_lang + sdsize + "usage.gb"_lang + "usage.sd_space"_lang + freespace + "usage.gb"_lang + "usage.sd_used"_lang + percent + "usage.percent_symbol"_lang);
+		inst::ui::mainApp->CreateShowDialog("usage.space_info"_lang, Info, { "common.ok"_lang }, true, "romfs:/images/icons/drive.png");
 	}
 
 	void mainMenuThread() {

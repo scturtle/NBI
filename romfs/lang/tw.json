@@ -249,5 +249,17 @@
     "retry": "主題擷取失敗，請重試？",
     "wait": "請稍候！",
     "trying": "我目前正在嘗試安裝主題"
+  },
+  "usage": {
+    "system_size": "系統總大小：",
+    "gb": " GB",
+    "freespace": "\n系統可用空間: ",
+    "percent_used": "\n系統使用百分比: ",
+    "percent": "%\n\n",
+    "percent_symbol": "%",
+    "sd_size": "SD卡總大小：",
+    "sd_space": "\nSD 卡可用空間: ",
+    "sd_used": "\nSD 卡使用百分比: ",
+    "space_info": "空間使用資訊"
   }
 }

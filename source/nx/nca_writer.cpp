@@ -102,7 +102,7 @@ public:
 	{
 	public:
 		Crypto::Aes128Ctr crypto;
-		
+
 		SectionContext(const Section& s) : Section(s), crypto(s.cryptoKey, Crypto::AesCtr(Crypto::swapEndian(((u64*)&s.cryptoCounter)[0])))
 		{
 		}

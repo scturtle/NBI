@@ -124,7 +124,7 @@ namespace inst::ui {
 			this->menu->SetSelectedIndex(myindex); //jump to the index we saved from above
 		}
 	}
-	
+
 	void ThemeInstPage::setInstBarPerc(double ourPercent) {
 		mainApp->ThemeinstPage->installBar->SetProgress(ourPercent);
 		if (ourPercent >= 1 && ourPercent != 100) {
@@ -134,21 +134,21 @@ namespace inst::ui {
 			mainApp->ThemeinstPage->installBar->SetVisible(false);
 		}
 		//
-		if (installing == 1){
+		if (installing == 1) {
 			std::stringstream x;
 			x << ourPercent;
 			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.downloading"_lang + x.str() + "theme.percent"_lang);
-			if (x.str() == "100"){
+			if (x.str() == "100") {
 				inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.extracting"_lang);
 			}
 		}
-		else{
+		else {
 			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.theme_top_info"_lang);
 		}
 		//
 		mainApp->CallForRender();
 	}
-	
+
 	void ThemeInstPage::startNetwork() {
 		this->butText->SetText("theme.please_wait"_lang);
 		this->menu->SetVisible(false);
@@ -180,62 +180,62 @@ namespace inst::ui {
 
 	void ThemeInstPage::selectTitle(int selectedIndex) {
 		if (installing != 1) {
-  		for (long unsigned int i = 0; i < this->selectedUrls.size(); i++) {
-  			inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
-  			ourPath = inst::config::appDir + "/temp_download.zip";
-  			installing = 1;
-    		bool didDownload = inst::curl::downloadFile(selectedUrls[0], ourPath.c_str(), 0, true);
-    		bool didExtract = false;
-    		if (didDownload) {
-    			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.complete"_lang);
-    			try {
-    				didExtract = inst::zip::extractFile(ourPath, "sdmc:/");
-    			}
-    			catch (...) {
-    				//extraction failed: still to do - put check in zip function...
+			for (long unsigned int i = 0; i < this->selectedUrls.size(); i++) {
+				inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
+				ourPath = inst::config::appDir + "/temp_download.zip";
+				installing = 1;
+				bool didDownload = inst::curl::downloadFile(selectedUrls[0], ourPath.c_str(), 0, true);
+				bool didExtract = false;
+				if (didDownload) {
+					inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.complete"_lang);
+					try {
+						didExtract = inst::zip::extractFile(ourPath, "sdmc:/");
 					}
-    		}
-    		else {
-    			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.failed"_lang);
-    			installing = 0;
-    			inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
-    			mainApp->ThemeinstPage->installBar->SetVisible(false);
-    			inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
-    			return;
-    		}
-    		std::filesystem::remove(ourPath);
-    		if (didExtract) {
-    			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.extracted"_lang);
-    			int close = inst::ui::mainApp->CreateShowDialog("theme.installed"_lang, "theme.restart"_lang, { "sig.later"_lang, "sig.restart"_lang }, false, "romfs:/images/icons/good.png");
-    			inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
-    			mainApp->ThemeinstPage->installBar->SetVisible(false);
-    			if (close != 0) {
-    				mainApp->FadeOut();
-    				mainApp->Close();
-    			}
-    		}
-    		else {
-    			inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.retry"_lang);
-    			installing = 0;
-    			inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
-    			mainApp->ThemeinstPage->installBar->SetVisible(false);
-    			return;
-    			
-    		}
-    		installing = 0;
-    		inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
-    		mainApp->ThemeinstPage->installBar->SetVisible(false);
-    		return;
-    	}
-    }
-    else {
-    	inst::ui::mainApp->CreateShowDialog("theme.wait"_lang, "theme.trying"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
-    }
+					catch (...) {
+						//extraction failed: still to do - put check in zip function...
+					}
+				}
+				else {
+					inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.failed"_lang);
+					installing = 0;
+					inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
+					mainApp->ThemeinstPage->installBar->SetVisible(false);
+					inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+					return;
+				}
+				std::filesystem::remove(ourPath);
+				if (didExtract) {
+					inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.extracted"_lang);
+					int close = inst::ui::mainApp->CreateShowDialog("theme.installed"_lang, "theme.restart"_lang, { "sig.later"_lang, "sig.restart"_lang }, false, "romfs:/images/icons/good.png");
+					inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
+					mainApp->ThemeinstPage->installBar->SetVisible(false);
+					if (close != 0) {
+						mainApp->FadeOut();
+						mainApp->Close();
+					}
+				}
+				else {
+					inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.retry"_lang);
+					installing = 0;
+					inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
+					mainApp->ThemeinstPage->installBar->SetVisible(false);
+					return;
+
+				}
+				installing = 0;
+				inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
+				mainApp->ThemeinstPage->installBar->SetVisible(false);
+				return;
+			}
+		}
+		else {
+			inst::ui::mainApp->CreateShowDialog("theme.wait"_lang, "theme.trying"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+		}
 		installing = 0;
 	}
 
 	void ThemeInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_pos) {
-		
+
 		if (Down & HidNpadButton_B) {
 			if (installing != 1) {
 				mainApp->LoadLayout(mainApp->optionspage);
@@ -258,16 +258,16 @@ namespace inst::ui {
 					if (xxxx != 1) {
 						int var = this->menu->GetItems().size();
 						auto s = std::to_string(var);
-							if (s != "0") {
-								myindex = this->menu->GetSelectedIndex(); //store index so when page redraws we can get the last item we checked.
-								if (this->menu->GetItems()[myindex]->GetIconPath() == "romfs:/images/icons/check-box-outline.png") {
-								}
-								this->selectedUrls.push_back(this->ourUrls[myindex]);
-								this->drawMenuItems(false);
-          		}
+						if (s != "0") {
+							myindex = this->menu->GetSelectedIndex(); //store index so when page redraws we can get the last item we checked.
+							if (this->menu->GetItems()[myindex]->GetIconPath() == "romfs:/images/icons/check-box-outline.png") {
+							}
+							this->selectedUrls.push_back(this->ourUrls[myindex]);
+							this->drawMenuItems(false);
+						}
 					}
 				}
-				
+
 				if (Down & HidNpadButton_Plus || (state.count != xxxx)) {
 					this->selectTitle(myindex);
 				}

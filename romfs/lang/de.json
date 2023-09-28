@@ -249,5 +249,17 @@
     "retry": "Theme-Extraktion fehlgeschlagen, erneut versuchen?",
     "wait": "Bitte warten!",
     "trying": "Ich versuche gerade, ein Theme zu installieren"
+  },
+  "usage": {
+    "system_size": "Gesamtgröße des Systems:",
+    "gb": " GB",
+    "freespace": "\nFreier Systemspeicherplatz: ",
+    "percent_used": "\nSystemprozentsatz verwendet: ",
+    "percent": "%\n\n",
+    "percent_symbol": "%",
+    "sd_size": "Gesamtgröße der SD-Karte: ",
+    "sd_space": "\nFreier Speicherplatz auf der SD-Karte: ",
+    "sd_used": "\nProzentsatz der genutzten SD-Karte: ",
+    "space_info": "Informationen zur Speicherplatznutzung"
   }
 }

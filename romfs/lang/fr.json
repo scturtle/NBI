@@ -249,5 +249,17 @@
     "retry": "L'extraction du thème a échoué. Réessayez ?",
     "wait": "S'il vous plaît, attendez!",
     "trying": "J'essaie actuellement d'installer un thème"
+  },
+  "usage": {
+    "system_size": "Taille totale du système: ",
+    "gb": " GB",
+    "freespace": "\nEspace libre du système: ",
+    "percent_used": "\nPourcentage du système utilisé: ",
+    "percent": "%\n\n",
+    "percent_symbol": "%",
+    "sd_size": "Taille totale de la carte SD: ",
+    "sd_space": "\nEspace libre sur la carte SD: ",
+    "sd_used": "\nPourcentage de carte SD utilisé: ",
+    "space_info": "Informations sur l'utilisation de l'espace"
   }
 }

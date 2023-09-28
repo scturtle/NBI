@@ -122,11 +122,11 @@ namespace inst::ui {
 			}
 		}
 		else {
-				if (inst::config::useTheme) {
-					inst::config::useTheme = false;
-					mainApp->FadeOut();
-					mainApp->Close();
-				}
+			if (inst::config::useTheme) {
+				inst::config::useTheme = false;
+				mainApp->FadeOut();
+				mainApp->Close();
+			}
 		}
 	}
 
@@ -177,17 +177,17 @@ namespace inst::ui {
 		httpkeyboard->SetColor(COLOR("#FFFFFFFF"));
 		httpkeyboard->SetIcon(this->getMenuOptionIcon(inst::config::httpkeyboard));
 		this->menu->AddItem(httpkeyboard);
-		
+
 		auto useThemeOption = pu::ui::elm::MenuItem::New("theme.theme_option"_lang);
 		useThemeOption->SetColor(COLOR("#FFFFFFFF"));
 		useThemeOption->SetIcon(this->getMenuOptionIcon(inst::config::useTheme));
 		this->menu->AddItem(useThemeOption);
-		
+
 		auto ThemeMenuOption = pu::ui::elm::MenuItem::New("theme.theme_menu"_lang);
 		ThemeMenuOption->SetColor(COLOR("#FFFFFFFF"));
 		ThemeMenuOption->SetIcon("romfs:/images/icons/thememenu.png");
 		this->menu->AddItem(ThemeMenuOption);
-		
+
 		//
 		auto ThemeUrlOption = pu::ui::elm::MenuItem::New("theme.theme_url"_lang + inst::util::shortenString(inst::config::httplastUrl2, 42, false));
 		ThemeUrlOption->SetColor(COLOR("#FFFFFFFF"));
@@ -362,7 +362,7 @@ namespace inst::ui {
 							inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 							break;
 						}
-						mainApp->ThemeinstPage->startNetwork();					
+						mainApp->ThemeinstPage->startNetwork();
 						break;
 					case 11:
 						keyboardResult = inst::util::softwareKeyboard("inst.net.url.hint"_lang, inst::config::httplastUrl2.c_str(), 500);

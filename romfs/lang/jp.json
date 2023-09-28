@@ -249,5 +249,17 @@
     "retry": "テーマの抽出に失敗しました。もう一度お試しください?",
     "wait": "お待ちください!",
     "trying": "現在テーマをインストールしようとしています"
+  },
+  "usage": {
+    "system_size": "システムの合計サイズ: ",
+    "gb": " GB",
+    "freespace": "\nシステムの空き領域: ",
+    "percent_used": "\nシステムの使用率: ",
+    "percent": "%\n\n",
+    "percent_symbol": "%",
+    "sd_size": "SD カードの合計サイズ: ",
+    "sd_space": "\nSD カードの空き容量: ",
+    "sd_used": "\nSD カードの使用率: ",
+    "space_info": "スペースの使用状況情報"
   }
 }

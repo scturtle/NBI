@@ -94,9 +94,9 @@ namespace tin::install::nsp
 			auto foundExtension = name.substr(name.find(".") + 1);
 
 			// fix cert filename extension becoming corrupted when xcz/nsz is installing certs.
-			std::string cert ("cert");
+			std::string cert("cert");
 			std::size_t found = name.find(cert);
-			if (found!=std::string::npos){
+			if (found != std::string::npos) {
 				int pos = 0;
 				std::string mystr = name;
 				pos = mystr.find_last_of('.');
@@ -163,7 +163,7 @@ namespace tin::install::nsp
 	const char* NSP::GetFileEntryName(const PFS0FileEntry* fileEntry)
 	{
 		u64 stringTableStart = sizeof(PFS0BaseHeader) + this->GetBaseHeader()->numFiles * sizeof(PFS0FileEntry);
-		
+
 		//check for messed up filenames in our table.... usually when instaling xcz/xci
 		/*
 		FILE * fp;

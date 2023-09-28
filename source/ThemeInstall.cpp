@@ -156,151 +156,151 @@ namespace ThemeInstStuff {
 				}
 
 				std::remove("temp.html");
-					std::string url;
-					unsigned short maxlist = 50;
-					unsigned short nowlist = 0;
+				std::string url;
+				unsigned short maxlist = 50;
+				unsigned short nowlist = 0;
 
-					if (inst::config::httpkeyboard) {
-						url = inst::util::softwareKeyboard("theme.hint_theme"_lang, inst::config::httplastUrl2, 500);
-						inst::config::httplastUrl2 = url;
-						inst::config::setConfig();
-						//refresh options page
-						inst::ui::mainApp->optionspage->setMenuText();
-					}
-					else {
-						url = inst::config::httplastUrl2;
-					}
+				if (inst::config::httpkeyboard) {
+					url = inst::util::softwareKeyboard("theme.hint_theme"_lang, inst::config::httplastUrl2, 500);
+					inst::config::httplastUrl2 = url;
+					inst::config::setConfig();
+					//refresh options page
+					inst::ui::mainApp->optionspage->setMenuText();
+				}
+				else {
+					url = inst::config::httplastUrl2;
+				}
 
-					if (url == "") {
-						url = ("http://127.0.0.1");
-						inst::ui::mainApp->CreateShowDialog("theme.theme_fail"_lang, "inst.net.help.blank"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
-						inst::config::httplastUrl2 = url;
-						inst::config::setConfig();
-						//refresh options page
-						inst::ui::mainApp->optionspage->setMenuText();
+				if (url == "") {
+					url = ("http://127.0.0.1");
+					inst::ui::mainApp->CreateShowDialog("theme.theme_fail"_lang, "inst.net.help.blank"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+					inst::config::httplastUrl2 = url;
+					inst::config::setConfig();
+					//refresh options page
+					inst::ui::mainApp->optionspage->setMenuText();
+					break;
+				}
+
+				else {
+					std::string response;
+					if (inst::util::formatUrlString(url) == "" || url == "https://" || url == "http://" || url == "HTTP://" || url == "HTTPS://") {
+						inst::ui::mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
 						break;
 					}
-
 					else {
-						std::string response;
-						if (inst::util::formatUrlString(url) == "" || url == "https://" || url == "http://" || url == "HTTP://" || url == "HTTPS://") {
-							inst::ui::mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
-							break;
-						}
-						else {
-							if (url[url.size() - 1] != '/') //does this line even do anything?
+						if (url[url.size() - 1] != '/') //does this line even do anything?
 
 							//First try and stream the links
 							response = inst::curl::downloadToBuffer(url);
 
-							//If the above fails we probably have an html page - try to download it instead.
+						//If the above fails we probably have an html page - try to download it instead.
+						if (response.empty()) {
+							response = inst::curl::html_to_buffer(url);
 							if (response.empty()) {
-								response = inst::curl::html_to_buffer(url);
-								if (response.empty()) {
-									inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
-									break;
-								}
-							}
-						}
-
-						if (!response.empty()) {
-							if (response[0] == '*') {
-								try {
-									nlohmann::json j = nlohmann::json::parse(response);
-									for (const auto& file : j["files"]) {
-										urls.push_back(file["url"]);
-									}
-
-									return urls;
-									response.clear();
-								}
-								catch (const nlohmann::detail::exception& ex) {
-									LOG_DEBUG("Failed to parse JSON\n");
-								}
-							}
-							else if (!response.empty()) {
-								std::size_t index = 0;
-								if (!inst::config::listoveride) {
-									inst::ui::mainApp->CreateShowDialog("inst.net.url.listwait"_lang + std::to_string(maxlist) + "inst.net.url.listwait2"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/wait.png");
-								}
-								while (index < response.size()) {
-									std::string link;
-									auto found = findCaseInsensitive(response, "href=\"", index);
-									if (found == std::string::npos) {
-										break;
-									}
-
-									index = found + 6;
-									while (index < response.size()) {
-										if (response[index] == '"') {
-											if (findCaseInsensitive(link, ".zip") != std::string::npos) {
-												/*
-												Try to see if the href links contain http - if not add the own url
-												defined in the settings page
-												*/
-												if (!inst::config::listoveride && nowlist >= maxlist) {
-													break;
-												}
-												else {
-													if (link.find("http") == std::string::npos) {
-														std::string before_strip = stripfilename(url);
-														if (link[0] == '/') {
-															tmp_array.push_back(before_strip + link);
-															nowlist++;
-														}
-														else {
-															tmp_array.push_back(before_strip + "/" + link);
-															nowlist++;
-
-														}
-													}
-													else {
-														tmp_array.push_back(link);
-														nowlist++;
-													}
-												}
-											}
-											break; //don't remove this or the net install screen will crash
-										}
-										link += response[index++];
-									}
-								}
-								if (tmp_array.size() > 0) {
-
-									//code to decode the url (if it's encoded), if not then (re)encode all urls.
-									for (unsigned long int i = 0; i < tmp_array.size(); i++) {
-										std::string debug = tmp_array[i];
-										std::string decoded = url_decode(debug);
-										debug = urlencode(decoded);
-										urls.push_back(debug);
-									}
-
-									tmp_array.clear(); //we may as well clear this now as it's done it's job..
-									std::sort(urls.begin(), urls.end(), inst::util::ignoreCaseCompare);
-									return urls;
-									break;
-								}
-
-								else {
-									inst::ui::mainApp->CreateShowDialog("theme.no_themes"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
-									LOG_DEBUG("Failed to parse themes from HTML\n");
-									break;
-								}
-								response.clear();
-							}
-
-							else {
 								inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
 								break;
 							}
 						}
+					}
+
+					if (!response.empty()) {
+						if (response[0] == '*') {
+							try {
+								nlohmann::json j = nlohmann::json::parse(response);
+								for (const auto& file : j["files"]) {
+									urls.push_back(file["url"]);
+								}
+
+								return urls;
+								response.clear();
+							}
+							catch (const nlohmann::detail::exception& ex) {
+								LOG_DEBUG("Failed to parse JSON\n");
+							}
+						}
+						else if (!response.empty()) {
+							std::size_t index = 0;
+							if (!inst::config::listoveride) {
+								inst::ui::mainApp->CreateShowDialog("inst.net.url.listwait"_lang + std::to_string(maxlist) + "inst.net.url.listwait2"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/wait.png");
+							}
+							while (index < response.size()) {
+								std::string link;
+								auto found = findCaseInsensitive(response, "href=\"", index);
+								if (found == std::string::npos) {
+									break;
+								}
+
+								index = found + 6;
+								while (index < response.size()) {
+									if (response[index] == '"') {
+										if (findCaseInsensitive(link, ".zip") != std::string::npos) {
+											/*
+											Try to see if the href links contain http - if not add the own url
+											defined in the settings page
+											*/
+											if (!inst::config::listoveride && nowlist >= maxlist) {
+												break;
+											}
+											else {
+												if (link.find("http") == std::string::npos) {
+													std::string before_strip = stripfilename(url);
+													if (link[0] == '/') {
+														tmp_array.push_back(before_strip + link);
+														nowlist++;
+													}
+													else {
+														tmp_array.push_back(before_strip + "/" + link);
+														nowlist++;
+
+													}
+												}
+												else {
+													tmp_array.push_back(link);
+													nowlist++;
+												}
+											}
+										}
+										break; //don't remove this or the net install screen will crash
+									}
+									link += response[index++];
+								}
+							}
+							if (tmp_array.size() > 0) {
+
+								//code to decode the url (if it's encoded), if not then (re)encode all urls.
+								for (unsigned long int i = 0; i < tmp_array.size(); i++) {
+									std::string debug = tmp_array[i];
+									std::string decoded = url_decode(debug);
+									debug = urlencode(decoded);
+									urls.push_back(debug);
+								}
+
+								tmp_array.clear(); //we may as well clear this now as it's done it's job..
+								std::sort(urls.begin(), urls.end(), inst::util::ignoreCaseCompare);
+								return urls;
+								break;
+							}
+
+							else {
+								inst::ui::mainApp->CreateShowDialog("theme.no_themes"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
+								LOG_DEBUG("Failed to parse themes from HTML\n");
+								break;
+							}
+							response.clear();
+						}
 
 						else {
-							LOG_DEBUG("Failed to fetch theme list\n");
 							inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
 							break;
 						}
 					}
+
+					else {
+						LOG_DEBUG("Failed to fetch theme list\n");
+						inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+						break;
+					}
+				}
 			}
 			return urls;
 		}
