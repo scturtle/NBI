@@ -19,27 +19,6 @@ namespace Language {
 		setMakeLanguage(lcode, &ourLang);
 		setExit();
 		int syslang = (int)ourLang;
-		/*
-		0 Japanese
-		1 AmericanEnglish
-		2 French
-		3 German
-		4 Italian
-		5 Spanish
-		6 Chinese
-		7 Korean
-		8 Dutch
-		9 Portuguese
-		10 Russian
-		11 Taiwanese
-		12 BritishEnglish
-		13 CanadianFrench
-		14 LatinAmericanSpanish
-		15 [4.0.0+] SimplifiedChinese
-		16 [4.0.0+] TraditionalChinese
-		17 [10.1.0+] BrazilianPortuguese
-		*/
-		//Get language int from config file
 		std::ifstream ifs;
 		std::string languagePath;
 		int langInt = inst::config::languageSetting;
@@ -74,44 +53,59 @@ namespace Language {
 				break;
 			case 0:
 				switch (syslang) {
-				case 0:
+				case 0: //Japanese
 					languagePath = "romfs:/lang/jp.json";
 					break;
-				case 1:
+				case 1: //AmericanEnglish
 					languagePath = "romfs:/lang/en.json";
 					break;
-				case 2:
+				case 2: //French
 					languagePath = "romfs:/lang/fr.json";
 					break;
-				case 3:
+				case 3: //German
 					languagePath = "romfs:/lang/de.json";
 					break;
-				case 4:
+				case 4: //Italian
 					languagePath = "romfs:/lang/it.json";
 					break;
-				case 5:
+				case 5: //Spanish
 					languagePath = "romfs:/lang/es.json";
 					break;
-				case 6:
+				case 6: //Chinese
 					languagePath = "romfs:/lang/tw.json";
 					break;
-				case 10:
-					languagePath = "romfs:/lang/ru.json";
-					break;
-				case 11:
-					languagePath = "romfs:/lang/tw.json";
-					break;
-				case 12:
+				case 7: //Korean
 					languagePath = "romfs:/lang/en.json";
 					break;
-				case 13:
+				case 8: //Dutch
+					languagePath = "romfs:/lang/en.json";
+					break;
+				case 9: //Portuguese
+					languagePath = "romfs:/lang/en.json";
+					break;
+				case 10: //Russian
+					languagePath = "romfs:/lang/ru.json";
+					break;
+				case 11: //Taiwanese
+					languagePath = "romfs:/lang/tw.json";
+					break;
+				case 12: //BritishEnglish
+					languagePath = "romfs:/lang/en.json";
+					break;
+				case 13: //CanadianFrench
 					languagePath = "romfs:/lang/fr.json";
 					break;
-				case 14:
+				case 14: //LatinAmericanSpanish
 					languagePath = "romfs:/lang/es.json";
 					break;
-				case 16:
+				case 15: //SimplifiedChinese
 					languagePath = "romfs:/lang/tw.json";
+					break;
+				case 16: //TraditionalChinese
+					languagePath = "romfs:/lang/tw.json";
+					break;
+				case 17: //BrazilianPortuguese
+					languagePath = "romfs:/lang/en.json";
 					break;
 				default:
 					languagePath = "romfs:/lang/en.json";
