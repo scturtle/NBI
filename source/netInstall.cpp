@@ -45,6 +45,7 @@ SOFTWARE.
 #include "util/lang.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/instPage.hpp"
+#include "util/theme.hpp"
 
 const unsigned int MAX_URL_SIZE = 1024;
 const unsigned int MAX_URLS = 1000;
@@ -242,16 +243,17 @@ namespace netInstStuff {
 			fprintf(stdout, "%s", e.what());
 			inst::ui::instPage::setInstInfoText("inst.info_page.failed"_lang + urlNames[urlItr]);
 			inst::ui::instPage::setInstBarPerc(0);
-			std::string audioPath = "";
-			
+
 			if (inst::config::useSound) {
-				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/sounds/failed.wav")) audioPath = (inst::config::appDir + "/theme/sounds/failed.wav");
+				std::string audioPath = "";
+				std::string fail = inst::config::appDir + "audio.fail"_theme;
+				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(fail)) audioPath = (fail);
 				else audioPath = "romfs:/audio/ohno.wav";
+				std::thread audioThread(inst::util::playAudio, audioPath);
+				audioThread.join();
 			}
-			
-			std::thread audioThread(inst::util::playAudio, audioPath);
+
 			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + urlNames[urlItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
-			audioThread.join();
 			nspInstalled = false;
 		}
 
@@ -269,22 +271,25 @@ namespace netInstStuff {
 		if (nspInstalled) {
 			inst::ui::instPage::setInstInfoText("inst.info_page.complete"_lang);
 			inst::ui::instPage::setInstBarPerc(100);
-			std::string audioPath = "";
 
 			if (inst::config::useSound) {
-				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/sounds/complete.wav")) audioPath = (inst::config::appDir + "/theme/sounds/complete.wav");
-				else audioPath = "romfs:/audio/yipee.wav";
-				
+				std::string audioPath = "";
+				std::string pass = inst::config::appDir + "audio.pass"_theme;
+				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(pass)) {
+					audioPath = (pass);
+				}
+				else {
+					audioPath = "romfs:/audio/yipee.wav";
+				}
 				std::thread audioThread(inst::util::playAudio, audioPath);
-
-				if (ourUrlList.size() > 1) inst::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
-				else inst::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
 				audioThread.join();
 			}
 
+			if (ourUrlList.size() > 1) {
+				inst::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
+			}
 			else {
-				if (ourUrlList.size() > 1) inst::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
-				else inst::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
+				inst::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
 			}
 		}
 

@@ -8,6 +8,7 @@
 #include "util/util.hpp"
 #include "util/config.hpp"
 #include "util/lang.hpp"
+#include "util/theme.hpp"
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
@@ -17,15 +18,18 @@ namespace inst::ui {
 	bool show_ext;
 
 	sdInstPage::sdInstPage() : Layout::Layout() {
+		std::string default_background = inst::config::appDir + "bg_images.default_background"_theme;
+		std::string sd_top = inst::config::appDir + "bg_images.sd_top"_theme;
+			
 		this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#00000080"));
 		this->SetBackgroundColor(COLOR("#000000FF"));
 		this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
 		this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/images/Sd.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/theme/images/Sd.png"));
+		if (inst::config::useTheme && std::filesystem::exists(sd_top)) this->titleImage = Image::New(0, 0, (sd_top));
 		else this->titleImage = Image::New(0, 0, "romfs:/images/Sd.png");
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/images/Background.png")) this->SetBackgroundImage(inst::config::appDir + "/theme/images/Background.png");
+		if (inst::config::useTheme && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
 		else this->SetBackgroundImage("romfs:/images/Background.png");
 
 		this->pageInfoText = TextBlock::New(10, 109, "inst.sd.top_info"_lang);

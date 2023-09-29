@@ -1,5 +1,6 @@
 #include "ui/MainApplication.hpp"
 #include "util/lang.hpp"
+#include "util/theme.hpp"
 
 namespace inst::ui {
 	MainApplication* mainApp;
@@ -8,6 +9,7 @@ namespace inst::ui {
 		mainApp = this;
 
 		Language::Load();
+		//Theme::Load(); //load in main.cpp instead.
 
 		this->mainPage = MainPage::New();
 		this->netinstPage = netInstPage::New();

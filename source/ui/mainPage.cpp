@@ -12,6 +12,7 @@
 #include "data/buffered_placeholder_writer.hpp"
 #include "nx/usbhdd.h"
 #include "usbhsfs.h"
+#include "util/theme.hpp"
 #include <sys/statvfs.h>
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
@@ -150,39 +151,92 @@ namespace inst::ui {
 	}
 
 	MainPage::MainPage() : Layout::Layout() {
-		this->SetBackgroundColor(COLOR("#000000FF"));
-		this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
-		this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
+		std::string default_background = inst::config::appDir + "bg_images.default_background"_theme;
+		std::string main_top = inst::config::appDir + "bg_images.main_top"_theme;
+		
+		std::string icons_sd = inst::config::appDir + "icons_mainmenu.sd"_theme;
+		std::string icons_net = inst::config::appDir + "icons_mainmenu.net"_theme;
+		std::string icons_usb = inst::config::appDir + "icons_mainmenu.usb"_theme;
+		std::string icons_hdd = inst::config::appDir + "icons_mainmenu.hdd"_theme;
+		std::string icons_hdd_connected = inst::config::appDir + "icons_mainmenu.hdd_connected"_theme;
+		std::string icons_settings = inst::config::appDir + "icons_mainmenu.settings"_theme;
+		std::string icons_exit = inst::config::appDir + "icons_mainmenu.exit"_theme;
+		
+		std::string bg_colour = "colour.background"_theme;
+		std::string tbar_colour = "colour.topbar"_theme;
+		std::string bbar_colour = "colour.bottombar"_theme;
+		std::string bottombar_text = "colour.bottombar_text"_theme;
+		std::string text_colour = "colour.main_text"_theme;
+		std::string background_overlay1 = "colour.background_overlay1"_theme;
+		std::string background_overlay2 = "colour.background_overlay2"_theme;
+		std::string focus = "colour.focus"_theme;
+		std::string scrollbar = "colour.scrollbar"_theme;
+			
+		
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->SetBackgroundColor(COLOR(bg_colour));
+		else this->SetBackgroundColor(COLOR("#000000FF"));
+		
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR(tbar_colour));
+		else this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
+		
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR(bbar_colour));
+		else this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/images/Main.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/theme/images/Main.png"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(main_top)) this->titleImage = Image::New(0, 0, (main_top));
 		else this->titleImage = Image::New(0, 0, "romfs:/images/Main.png");
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/images/Background.png")) this->SetBackgroundImage(inst::config::appDir + "/theme/images/Background.png");
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
 		else this->SetBackgroundImage("romfs:/images/Background.png");
 
 		this->butText = TextBlock::New(10, 678, "main.buttons"_lang);
-		this->butText->SetColor(COLOR("#FFFFFFFF"));
-		this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1280, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 94, 6);
-		this->optionMenu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
-		this->optionMenu->SetScrollbarColor(COLOR("#1A1919FF"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->butText->SetColor(COLOR(bottombar_text));
+		else this->butText->SetColor(COLOR("#FFFFFFFF"));
+		
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1280, COLOR(background_overlay1), COLOR(background_overlay2), 94, 6);
+		else this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1280, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 94, 6);
+		
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->optionMenu->SetItemsFocusColor(COLOR(focus));
+		else this->optionMenu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
+		
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->optionMenu->SetScrollbarColor(COLOR(scrollbar));
+		else this->optionMenu->SetScrollbarColor(COLOR("#1A1919FF"));
+		
 		this->installMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
-		this->installMenuItem->SetColor(COLOR("#FFFFFFFF"));
-		this->installMenuItem->SetIcon("romfs:/images/icons/micro-sd.png");
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->installMenuItem->SetColor(COLOR(text_colour));
+		else this->installMenuItem->SetColor(COLOR("#FFFFFFFF"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(icons_sd)) this->installMenuItem->SetIcon(icons_sd);
+		else this->installMenuItem->SetIcon("romfs:/images/icons/micro-sd.png");
+		
 		this->netInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.net"_lang);
-		this->netInstallMenuItem->SetColor(COLOR("#FFFFFFFF"));
-		this->netInstallMenuItem->SetIcon("romfs:/images/icons/cloud-download.png");
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->netInstallMenuItem->SetColor(COLOR(text_colour));
+		else this->netInstallMenuItem->SetColor(COLOR("#FFFFFFFF"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(icons_net)) this->netInstallMenuItem->SetIcon(icons_net);
+		else this->netInstallMenuItem->SetIcon("romfs:/images/icons/cloud-download.png");
+		
 		this->usbInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.usb"_lang);
-		this->usbInstallMenuItem->SetColor(COLOR("#FFFFFFFF"));
-		this->usbInstallMenuItem->SetIcon("romfs:/images/icons/usb-port.png");
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->usbInstallMenuItem->SetColor(COLOR(text_colour));
+		else this->usbInstallMenuItem->SetColor(COLOR("#FFFFFFFF"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(icons_usb)) this->usbInstallMenuItem->SetIcon(icons_usb);
+		else this->usbInstallMenuItem->SetIcon("romfs:/images/icons/usb-port.png");
+		
 		this->HdInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.hdd"_lang);
-		this->HdInstallMenuItem->SetColor(COLOR("#FFFFFFFF"));
-		this->HdInstallMenuItem->SetIcon("romfs:/images/icons/usb-hd.png");
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->HdInstallMenuItem->SetColor(COLOR(text_colour));
+		else this->HdInstallMenuItem->SetColor(COLOR("#FFFFFFFF"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(icons_hdd)) this->HdInstallMenuItem->SetIcon(icons_hdd);
+		else this->HdInstallMenuItem->SetIcon("romfs:/images/icons/usb-hd.png");
+		
 		this->settingsMenuItem = pu::ui::elm::MenuItem::New("main.menu.set"_lang);
-		this->settingsMenuItem->SetColor(COLOR("#FFFFFFFF"));
-		this->settingsMenuItem->SetIcon("romfs:/images/icons/settings.png");
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->settingsMenuItem->SetColor(COLOR(text_colour));
+		else this->settingsMenuItem->SetColor(COLOR("#FFFFFFFF"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(icons_settings)) this->settingsMenuItem->SetIcon(icons_settings);
+		else this->settingsMenuItem->SetIcon("romfs:/images/icons/settings.png");
+		
 		this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
-		this->exitMenuItem->SetColor(COLOR("#FFFFFFFF"));
-		this->exitMenuItem->SetIcon("romfs:/images/icons/exit-run.png");
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->exitMenuItem->SetColor(COLOR(text_colour));
+		else this->exitMenuItem->SetColor(COLOR("#FFFFFFFF"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(icons_exit)) this->exitMenuItem->SetIcon(icons_exit);
+		else this->exitMenuItem->SetIcon("romfs:/images/icons/exit-run.png");
+		
 		this->Add(this->topRect);
 		this->Add(this->botRect);
 		this->Add(this->titleImage);
@@ -194,7 +248,8 @@ namespace inst::ui {
 		this->optionMenu->AddItem(this->settingsMenuItem);
 		this->optionMenu->AddItem(this->exitMenuItem);
 		if (nx::hdd::count() && nx::hdd::rootPath()) {
-			this->hdd = Image::New(1156, 669, "romfs:/images/icons/usb-hd-connected.png");
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(icons_hdd_connected)) this->hdd = Image::New(1156, 669, icons_hdd_connected);
+			else this->hdd = Image::New(1156, 669, "romfs:/images/icons/usb-hd-connected.png");
 			this->Add(this->hdd);
 		}
 		this->Add(this->optionMenu);
