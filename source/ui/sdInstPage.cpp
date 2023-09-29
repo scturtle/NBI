@@ -20,26 +20,54 @@ namespace inst::ui {
 	sdInstPage::sdInstPage() : Layout::Layout() {
 		std::string default_background = inst::config::appDir + "bg_images.default_background"_theme;
 		std::string sd_top = inst::config::appDir + "bg_images.sd_top"_theme;
-			
-		this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#00000080"));
-		this->SetBackgroundColor(COLOR("#000000FF"));
-		this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
-		this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
+		std::string bg_colour = "colour.background"_theme;
+		std::string tbar_colour = "colour.topbar"_theme;
+		std::string bbar_colour = "colour.bottombar"_theme;
+		std::string infoRect_colour = "colour.inforect"_theme;
+		std::string pageinfo_colour = "colour.pageinfo_text"_theme;
+		std::string bottombar_text = "colour.bottombar_text"_theme;
+		std::string background_overlay1 = "colour.background_overlay1"_theme;
+		std::string background_overlay2 = "colour.background_overlay2"_theme;
+		std::string focus = "colour.focus"_theme;
+		std::string scrollbar = "colour.scrollbar"_theme;
 
-		if (inst::config::useTheme && std::filesystem::exists(sd_top)) this->titleImage = Image::New(0, 0, (sd_top));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR(infoRect_colour));
+		else this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#00000080"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->SetBackgroundColor(COLOR(bg_colour));
+		else this->SetBackgroundColor(COLOR("#000000FF"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR(tbar_colour));
+		else this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR(bbar_colour));
+		else this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(sd_top)) this->titleImage = Image::New(0, 0, (sd_top));
 		else this->titleImage = Image::New(0, 0, "romfs:/images/Sd.png");
 
-		if (inst::config::useTheme && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
 		else this->SetBackgroundImage("romfs:/images/Background.png");
 
 		this->pageInfoText = TextBlock::New(10, 109, "inst.sd.top_info"_lang);
 		this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
-		this->pageInfoText->SetColor(COLOR("#FFFFFFFF"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->pageInfoText->SetColor(COLOR(pageinfo_colour));
+		else this->pageInfoText->SetColor(COLOR("#FFFFFFFF"));
+
 		this->butText = TextBlock::New(10, 678, "inst.sd.buttons"_lang);
-		this->butText->SetColor(COLOR("#FFFFFFFF"));
-		this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 84, (506 / 84));
-		this->menu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
-		this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->butText->SetColor(COLOR(bottombar_text));
+		else this->butText->SetColor(COLOR("#FFFFFFFF"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR(background_overlay1), COLOR(background_overlay2), 84, (506 / 84));
+		else this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 84, (506 / 84));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu->SetItemsFocusColor(COLOR(focus));
+		else this->menu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu->SetScrollbarColor(COLOR(scrollbar));
+		else this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
+
 		this->Add(this->topRect);
 		this->Add(this->infoRect);
 		this->Add(this->botRect);
@@ -51,6 +79,7 @@ namespace inst::ui {
 
 	void sdInstPage::drawMenuItems(bool clearItems, std::filesystem::path ourPath) {
 		int myindex = this->menu->GetSelectedIndex(); //store index so when page redraws we can get the last item we checked.
+		std::string text_colour = "colour.main_text"_theme;
 
 		if (clearItems) this->selectedTitles = {};
 		this->currentDir = ourPath;
@@ -78,16 +107,27 @@ namespace inst::ui {
 
 		std::string itm = "..";
 		auto ourEntry = pu::ui::elm::MenuItem::New(itm);
-		ourEntry->SetColor(COLOR("#FFFFFFFF"));
-		ourEntry->SetIcon("romfs:/images/icons/folder-upload.png");
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
+		else ourEntry->SetColor(COLOR("#FFFFFFFF"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.folder_up"_theme)) {
+			ourEntry->SetIcon(inst::config::appDir + "icons_others.folder_up"_theme);
+		}
+		else ourEntry->SetIcon("romfs:/images/icons/folder-upload.png");
+
 		this->menu->AddItem(ourEntry);
 
 		for (auto& file : this->ourDirectories) {
 			if (file == "..") break;
 			std::string itm = file.filename().string();
 			auto ourEntry = pu::ui::elm::MenuItem::New(itm);
-			ourEntry->SetColor(COLOR("#FFFFFFFF"));
-			ourEntry->SetIcon("romfs:/images/icons/folder.png");
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
+			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
+
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.folder"_theme)) {
+				ourEntry->SetIcon(inst::config::appDir + "icons_others.folder"_theme);
+			}
+			else ourEntry->SetIcon("romfs:/images/icons/folder.png");
 			this->menu->AddItem(ourEntry);
 		}
 
@@ -100,8 +140,11 @@ namespace inst::ui {
 				itm = file.filename().string();
 			}
 			auto ourEntry = pu::ui::elm::MenuItem::New(itm);
-			ourEntry->SetColor(COLOR("#FFFFFFFF"));
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
+			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
+
 			ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
+
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == file) {
 					ourEntry->SetIcon("romfs:/images/icons/check-box-outline.png");
@@ -175,18 +218,13 @@ namespace inst::ui {
 					int var = this->menu->GetItems().size();
 					auto s = std::to_string(var);
 
-					if (s == "0") {
-						//do nothing here because there's no items in the list, that way the app won't freeze
-					}
-
-					else {
+					if (s != "0") {
 						this->selectNsp(this->menu->GetSelectedIndex());
 
 						if (this->ourFiles.size() == 1 && this->selectedTitles.size() == 1) {
 							this->startInstall();
 						}
 					}
-
 				}
 			}
 		}
@@ -212,11 +250,7 @@ namespace inst::ui {
 			int var = this->menu->GetItems().size();
 			auto s = std::to_string(var);
 
-			if (s == "0") {
-				//do nothing here because there's no items in the list, that way the app won't freeze
-			}
-
-			else {
+			if (s != "0") {
 				if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconPath() == "romfs:/images/icons/checkbox-blank-outline.png") {
 					this->selectNsp(this->menu->GetSelectedIndex());
 				}

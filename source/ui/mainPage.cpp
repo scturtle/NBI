@@ -153,7 +153,7 @@ namespace inst::ui {
 	MainPage::MainPage() : Layout::Layout() {
 		std::string default_background = inst::config::appDir + "bg_images.default_background"_theme;
 		std::string main_top = inst::config::appDir + "bg_images.main_top"_theme;
-		
+
 		std::string icons_sd = inst::config::appDir + "icons_mainmenu.sd"_theme;
 		std::string icons_net = inst::config::appDir + "icons_mainmenu.net"_theme;
 		std::string icons_usb = inst::config::appDir + "icons_mainmenu.usb"_theme;
@@ -161,7 +161,7 @@ namespace inst::ui {
 		std::string icons_hdd_connected = inst::config::appDir + "icons_mainmenu.hdd_connected"_theme;
 		std::string icons_settings = inst::config::appDir + "icons_mainmenu.settings"_theme;
 		std::string icons_exit = inst::config::appDir + "icons_mainmenu.exit"_theme;
-		
+
 		std::string bg_colour = "colour.background"_theme;
 		std::string tbar_colour = "colour.topbar"_theme;
 		std::string bbar_colour = "colour.bottombar"_theme;
@@ -171,14 +171,14 @@ namespace inst::ui {
 		std::string background_overlay2 = "colour.background_overlay2"_theme;
 		std::string focus = "colour.focus"_theme;
 		std::string scrollbar = "colour.scrollbar"_theme;
-			
-		
+
+
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->SetBackgroundColor(COLOR(bg_colour));
 		else this->SetBackgroundColor(COLOR("#000000FF"));
-		
+
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR(tbar_colour));
 		else this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
-		
+
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR(bbar_colour));
 		else this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
@@ -191,52 +191,52 @@ namespace inst::ui {
 		this->butText = TextBlock::New(10, 678, "main.buttons"_lang);
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->butText->SetColor(COLOR(bottombar_text));
 		else this->butText->SetColor(COLOR("#FFFFFFFF"));
-		
+
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1280, COLOR(background_overlay1), COLOR(background_overlay2), 94, 6);
 		else this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1280, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 94, 6);
-		
+
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->optionMenu->SetItemsFocusColor(COLOR(focus));
 		else this->optionMenu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
-		
+
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->optionMenu->SetScrollbarColor(COLOR(scrollbar));
 		else this->optionMenu->SetScrollbarColor(COLOR("#1A1919FF"));
-		
+
 		this->installMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->installMenuItem->SetColor(COLOR(text_colour));
 		else this->installMenuItem->SetColor(COLOR("#FFFFFFFF"));
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(icons_sd)) this->installMenuItem->SetIcon(icons_sd);
 		else this->installMenuItem->SetIcon("romfs:/images/icons/micro-sd.png");
-		
+
 		this->netInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.net"_lang);
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->netInstallMenuItem->SetColor(COLOR(text_colour));
 		else this->netInstallMenuItem->SetColor(COLOR("#FFFFFFFF"));
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(icons_net)) this->netInstallMenuItem->SetIcon(icons_net);
 		else this->netInstallMenuItem->SetIcon("romfs:/images/icons/cloud-download.png");
-		
+
 		this->usbInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.usb"_lang);
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->usbInstallMenuItem->SetColor(COLOR(text_colour));
 		else this->usbInstallMenuItem->SetColor(COLOR("#FFFFFFFF"));
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(icons_usb)) this->usbInstallMenuItem->SetIcon(icons_usb);
 		else this->usbInstallMenuItem->SetIcon("romfs:/images/icons/usb-port.png");
-		
+
 		this->HdInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.hdd"_lang);
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->HdInstallMenuItem->SetColor(COLOR(text_colour));
 		else this->HdInstallMenuItem->SetColor(COLOR("#FFFFFFFF"));
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(icons_hdd)) this->HdInstallMenuItem->SetIcon(icons_hdd);
 		else this->HdInstallMenuItem->SetIcon("romfs:/images/icons/usb-hd.png");
-		
+
 		this->settingsMenuItem = pu::ui::elm::MenuItem::New("main.menu.set"_lang);
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->settingsMenuItem->SetColor(COLOR(text_colour));
 		else this->settingsMenuItem->SetColor(COLOR("#FFFFFFFF"));
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(icons_settings)) this->settingsMenuItem->SetIcon(icons_settings);
 		else this->settingsMenuItem->SetIcon("romfs:/images/icons/settings.png");
-		
+
 		this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->exitMenuItem->SetColor(COLOR(text_colour));
 		else this->exitMenuItem->SetColor(COLOR("#FFFFFFFF"));
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(icons_exit)) this->exitMenuItem->SetIcon(icons_exit);
 		else this->exitMenuItem->SetIcon("romfs:/images/icons/exit-run.png");
-		
+
 		this->Add(this->topRect);
 		this->Add(this->botRect);
 		this->Add(this->titleImage);
@@ -264,21 +264,28 @@ namespace inst::ui {
 
 	void MainPage::netInstallMenuItem_Click() {
 		if (inst::util::getIPAddress() == "1.0.0.127") {
-			inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
+				inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, { "common.ok"_lang }, true, inst::config::appDir + "icons_others.information"_theme);
+			}
+			else inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
 			return;
 		}
 		mainApp->netinstPage->startNetwork();
 	}
 
 	void MainPage::usbInstallMenuItem_Click() {
+		std::string usb = "romfs:/images/icons/usb.png";
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.usb"_theme)) {
+			usb = inst::config::appDir + "icons_others.usb"_theme;
+		}
 		if (!inst::config::usbAck) {
-			if (mainApp->CreateShowDialog("main.usb.warn.title"_lang, "main.usb.warn.desc"_lang, { "common.ok"_lang, "main.usb.warn.opt1"_lang }, false, "romfs:/images/icons/usb.png") == 1) {
+			if (mainApp->CreateShowDialog("main.usb.warn.title"_lang, "main.usb.warn.desc"_lang, { "common.ok"_lang, "main.usb.warn.opt1"_lang }, false, usb) == 1) {
 				inst::config::usbAck = true;
 				inst::config::setConfig();
 			}
 		}
 		if (inst::util::getUsbState() == 5) mainApp->usbinstPage->startUsb();
-		else mainApp->CreateShowDialog("main.usb.error.title"_lang, "main.usb.error.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/usb.png");
+		else mainApp->CreateShowDialog("main.usb.error.title"_lang, "main.usb.error.desc"_lang, { "common.ok"_lang }, true, usb);
 	}
 
 	void MainPage::HdInstallMenuItem_Click() {
@@ -288,7 +295,11 @@ namespace inst::ui {
 			mainApp->LoadLayout(mainApp->HDinstPage);
 		}
 		else {
-			inst::ui::mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/drive.png");
+			std::string drive = "romfs:/images/icons/drive.png";
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.drive"_theme)) {
+				drive = inst::config::appDir + "icons_others.drive"_theme;
+			}
+			inst::ui::mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, { "common.ok"_lang }, true, drive);
 		}
 	}
 
