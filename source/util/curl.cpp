@@ -8,7 +8,6 @@
 #include "util/config.hpp"
 #include "util/error.hpp"
 #include "ui/instPage.hpp"
-//
 #include "ui/ThemeinstPage.hpp"
 
 static size_t writeDataFile(void* ptr, size_t size, size_t nmemb, void* stream) {
@@ -101,9 +100,9 @@ namespace inst::curl {
 
 		curl_global_init(CURL_GLOBAL_ALL);
 		curl_handle = curl_easy_init();
-		
+
 		curl_easy_setopt(curl_handle, CURLOPT_BUFFERSIZE, 240000L);
-		curl_easy_setopt(curl_handle, CURLOPT_ENCODING, "" );
+		curl_easy_setopt(curl_handle, CURLOPT_ENCODING, "");
 		curl_easy_setopt(curl_handle, CURLOPT_TCP_FASTOPEN, 1L);
 		curl_easy_setopt(curl_handle, CURLOPT_STREAM_WEIGHT, 256L);
 		curl_easy_setopt(curl_handle, CURLOPT_TCP_KEEPALIVE, 1L);

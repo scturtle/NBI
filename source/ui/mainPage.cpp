@@ -126,9 +126,9 @@ namespace inst::ui {
 		fsdevUnmountDevice("user");
 
 		std::string Info = ("usage.system_size"_lang + sdsize2 + "usage.gb"_lang + "usage.freespace"_lang + freespace2 + "usage.gb"_lang + "usage.percent_used"_lang + percent2 + "usage.percent"_lang + "usage.sd_size"_lang + sdsize + "usage.gb"_lang + "usage.sd_space"_lang + freespace + "usage.gb"_lang + "usage.sd_used"_lang + percent + "usage.percent_symbol"_lang);
-		
+
 		std::string drive = "romfs:/images/icons/drive.png";
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.drive"_theme)){
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.drive"_theme)) {
 			drive = inst::config::appDir + "icons_others.drive"_theme;
 		}
 		inst::ui::mainApp->CreateShowDialog("usage.space_info"_lang, Info, { "common.ok"_lang }, true, "romfs:/images/icons/drive.png");
@@ -141,7 +141,7 @@ namespace inst::ui {
 			if (menuLoaded) {
 				inst::ui::appletFinished = true;
 				std::string information = "romfs:/images/icons/information.png";
-				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)){
+				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
 					information = inst::config::appDir + "icons_others.information"_theme;
 				}
 				mainApp->CreateShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, { "common.ok"_lang }, true, information);

@@ -192,10 +192,14 @@ namespace inst::ui {
 
 	void sdInstPage::startInstall() {
 		int dialogResult = -1;
-		if (this->selectedTitles.size() == 1) {
-			dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ":\n\n" + inst::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) + "\n\n" + "inst.target.desc1"_lang, "\n\n\n\n\n\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, "romfs:/images/icons/install.png");
+		std::string install = "romfs:/images/icons/install.png";
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.install"_theme)) {
+			install = inst::config::appDir + "icons_others.install"_theme;
 		}
-		else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, "romfs:/images/icons/install.png");
+		if (this->selectedTitles.size() == 1) {
+			dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ":\n\n" + inst::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) + "\n\n" + "inst.target.desc1"_lang, "\n\n\n\n\n\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, install);
+		}
+		else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, install);
 		if (dialogResult == -1) return;
 		nspInstStuff::installNspFromFile(this->selectedTitles, dialogResult);
 	}
@@ -243,7 +247,11 @@ namespace inst::ui {
 		}
 
 		if ((Down & HidNpadButton_X)) {
-			inst::ui::mainApp->CreateShowDialog("inst.sd.help.title"_lang, "inst.sd.help.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+			std::string information = "romfs:/images/icons/information.png";
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
+				information = inst::config::appDir + "icons_others.information"_theme;
+			}
+			inst::ui::mainApp->CreateShowDialog("inst.sd.help.title"_lang, "inst.sd.help.desc"_lang, { "common.ok"_lang }, true, information);
 		}
 
 		if (Down & HidNpadButton_Plus) {

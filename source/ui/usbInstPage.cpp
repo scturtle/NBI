@@ -27,14 +27,14 @@ namespace inst::ui {
 		std::string focus = "colour.focus"_theme;
 		std::string scrollbar = "colour.scrollbar"_theme;
 		std::string waiting = inst::config::appDir + "icons_others.waiting_usb"_theme;
-		
-		
+
+
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR(infoRect_colour));
 		else this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#00000080"));
-		
+
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->SetBackgroundColor(COLOR(bg_colour));
 		else this->SetBackgroundColor(COLOR("#000000FF"));
-			
+
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR(tbar_colour));
 		else this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
 
@@ -49,15 +49,15 @@ namespace inst::ui {
 
 		this->pageInfoText = TextBlock::New(10, 109, "inst.hd.top_info"_lang);
 		this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
-		
+
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->pageInfoText->SetColor(COLOR(pageinfo_colour));
 		else this->pageInfoText->SetColor(COLOR("#FFFFFFFF"));
-		
+
 		this->butText = TextBlock::New(10, 678, "inst.hd.buttons"_lang);
-		
+
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->butText->SetColor(COLOR(bottombar_text));
 		else this->butText->SetColor(COLOR("#FFFFFFFF"));
-		
+
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR(background_overlay1), COLOR(background_overlay2), 84, (506 / 84));
 		else this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 84, (506 / 84));
 
@@ -66,10 +66,10 @@ namespace inst::ui {
 
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu->SetScrollbarColor(COLOR(scrollbar));
 		else this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
-		
+
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(waiting)) this->infoImage = Image::New(453, 292, waiting);
 		else this->infoImage = Image::New(453, 292, "romfs:/images/icons/usb-connection-waiting.png");
-		
+
 		this->Add(this->topRect);
 		this->Add(this->infoRect);
 		this->Add(this->botRect);
@@ -88,10 +88,10 @@ namespace inst::ui {
 		for (auto& url : this->ourTitles) {
 			std::string itm = inst::util::shortenString(inst::util::formatUrlString(url), 56, true);
 			auto ourEntry = pu::ui::elm::MenuItem::New(itm);
-			
+
 			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
-			
+
 			ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == url) {
@@ -117,11 +117,11 @@ namespace inst::ui {
 
 			//std::string itm = inst::util::shortenString(inst::util::formatUrlString(url), 56, true);
 			auto ourEntry = pu::ui::elm::MenuItem::New(itm);
-			
+
 			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
 			ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
-			
+
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == url) {
 					ourEntry->SetIcon("romfs:/images/icons/check-box-outline.png");
@@ -170,12 +170,12 @@ namespace inst::ui {
 
 	void usbInstPage::startInstall() {
 		int dialogResult = -1;
-		
+
 		std::string install = "romfs:/images/icons/install.png";
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.install"_theme)){
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.install"_theme)) {
 			install = inst::config::appDir + "icons_others.install"_theme;
 		}
-		
+
 		if (this->selectedTitles.size() == 1) {
 			dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ":\n\n" + inst::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) + "\n\n" + "inst.target.desc1"_lang, "\n\n\n\n\n\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, install);
 		}
