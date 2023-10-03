@@ -175,6 +175,7 @@
       "ask_delete": "Frage ob installierte Titel gelöscht werden sollen",
       "auto_update": "Suche automatisch nach Updates für TinWoo",
       "useSound": "Nutzen von Benachrichtungstönen während Installation",
+      "useMusic": "Musik automatisch abspielen, wenn Tinwoo startet",
       "fixticket": "Wandeln Sie temporäre Tickets in permanente Tickets um",
       "listoveride": "Deaktivieren Sie die URL-Listenwarnung und die Dateibeschränkung",
       "usehttpkeyboard": "Verwenden Sie die Tastatur während der Installation des HTTP-Servers",

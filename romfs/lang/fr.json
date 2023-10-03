@@ -175,6 +175,7 @@
       "ask_delete": "Demande de suppression des fichiers originaux après l'installation",
       "auto_update": "Vérifier les mises à jour de l'installateur TinWoo automatiquement",
       "useSound": "Utiliser les notifications sonores lors des installations",
+      "useMusic": "Lecture automatique de la musique au démarrage de Tinwoo",
       "fixticket": "Convertir des billets temporaires en billets permanents",
       "listoveride": "Désactiver l'avertissement de liste d'URL et la limite de fichiers",
       "usehttpkeyboard": "Utiliser le clavier lors des installations du serveur http",

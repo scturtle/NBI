@@ -22,6 +22,7 @@ namespace inst::config {
 	extern bool usbAck;
 	extern bool useTheme;
 	extern bool useSound;
+	extern bool useMusic;
 	extern bool fixticket;
 	extern bool listoveride;
 	extern bool httpkeyboard;

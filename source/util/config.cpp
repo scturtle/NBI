@@ -17,6 +17,7 @@ namespace inst::config {
 	bool overClock;
 	bool useTheme;
 	bool useSound;
+	bool useMusic;
 	bool usbAck;
 	bool validateNCAs;
 	bool fixticket;
@@ -30,6 +31,7 @@ namespace inst::config {
 			{"gAuthKey", gAuthKey},
 			{"useTheme", useTheme},
 			{"useSound", useSound},
+			{"useMusic", useMusic},
 			{"ignoreReqVers", ignoreReqVers},
 			{"languageSetting", languageSetting},
 			{"overClock", overClock},
@@ -60,6 +62,7 @@ namespace inst::config {
 			gAuthKey = j["gAuthKey"].get<std::string>();
 			useTheme = j["useTheme"].get<bool>();
 			useSound = j["useSound"].get<bool>();
+			useMusic = j["useMusic"].get<bool>();
 			ignoreReqVers = j["ignoreReqVers"].get<bool>();
 			languageSetting = j["languageSetting"].get<int>();
 			overClock = j["overClock"].get<bool>();
@@ -82,6 +85,7 @@ namespace inst::config {
 			deletePrompt = true;
 			useTheme = false;
 			useSound = true;
+			useMusic = true;
 			fixticket = true;
 			listoveride = false;
 			httpkeyboard = false;

@@ -175,6 +175,7 @@
       "ask_delete": "在安裝完成後，詢問是否刪除原始檔案",
       "auto_update": "自動檢查Tinwoo Installer的更新版本",
       "useSound": "在安裝過程中使用音效提醒進度",
+      "useMusic": "Tinwoo 啟動時自動播放音樂",
       "fixticket": "將臨時門票轉換為永久門票",
       "listoveride": "禁用 URL 列表警告和文件限制",
       "usehttpkeyboard": "在 http 服務器安裝期間使用鍵盤",

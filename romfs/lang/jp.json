@@ -175,6 +175,7 @@
       "ask_delete": "インストール後に元のファイルを削除する",
       "auto_update": "TinWooのアップデートを自動的に確認する",
       "useSound": "インストール時にサウンドで通知する",
+      "useMusic": "Tinwoo の起動時に音楽を自動再生",
       "fixticket": "一時的なチケットを永続的なチケットに変換する",
       "listoveride": "URL リストの警告とファイル制限を無効にする",
       "usehttpkeyboard": "httpサーバーのインストール中にキーボードを使用する",

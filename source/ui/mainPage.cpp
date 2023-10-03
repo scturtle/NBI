@@ -285,7 +285,7 @@ namespace inst::ui {
 		}
 		this->Add(this->optionMenu);
 		this->AddRenderCallback(mainMenuThread);
-		playmusic();
+		if (inst::config::useMusic) playmusic();
 	}
 
 	void MainPage::installMenuItem_Click() {
