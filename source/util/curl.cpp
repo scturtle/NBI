@@ -18,6 +18,7 @@ static size_t writeDataFile(void* ptr, size_t size, size_t nmemb, void* stream) 
 
 size_t writeDataBuffer(char* ptr, size_t size, size_t nmemb, void* userdata) {
 	std::ostringstream* stream = (std::ostringstream*)userdata;
+	//std::ofstream* stream = (std::ofstream*)userdata;
 	size_t count = size * nmemb;
 	stream->write(ptr, count);
 	return count;
@@ -92,6 +93,7 @@ namespace inst::curl {
 	}
 
 	std::string downloadToBuffer(const std::string ourUrl, int firstRange, int secondRange, long timeout) {
+		//https://www.php.net/manual/en/function.curl-setopt.php
 		CURL* curl_handle;
 		CURLcode result;
 		std::ostringstream stream;
@@ -99,6 +101,13 @@ namespace inst::curl {
 
 		curl_global_init(CURL_GLOBAL_ALL);
 		curl_handle = curl_easy_init();
+		
+		curl_easy_setopt(curl_handle, CURLOPT_BUFFERSIZE, 240000L);
+		curl_easy_setopt(curl_handle, CURLOPT_ENCODING, "" );
+		curl_easy_setopt(curl_handle, CURLOPT_TCP_FASTOPEN, 1L);
+		curl_easy_setopt(curl_handle, CURLOPT_STREAM_WEIGHT, 256L);
+		curl_easy_setopt(curl_handle, CURLOPT_TCP_KEEPALIVE, 1L);
+		curl_easy_setopt(curl_handle, CURLOPT_MAX_RECV_SPEED_LARGE, 1L);
 
 		curl_easy_setopt(curl_handle, CURLOPT_URL, url);
 		curl_easy_setopt(curl_handle, CURLOPT_REFERER, url);
@@ -111,6 +120,7 @@ namespace inst::curl {
 		curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT_MS, timeout);
 		curl_easy_setopt(curl_handle, CURLOPT_CONNECTTIMEOUT_MS, timeout);
 		curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, writeDataBuffer);
+		//curl_easy_setopt(curl_handle, CURLOPT_STDERR, fopen("sdmc://curl.txt", "a+"));
 		if (firstRange && secondRange) {
 			const char* ourRange = (std::to_string(firstRange) + "-" + std::to_string(secondRange)).c_str();
 			curl_easy_setopt(curl_handle, CURLOPT_RANGE, ourRange);
