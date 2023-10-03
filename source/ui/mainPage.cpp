@@ -15,6 +15,11 @@
 #include "util/theme.hpp"
 #include <sys/statvfs.h>
 
+// Include sdl2 headers
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
+Mix_Music* audio = NULL;
+
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
 int statvfs(const char* path, struct statvfs* buf);
@@ -132,6 +137,19 @@ namespace inst::ui {
 			drive = inst::config::appDir + "icons_others.drive"_theme;
 		}
 		inst::ui::mainApp->CreateShowDialog("usage.space_info"_lang, Info, { "common.ok"_lang }, true, "romfs:/images/icons/drive.png");
+	}
+
+	void playmusic() {
+		SDL_Init(SDL_INIT_AUDIO);
+		Mix_Init(MIX_INIT_MP3); //enable mp3 support
+		Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+		std::string loadsound = "romfs:/bluesong.mod";
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "audio.music"_theme)) {
+			loadsound = inst::config::appDir + "audio.music"_theme;
+		}
+		const char* x = loadsound.c_str();
+		audio = Mix_LoadMUS(x);
+		Mix_PlayMusic(audio, 100); //Play the audio file 100 loops
 	}
 
 	void mainMenuThread() {
@@ -263,6 +281,7 @@ namespace inst::ui {
 		}
 		this->Add(this->optionMenu);
 		this->AddRenderCallback(mainMenuThread);
+		playmusic();
 	}
 
 	void MainPage::installMenuItem_Click() {
@@ -380,10 +399,14 @@ namespace inst::ui {
 		if (Down & HidNpadButton_ZR) {
 		}
 
-		if (Down & HidNpadButton_L) {
+		if (Down & Held & HidNpadButton_L) {
+			playmusic();
 		}
 
-		if (Down & HidNpadButton_R) {
+		if (Down & Held & HidNpadButton_R) {
+			Mix_FreeMusic(audio);
+			audio = NULL;
+			Mix_Quit();
 		}
 	}
 }
