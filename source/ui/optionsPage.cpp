@@ -11,6 +11,7 @@
 #include "util/lang.hpp"
 #include "ui/instPage.hpp"
 #include "sigInstall.hpp"
+#include "util/theme.hpp"
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
@@ -22,28 +23,61 @@ namespace inst::ui {
 	std::vector<std::string> languageStrings = { "Sys", "En", "Jpn", "Fr", "De", "It", "Ru", "Es", "Tw" };
 
 	optionsPage::optionsPage() : Layout::Layout() {
-		this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#00000080"));
-		this->SetBackgroundColor(COLOR("#000000FF"));
-		this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
-		this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
+		std::string infoRect_colour = "colour.inforect"_theme;
+		std::string bg_colour = "colour.background"_theme;
+		std::string tbar_colour = "colour.topbar"_theme;
+		std::string bbar_colour = "colour.bottombar"_theme;
+		std::string settings_top = inst::config::appDir + "bg_images.settings_top"_theme;
+		std::string default_background = inst::config::appDir + "bg_images.default_background"_theme;
+		std::string version = "colour.version"_theme;
+		std::string pageinfo_colour = "colour.pageinfo_text"_theme;
+		std::string bottombar_text = "colour.bottombar_text"_theme;
+		std::string background_overlay1 = "colour.background_overlay1"_theme;
+		std::string background_overlay2 = "colour.background_overlay2"_theme;
+		std::string focus = "colour.focus"_theme;
+		std::string scrollbar = "colour.scrollbar"_theme;
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/images/Settings.png")) this->titleImage = Image::New(0, 0, (inst::config::appDir + "/theme/images/Settings.png"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR(infoRect_colour));
+		else this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#00000080"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->SetBackgroundColor(COLOR(bg_colour));
+		else this->SetBackgroundColor(COLOR("#000000FF"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR(tbar_colour));
+		else this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR(bbar_colour));
+		else this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(settings_top)) this->titleImage = Image::New(0, 0, (settings_top));
 		else this->titleImage = Image::New(0, 0, "romfs:/images/Settings.png");
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/images/Background.png")) this->SetBackgroundImage(inst::config::appDir + "/theme/images/Background.png");
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
 		else this->SetBackgroundImage("romfs:/images/Background.png");
 
 		this->appVersionText = TextBlock::New(1200, 680, "v" + inst::config::appVersion);
-		this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->appVersionText->SetColor(COLOR(version));
+		else this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
 		this->appVersionText->SetFont(pu::ui::MakeDefaultFontName(20));
+
 		this->pageInfoText = TextBlock::New(10, 109, "options.title"_lang);
 		this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
-		this->pageInfoText->SetColor(COLOR("#FFFFFFFF"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->pageInfoText->SetColor(COLOR(pageinfo_colour));
+		else this->pageInfoText->SetColor(COLOR("#FFFFFFFF"));
+
 		this->butText = TextBlock::New(10, 678, "options.buttons"_lang);
-		this->butText->SetColor(COLOR("#FFFFFFFF"));
-		this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 84, (506 / 84));
-		this->menu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
-		this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->butText->SetColor(COLOR(bottombar_text));
+		else this->butText->SetColor(COLOR("#FFFFFFFF"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR(background_overlay1), COLOR(background_overlay2), 84, (506 / 84));
+		else this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 84, (506 / 84));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu->SetItemsFocusColor(COLOR(focus));
+		else this->menu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
+
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu->SetScrollbarColor(COLOR(scrollbar));
+		else this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
+
 		this->Add(this->topRect);
 		this->Add(this->infoRect);
 		this->Add(this->botRect);
