@@ -36,6 +36,7 @@ SOFTWARE.
 #include "util/curl.hpp"
 #include "util/lang.hpp"
 #include "ui/MainApplication.hpp"
+#include "util/theme.hpp"
 
 bool netConnected2 = false;
 
@@ -125,6 +126,19 @@ namespace ThemeInstStuff {
 		u64 startTime = armGetSystemTick();
 		OnUnwound();
 
+		std::string info = "romfs:/images/icons/information.png";
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
+			info = inst::config::appDir + "icons_others.information"_theme;
+		}
+		std::string fail = "romfs:/images/icons/fail.png";
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+			fail = inst::config::appDir + "icons_others.fail"_theme;
+		}
+		std::string wait = "romfs:/images/icons/wait.png";
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.wait"_theme)) {
+			wait = inst::config::appDir + "icons_others.wait"_theme;
+		}
+
 		try {
 			ASSERT_OK(curl_global_init(CURL_GLOBAL_ALL), "Curl failed to initialized");
 
@@ -173,7 +187,7 @@ namespace ThemeInstStuff {
 
 				if (url == "") {
 					url = ("http://127.0.0.1");
-					inst::ui::mainApp->CreateShowDialog("theme.theme_fail"_lang, "inst.net.help.blank"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+					inst::ui::mainApp->CreateShowDialog("theme.theme_fail"_lang, "inst.net.help.blank"_lang, { "common.ok"_lang }, true, info);
 					inst::config::httplastUrl2 = url;
 					inst::config::setConfig();
 					//refresh options page
@@ -184,7 +198,7 @@ namespace ThemeInstStuff {
 				else {
 					std::string response;
 					if (inst::util::formatUrlString(url) == "" || url == "https://" || url == "http://" || url == "HTTP://" || url == "HTTPS://") {
-						inst::ui::mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
+						inst::ui::mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false, fail);
 						break;
 					}
 					else {
@@ -197,7 +211,7 @@ namespace ThemeInstStuff {
 						if (response.empty()) {
 							response = inst::curl::html_to_buffer(url);
 							if (response.empty()) {
-								inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+								inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, fail);
 								break;
 							}
 						}
@@ -221,7 +235,7 @@ namespace ThemeInstStuff {
 						else if (!response.empty()) {
 							std::size_t index = 0;
 							if (!inst::config::listoveride) {
-								inst::ui::mainApp->CreateShowDialog("inst.net.url.listwait"_lang + std::to_string(maxlist) + "inst.net.url.listwait2"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/wait.png");
+								inst::ui::mainApp->CreateShowDialog("inst.net.url.listwait"_lang + std::to_string(maxlist) + "inst.net.url.listwait2"_lang, "", { "common.ok"_lang }, false, wait);
 							}
 							while (index < response.size()) {
 								std::string link;
@@ -282,7 +296,7 @@ namespace ThemeInstStuff {
 							}
 
 							else {
-								inst::ui::mainApp->CreateShowDialog("theme.no_themes"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
+								inst::ui::mainApp->CreateShowDialog("theme.no_themes"_lang, "", { "common.ok"_lang }, false, fail);
 								LOG_DEBUG("Failed to parse themes from HTML\n");
 								break;
 							}
@@ -290,14 +304,14 @@ namespace ThemeInstStuff {
 						}
 
 						else {
-							inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+							inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, fail);
 							break;
 						}
 					}
 
 					else {
 						LOG_DEBUG("Failed to fetch theme list\n");
-						inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+						inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, fail);
 						break;
 					}
 				}
@@ -308,7 +322,7 @@ namespace ThemeInstStuff {
 			LOG_DEBUG("Failed to perform remote install!\n");
 			LOG_DEBUG("%s", e.what());
 			fprintf(stdout, "%s", e.what());
-			inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+			inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), { "common.ok"_lang }, true, fail);
 			return {};
 		}
 	}

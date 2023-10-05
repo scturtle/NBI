@@ -13,6 +13,18 @@ namespace inst::ui {
 	extern MainApplication* mainApp;
 	s32 www = 0; //touchscreen variable
 
+	std::string checked_usb = "romfs:/images/icons/check-box-outline.png";
+	std::string unchecked_usb = "romfs:/images/icons/checkbox-blank-outline.png";
+
+	void checkbox_usb() {
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-checked"_theme)) {
+			checked_usb = inst::config::appDir + "icons_others.checkbox-checked"_theme;
+		}
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-empty"_theme)) {
+			unchecked_usb = inst::config::appDir + "icons_others.checkbox-empty"_theme;
+		}
+	}
+
 	usbInstPage::usbInstPage() : Layout::Layout() {
 		std::string infoRect_colour = "colour.inforect"_theme;
 		std::string bg_colour = "colour.background"_theme;
@@ -78,6 +90,7 @@ namespace inst::ui {
 		this->Add(this->pageInfoText);
 		this->Add(this->menu);
 		this->Add(this->infoImage);
+		checkbox_usb();
 	}
 
 	void usbInstPage::drawMenuItems_withext(bool clearItems) {
@@ -92,10 +105,10 @@ namespace inst::ui {
 			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
 
-			ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
+			ourEntry->SetIcon(unchecked_usb);
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == url) {
-					ourEntry->SetIcon("romfs:/images/icons/check-box-outline.png");
+					ourEntry->SetIcon(checked_usb);
 				}
 			}
 			this->menu->AddItem(ourEntry);
@@ -120,11 +133,11 @@ namespace inst::ui {
 
 			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
-			ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
+			ourEntry->SetIcon(unchecked_usb);
 
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == url) {
-					ourEntry->SetIcon("romfs:/images/icons/check-box-outline.png");
+					ourEntry->SetIcon(checked_usb);
 				}
 			}
 			this->menu->AddItem(ourEntry);
@@ -133,7 +146,7 @@ namespace inst::ui {
 	}
 
 	void usbInstPage::selectTitle(int selectedIndex) {
-		if (this->menu->GetItems()[selectedIndex]->GetIconPath() == "romfs:/images/icons/check-box-outline.png") {
+		if (this->menu->GetItems()[selectedIndex]->GetIconPath() == checked_usb) {
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == this->ourTitles[selectedIndex]) this->selectedTitles.erase(this->selectedTitles.begin() + i);
 			}
@@ -219,7 +232,7 @@ namespace inst::ui {
 			if (this->selectedTitles.size() == this->menu->GetItems().size()) this->drawMenuItems(true);
 			else {
 				for (long unsigned int i = 0; i < this->menu->GetItems().size(); i++) {
-					if (this->menu->GetItems()[i]->GetIconPath() == "romfs:/images/icons/check-box-outline.png") continue;
+					if (this->menu->GetItems()[i]->GetIconPath() == checked_usb) continue;
 					else this->selectTitle(i);
 				}
 				this->drawMenuItems(false);

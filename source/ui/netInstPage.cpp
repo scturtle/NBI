@@ -16,6 +16,17 @@
 namespace inst::ui {
 	extern MainApplication* mainApp;
 	s32 xxx = 0;
+	std::string checked_net = "romfs:/images/icons/check-box-outline.png";
+	std::string unchecked_net = "romfs:/images/icons/checkbox-blank-outline.png";
+
+	void checkbox_net() {
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-checked"_theme)) {
+			checked_net = inst::config::appDir + "icons_others.checkbox-checked"_theme;
+		}
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-empty"_theme)) {
+			unchecked_net = inst::config::appDir + "icons_others.checkbox-empty"_theme;
+		}
+	}
 
 	std::string httplastUrl = "http://";
 	std::string lastFileID = "";
@@ -86,6 +97,7 @@ namespace inst::ui {
 		this->Add(this->pageInfoText);
 		this->Add(this->menu);
 		this->Add(this->infoImage);
+		checkbox_net();
 	}
 
 	void netInstPage::drawMenuItems_withext(bool clearItems) {
@@ -103,11 +115,11 @@ namespace inst::ui {
 			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
 
-			ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
+			ourEntry->SetIcon(unchecked_net);
 			long unsigned int i;
 			for (i = 0; i < this->selectedUrls.size(); i++) {
 				if (this->selectedUrls[i] == urls) {
-					ourEntry->SetIcon("romfs:/images/icons/check-box-outline.png");
+					ourEntry->SetIcon(checked_net);
 				}
 			}
 			this->menu->AddItem(ourEntry);
@@ -155,11 +167,11 @@ namespace inst::ui {
 			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
 
-			ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
+			ourEntry->SetIcon(unchecked_net);
 			long unsigned int i;
 			for (i = 0; i < this->selectedUrls.size(); i++) {
 				if (this->selectedUrls[i] == urls) {
-					ourEntry->SetIcon("romfs:/images/icons/check-box-outline.png");
+					ourEntry->SetIcon(checked_net);
 				}
 			}
 			this->menu->AddItem(ourEntry);
@@ -168,7 +180,7 @@ namespace inst::ui {
 	}
 
 	void netInstPage::selectTitle(int selectedIndex) {
-		if (this->menu->GetItems()[selectedIndex]->GetIconPath() == "romfs:/images/icons/check-box-outline.png") {
+		if (this->menu->GetItems()[selectedIndex]->GetIconPath() == checked_net) {
 			for (long unsigned int i = 0; i < this->selectedUrls.size(); i++) {
 				if (this->selectedUrls[i] == this->ourUrls[selectedIndex]) this->selectedUrls.erase(this->selectedUrls.begin() + i);
 			}
@@ -333,7 +345,7 @@ namespace inst::ui {
 			if (this->selectedUrls.size() == this->menu->GetItems().size()) this->drawMenuItems(true);
 			else {
 				for (long unsigned int i = 0; i < this->menu->GetItems().size(); i++) {
-					if (this->menu->GetItems()[i]->GetIconPath() == "romfs:/images/icons/check-box-outline.png") continue;
+					if (this->menu->GetItems()[i]->GetIconPath() == checked_net) continue;
 					else this->selectTitle(i);
 				}
 				this->drawMenuItems(false);

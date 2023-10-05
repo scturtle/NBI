@@ -164,7 +164,12 @@ namespace netInstStuff {
 				close(m_serverSocket);
 				m_serverSocket = 0;
 			}
-			inst::ui::mainApp->CreateShowDialog("Failed to initialize server socket!", (std::string)e.what(), { "OK" }, true, "romfs:/images/icons/fail.png");
+			std::string fail = "romfs:/images/icons/fail.png";
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+				fail = inst::config::appDir + "icons_others.fail"_theme;
+			}
+
+			inst::ui::mainApp->CreateShowDialog("Failed to initialize server socket!", (std::string)e.what(), { "OK" }, true, fail);
 		}
 	}
 
@@ -253,7 +258,12 @@ namespace netInstStuff {
 				audioThread.join();
 			}
 
-			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + urlNames[urlItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+			std::string fail = "romfs:/images/icons/fail.png";
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+				fail = inst::config::appDir + "icons_others.fail"_theme;
+			}
+
+			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + urlNames[urlItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true, fail);
 			nspInstalled = false;
 		}
 
@@ -285,11 +295,16 @@ namespace netInstStuff {
 				audioThread.join();
 			}
 
+			std::string good = "romfs:/images/icons/good.png";
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.good"_theme)) {
+				good = inst::config::appDir + "icons_others.good"_theme;
+			}
+
 			if (ourUrlList.size() > 1) {
-				inst::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
+				inst::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, good);
 			}
 			else {
-				inst::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
+				inst::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, good);
 			}
 		}
 
@@ -332,6 +347,19 @@ namespace netInstStuff {
 			std::vector<std::string> urls;
 			std::vector<std::string> tmp_array;
 
+			std::string info = "romfs:/images/icons/information.png";
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
+				info = inst::config::appDir + "icons_others.information"_theme;
+			}
+			std::string fail = "romfs:/images/icons/fail.png";
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+				fail = inst::config::appDir + "icons_others.fail"_theme;
+			}
+			std::string wait = "romfs:/images/icons/wait.png";
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.wait"_theme)) {
+				wait = inst::config::appDir + "icons_others.wait"_theme;
+			}
+
 			while (true) {
 				padUpdate(&pad);
 
@@ -356,7 +384,7 @@ namespace netInstStuff {
 				}
 				if (kDown & HidNpadButton_X)
 				{
-					inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+					inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.desc"_lang, { "common.ok"_lang }, true, info);
 				}
 
 				if (kDown & HidNpadButton_Minus) {
@@ -378,7 +406,7 @@ namespace netInstStuff {
 
 					if (url == "") {
 						url = ("http://127.0.0.1");
-						inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.blank"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+						inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.blank"_lang, { "common.ok"_lang }, true, info);
 						inst::config::httpIndexUrl = url;
 						inst::config::setConfig();
 						//refresh options page
@@ -389,7 +417,7 @@ namespace netInstStuff {
 					else {
 						std::string response;
 						if (inst::util::formatUrlString(url) == "" || url == "https://" || url == "http://" || url == "HTTP://" || url == "HTTPS://") {
-							inst::ui::mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
+							inst::ui::mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false, fail);
 							break;
 						}
 						else {
@@ -402,7 +430,7 @@ namespace netInstStuff {
 							if (response.empty()) {
 								response = inst::curl::html_to_buffer(url);
 								if (response.empty()) {
-									inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+									inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, fail);
 									break;
 								}
 							}
@@ -426,7 +454,7 @@ namespace netInstStuff {
 							else if (!response.empty()) {
 								std::size_t index = 0;
 								if (!inst::config::listoveride) {
-									inst::ui::mainApp->CreateShowDialog("inst.net.url.listwait"_lang + std::to_string(maxlist) + "inst.net.url.listwait2"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/wait.png");
+									inst::ui::mainApp->CreateShowDialog("inst.net.url.listwait"_lang + std::to_string(maxlist) + "inst.net.url.listwait2"_lang, "", { "common.ok"_lang }, false, wait);
 								}
 								while (index < response.size()) {
 									std::string link;
@@ -508,7 +536,7 @@ namespace netInstStuff {
 								}
 
 								else {
-									inst::ui::mainApp->CreateShowDialog("inst.net.url.nolinks"_lang, "", { "common.ok"_lang }, false, "romfs:/images/icons/fail.png");
+									inst::ui::mainApp->CreateShowDialog("inst.net.url.nolinks"_lang, "", { "common.ok"_lang }, false, fail);
 									LOG_DEBUG("Failed to parse games from HTML\n");
 									break;
 								}
@@ -516,7 +544,7 @@ namespace netInstStuff {
 							}
 
 							else {
-								inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+								inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, fail);
 								break;
 							}
 						}
@@ -575,7 +603,11 @@ namespace netInstStuff {
 			LOG_DEBUG("Failed to perform remote install!\n");
 			LOG_DEBUG("%s", e.what());
 			fprintf(stdout, "%s", e.what());
-			inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+			std::string fail = "romfs:/images/icons/fail.png";
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+				fail = inst::config::appDir + "icons_others.fail"_theme;
+			}
+			inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), { "common.ok"_lang }, true, fail);
 			return {};
 		}
 	}

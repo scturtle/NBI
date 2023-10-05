@@ -40,6 +40,7 @@ SOFTWARE.
 #include "util/util.hpp"
 #include "util/lang.hpp"
 #include "ui/MainApplication.hpp"
+#include "util/theme.hpp"
 
 namespace inst::ui {
 	extern MainApplication* mainApp;
@@ -165,7 +166,11 @@ namespace tin::install::nsp
 			ss << *it;
 		}
 		if (ss.str().length() == 0) {
-			inst::ui::mainApp->CreateShowDialog("main.usb.warn.title"_lang, "inst.nca_verify.ticket_missing"_lang, { "common.ok"_lang }, false, "romfs:/images/icons/information.png");
+			std::string info = "romfs:/images/icons/information.png";
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
+				info = inst::config::appDir + "icons_others.information"_theme;
+			}
+			inst::ui::mainApp->CreateShowDialog("main.usb.warn.title"_lang, "inst.nca_verify.ticket_missing"_lang, { "common.ok"_lang }, false, info);
 			return; //don't bother trying to install the ticket or cert if it doesn't exist.
 		}
 		// end of ticket check

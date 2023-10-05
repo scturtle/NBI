@@ -16,6 +16,17 @@ namespace inst::ui {
 	extern MainApplication* mainApp;
 	s32 yyy = 0;
 	bool show_ext;
+	std::string checked = "romfs:/images/icons/check-box-outline.png";
+	std::string unchecked = "romfs:/images/icons/checkbox-blank-outline.png";
+
+	void checkbox_sd() {
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-checked"_theme)) {
+			checked = inst::config::appDir + "icons_others.checkbox-checked"_theme;
+		}
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-empty"_theme)) {
+			unchecked = inst::config::appDir + "icons_others.checkbox-empty"_theme;
+		}
+	}
 
 	sdInstPage::sdInstPage() : Layout::Layout() {
 		std::string default_background = inst::config::appDir + "bg_images.default_background"_theme;
@@ -75,6 +86,7 @@ namespace inst::ui {
 		this->Add(this->butText);
 		this->Add(this->pageInfoText);
 		this->Add(this->menu);
+		checkbox_sd();
 	}
 
 	void sdInstPage::drawMenuItems(bool clearItems, std::filesystem::path ourPath) {
@@ -143,11 +155,11 @@ namespace inst::ui {
 			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
 
-			ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
+			ourEntry->SetIcon(unchecked);
 
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == file) {
-					ourEntry->SetIcon("romfs:/images/icons/check-box-outline.png");
+					ourEntry->SetIcon(checked);
 				}
 			}
 			this->menu->AddItem(ourEntry);
@@ -177,12 +189,12 @@ namespace inst::ui {
 		int dirListSize = this->ourDirectories.size();
 		dirListSize++;
 
-		if (this->menu->GetItems()[selectedIndex]->GetIconPath() == "romfs:/images/icons/check-box-outline.png") {
+		if (this->menu->GetItems()[selectedIndex]->GetIconPath() == checked) {
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == this->ourFiles[selectedIndex - dirListSize]) this->selectedTitles.erase(this->selectedTitles.begin() + i);
 			}
 		}
-		else if (this->menu->GetItems()[selectedIndex]->GetIconPath() == "romfs:/images/icons/checkbox-blank-outline.png") this->selectedTitles.push_back(this->ourFiles[selectedIndex - dirListSize]);
+		else if (this->menu->GetItems()[selectedIndex]->GetIconPath() == unchecked) this->selectedTitles.push_back(this->ourFiles[selectedIndex - dirListSize]);
 		else {
 			this->followDirectory();
 			return;
@@ -239,7 +251,7 @@ namespace inst::ui {
 				int topDir = 0;
 				topDir++;
 				for (long unsigned int i = this->ourDirectories.size() + topDir; i < this->menu->GetItems().size(); i++) {
-					if (this->menu->GetItems()[i]->GetIconPath() == "romfs:/images/icons/check-box-outline.png") continue;
+					if (this->menu->GetItems()[i]->GetIconPath() == checked) continue;
 					else this->selectNsp(i);
 				}
 				this->drawMenuItems(false, currentDir);
@@ -259,7 +271,7 @@ namespace inst::ui {
 			auto s = std::to_string(var);
 
 			if (s != "0") {
-				if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconPath() == "romfs:/images/icons/checkbox-blank-outline.png") {
+				if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconPath() == unchecked) {
 					this->selectNsp(this->menu->GetSelectedIndex());
 				}
 				if (this->selectedTitles.size() > 0) this->startInstall();

@@ -65,6 +65,10 @@ namespace usbInstStuff {
 		padConfigureInput(8, HidNpadStyleSet_NpadStandard);
 		PadState pad;
 		padInitializeAny(&pad);
+		std::string info = "romfs:/images/icons/information.png";
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
+			info = inst::config::appDir + "icons_others.information"_theme;
+		}
 
 		while (true) {
 			if (bufferData(&header, sizeof(TUSHeader), 500000000) != 0) break;
@@ -73,7 +77,7 @@ namespace usbInstStuff {
 			u64 kDown = padGetButtonsDown(&pad);
 
 			if (kDown & HidNpadButton_B) return {};
-			if (kDown & HidNpadButton_X) inst::ui::mainApp->CreateShowDialog("inst.usb.help.title"_lang, "inst.usb.help.desc"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/information.png");
+			if (kDown & HidNpadButton_X) inst::ui::mainApp->CreateShowDialog("inst.usb.help.title"_lang, "inst.usb.help.desc"_lang, { "common.ok"_lang }, true, info);
 			if (inst::util::getUsbState() != 5) return {};
 		}
 
@@ -101,6 +105,15 @@ namespace usbInstStuff {
 		inst::ui::instPage::loadInstallScreen();
 		bool nspInstalled = true;
 		NcmStorageId m_destStorageId = NcmStorageId_SdCard;
+
+		std::string good = "romfs:/images/icons/good.png";
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.good"_theme)) {
+			good = inst::config::appDir + "icons_others.good"_theme;
+		}
+		std::string fail = "romfs:/images/icons/fail.png";
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+			fail = inst::config::appDir + "icons_others.fail"_theme;
+		}
 
 		if (ourStorage) m_destStorageId = NcmStorageId_BuiltInUser;
 		unsigned int fileItr;
@@ -165,7 +178,7 @@ namespace usbInstStuff {
 				audioThread.join();
 			}
 
-			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + fileNames[fileItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + fileNames[fileItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true, fail);
 			nspInstalled = false;
 		}
 
@@ -193,8 +206,8 @@ namespace usbInstStuff {
 				audioThread.join();
 			}
 
-			if (ourTitleList.size() > 1) inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
-			else inst::ui::mainApp->CreateShowDialog(fileNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, "romfs:/images/icons/good.png");
+			if (ourTitleList.size() > 1) inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, good);
+			else inst::ui::mainApp->CreateShowDialog(fileNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, good);
 		}
 
 		LOG_DEBUG("Done");

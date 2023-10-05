@@ -23,6 +23,18 @@ namespace inst::ui {
 	int myindex;
 	int installing = 0;
 
+	std::string checked_theme = "romfs:/images/icons/check-box-outline.png";
+	std::string unchecked_theme = "romfs:/images/icons/checkbox-blank-outline.png";
+
+	void checkbox_theme() {
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-checked"_theme)) {
+			checked_theme = inst::config::appDir + "icons_others.checkbox-checked"_theme;
+		}
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-empty"_theme)) {
+			unchecked_theme = inst::config::appDir + "icons_others.checkbox-empty"_theme;
+		}
+	}
+
 	std::string httplastUrl2 = "http://";
 	std::string lastFileID2 = "";
 	std::string sourceString2 = "";
@@ -102,33 +114,7 @@ namespace inst::ui {
 		else this->installBar->SetProgressColor(COLOR("#565759FF"));
 
 		this->Add(this->installBar);
-	}
-
-	void ThemeInstPage::drawMenuItems_withext(bool clearItems) {
-		myindex = this->menu->GetSelectedIndex(); //store index so when page redraws we can get the last item we checked.
-		if (clearItems) this->selectedUrls = {};
-		if (clearItems) this->alternativeNames = {};
-		mainApp->ThemeinstPage->installBar->SetProgress(0);
-		mainApp->ThemeinstPage->installBar->SetVisible(false);
-		std::string itm;
-		std::string text_colour = "colour.main_text"_theme;
-
-		this->menu->ClearItems();
-		for (auto& urls : this->ourUrls) {
-			itm = inst::util::shortenString(inst::util::formatUrlString(urls), 56, true);
-			auto ourEntry = pu::ui::elm::MenuItem::New(itm);
-			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
-			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
-			ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
-			long unsigned int i;
-			for (i = 0; i < this->selectedUrls.size(); i++) {
-				if (this->selectedUrls[i] == urls) {
-					ourEntry->SetIcon("romfs:/images/icons/check-box-outline.png");
-				}
-			}
-			this->menu->AddItem(ourEntry);
-			this->menu->SetSelectedIndex(myindex); //jump to the index we saved from above
-		}
+		checkbox_theme();
 	}
 
 	void ThemeInstPage::drawMenuItems(bool clearItems) {
@@ -151,12 +137,12 @@ namespace inst::ui {
 			auto ourEntry = pu::ui::elm::MenuItem::New(itm);
 			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
-			ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
+			ourEntry->SetIcon(unchecked_theme);
 
 			long unsigned int i;
 			for (i = 0; i < this->selectedUrls.size(); i++) {
 				if (this->selectedUrls[i] == urls) {
-					ourEntry->SetIcon("romfs:/images/icons/check-box-outline.png");
+					ourEntry->SetIcon(checked_theme);
 				}
 			}
 			this->menu->AddItem(ourEntry);
@@ -316,7 +302,7 @@ namespace inst::ui {
 						auto s = std::to_string(var);
 						if (s != "0") {
 							myindex = this->menu->GetSelectedIndex(); //store index so when page redraws we can get the last item we checked.
-							if (this->menu->GetItems()[myindex]->GetIconPath() == "romfs:/images/icons/check-box-outline.png") {
+							if (this->menu->GetItems()[myindex]->GetIconPath() == checked_theme) {
 							}
 							this->selectedUrls.push_back(this->ourUrls[myindex]);
 							this->drawMenuItems(false);
@@ -350,17 +336,16 @@ namespace inst::ui {
 			this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + x));
 		}
 
-		//don't show file extensions
+		//refresh/redraw the items in the list
 		if (Down & HidNpadButton_Left) {
 			if (installing != 1) {
 				this->drawMenuItems(true);
 			}
 		}
 
-		//show file extensions
 		if (Down & HidNpadButton_Right) {
 			if (installing != 1) {
-				this->drawMenuItems_withext(true);
+				this->drawMenuItems(true);
 			}
 		}
 	}

@@ -15,6 +15,18 @@ namespace inst::ui {
 	s32 zzz = 0; //touchscreen variable
 	bool show_file_ext;
 
+	std::string checked_hdd = "romfs:/images/icons/check-box-outline.png";
+	std::string unchecked_hdd = "romfs:/images/icons/checkbox-blank-outline.png";
+
+	void checkbox_hdd() {
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-checked"_theme)) {
+			checked_hdd = inst::config::appDir + "icons_others.checkbox-checked"_theme;
+		}
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-empty"_theme)) {
+			unchecked_hdd = inst::config::appDir + "icons_others.checkbox-empty"_theme;
+		}
+	}
+
 	HDInstPage::HDInstPage() : Layout::Layout() {
 		std::string infoRect_colour = "colour.inforect"_theme;
 		std::string bg_colour = "colour.background"_theme;
@@ -72,6 +84,7 @@ namespace inst::ui {
 		this->Add(this->butText);
 		this->Add(this->pageInfoText);
 		this->Add(this->menu);
+		checkbox_hdd();
 	}
 
 	void HDInstPage::drawMenuItems(bool clearItems, std::filesystem::path ourPath) {
@@ -137,10 +150,10 @@ namespace inst::ui {
 			auto ourEntry = pu::ui::elm::MenuItem::New(itm);
 			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
-			ourEntry->SetIcon("romfs:/images/icons/checkbox-blank-outline.png");
+			ourEntry->SetIcon(unchecked_hdd);
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == file) {
-					ourEntry->SetIcon("romfs:/images/icons/check-box-outline.png");
+					ourEntry->SetIcon(checked_hdd);
 				}
 			}
 			this->menu->AddItem(ourEntry);
@@ -170,12 +183,12 @@ namespace inst::ui {
 		int dirListSize = this->ourDirectories.size();
 		dirListSize++;
 
-		if (this->menu->GetItems()[selectedIndex]->GetIconPath() == "romfs:/images/icons/check-box-outline.png") {
+		if (this->menu->GetItems()[selectedIndex]->GetIconPath() == checked_hdd) {
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == this->ourFiles[selectedIndex - dirListSize]) this->selectedTitles.erase(this->selectedTitles.begin() + i);
 			}
 		}
-		else if (this->menu->GetItems()[selectedIndex]->GetIconPath() == "romfs:/images/icons/checkbox-blank-outline.png") this->selectedTitles.push_back(this->ourFiles[selectedIndex - dirListSize]);
+		else if (this->menu->GetItems()[selectedIndex]->GetIconPath() == unchecked_hdd) this->selectedTitles.push_back(this->ourFiles[selectedIndex - dirListSize]);
 		else {
 			this->followDirectory();
 			return;
@@ -226,7 +239,7 @@ namespace inst::ui {
 				int topDir = 0;
 				topDir++;
 				for (long unsigned int i = this->ourDirectories.size() + topDir; i < this->menu->GetItems().size(); i++) {
-					if (this->menu->GetItems()[i]->GetIconPath() == "romfs:/images/icons/check-box-outline.png") continue;
+					if (this->menu->GetItems()[i]->GetIconPath() == checked_hdd) continue;
 					else this->selectNsp(i);
 				}
 				this->drawMenuItems(false, currentDir);
@@ -242,7 +255,7 @@ namespace inst::ui {
 		}
 
 		if (Down & HidNpadButton_Plus) {
-			if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconPath() == "romfs:/images/icons/checkbox-blank-outline.png") {
+			if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconPath() == unchecked_hdd) {
 				this->selectNsp(this->menu->GetSelectedIndex());
 			}
 			if (this->selectedTitles.size() > 0) this->startInstall();

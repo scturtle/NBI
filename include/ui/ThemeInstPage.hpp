@@ -27,7 +27,6 @@ namespace inst::ui {
 		pu::ui::elm::Menu::Ref menu;
 		Image::Ref infoImage;
 		void drawMenuItems(bool clearItems);
-		void drawMenuItems_withext(bool clearItems);
 		void selectTitle(int selectedIndex);
 	};
 }
