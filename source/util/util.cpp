@@ -306,20 +306,24 @@ namespace inst::util {
 			playWav(audioPath);
 			return;
 		}
-		//if not wav try to play
-		SDL_Init(SDL_INIT_AUDIO);
-		Mix_Init(MIX_INIT_MP3); //enable mp3 support
-		Mix_Init(MIX_INIT_FLAC); //enable flac support
-		Mix_Init(MIX_INIT_OGG); //enable ogg support
-		Mix_Init(MIX_INIT_MID);
-		Mix_Init(MIX_INIT_OPUS);
-		Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
-		const char* x = audioPath.c_str();
-		music = Mix_LoadMUS(x);
-		if (music != NULL) {
-			Mix_PlayMusic(music, 1);
-		}
-		else {
+
+		//check if music is already playing, if not play something.
+		if (Mix_PlayingMusic() == 0) {
+			//if not wav try to play
+			SDL_Init(SDL_INIT_AUDIO);
+			Mix_Init(MIX_INIT_MP3); //enable mp3 support
+			Mix_Init(MIX_INIT_FLAC); //enable flac support
+			Mix_Init(MIX_INIT_OGG); //enable ogg support
+			Mix_Init(MIX_INIT_MID);
+			Mix_Init(MIX_INIT_OPUS);
+			Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+			const char* x = audioPath.c_str();
+			music = Mix_LoadMUS(x);
+			if (music != NULL) {
+				Mix_PlayMusic(music, 1);
+				return;
+			}
+
 			Mix_HaltChannel(-1);
 			Mix_FreeMusic(music);
 			Mix_CloseAudio();

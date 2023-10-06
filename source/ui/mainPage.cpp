@@ -150,7 +150,7 @@ namespace inst::ui {
 		const char* x = loadsound.c_str();
 		audio = Mix_LoadMUS(x);
 		if (audio != NULL) {
-			Mix_PlayMusic(audio, -1); //loop "infinitely"
+			Mix_PlayMusic(audio, -1); //-1 loop "infinitely"
 		}
 	}
 
