@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 #include <unistd.h>
 #include <curl/curl.h>
 #include <regex>
@@ -17,6 +18,11 @@
 #include "util/usb_comms_tinleaf.h"
 #include "util/json.hpp"
 #include "nx/usbhdd.h"
+
+// Include sdl2 headers
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
+Mix_Music* music = NULL;
 
 namespace inst::util {
 	void initApp() {
@@ -293,6 +299,36 @@ namespace inst::util {
 	}
 
 	void playAudio(std::string audioPath) {
+		//check to make sure we aren't trying to play a wav file...
+		std::string wav("wav");
+		std::size_t found = audioPath.find(wav);
+		if (found != std::string::npos) {
+			playWav(audioPath);
+			return;
+		}
+		//if not wav try to play
+		SDL_Init(SDL_INIT_AUDIO);
+		Mix_Init(MIX_INIT_MP3); //enable mp3 support
+		Mix_Init(MIX_INIT_FLAC); //enable flac support
+		Mix_Init(MIX_INIT_OGG); //enable ogg support
+		Mix_Init(MIX_INIT_MID);
+		Mix_Init(MIX_INIT_OPUS);
+		Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+		const char* x = audioPath.c_str();
+		music = Mix_LoadMUS(x);
+		if (music != NULL) {
+			Mix_PlayMusic(music, 1);
+		}
+		else {
+			Mix_HaltChannel(-1);
+			Mix_FreeMusic(music);
+			Mix_CloseAudio();
+			Mix_Quit();
+			return;
+		}
+	}
+
+	void playWav(std::string audioPath) {
 		int audio_rate = 22050;
 		Uint16 audio_format = AUDIO_S16SYS;
 		int audio_channels = 2;
@@ -319,7 +355,6 @@ namespace inst::util {
 
 		Mix_FreeChunk(sound);
 		Mix_CloseAudio();
-
 		return;
 	}
 

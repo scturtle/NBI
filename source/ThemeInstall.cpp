@@ -27,7 +27,6 @@ SOFTWARE.
 #include <fcntl.h>
 #include <sstream>
 #include <curl/curl.h>
-#include <thread>
 #include <switch.h>
 #include "ThemeInstall.hpp"
 #include "util/error.hpp"
@@ -204,7 +203,7 @@ namespace ThemeInstStuff {
 					else {
 						if (url[url.size() - 1] != '/') //does this line even do anything?
 
-							//First try and stream the links
+							//First try and see if we have any links for zip files
 							response = inst::curl::downloadToBuffer(url);
 
 						//If the above fails we probably have an html page - try to download it instead.

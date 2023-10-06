@@ -142,9 +142,6 @@ namespace inst::ui {
 
 	void playmusic() {
 		SDL_Init(SDL_INIT_AUDIO);
-		Mix_Init(MIX_INIT_MP3); //enable mp3 support
-		Mix_Init(MIX_INIT_FLAC); //enable flac support
-		Mix_Init(MIX_INIT_OGG); //enable ogg support
 		Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 		std::string loadsound = "romfs:/bluesong.mod";
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "audio.music"_theme)) {
@@ -153,7 +150,7 @@ namespace inst::ui {
 		const char* x = loadsound.c_str();
 		audio = Mix_LoadMUS(x);
 		if (audio != NULL) {
-			Mix_PlayMusic(audio, 100); //Play the audio file 100 loops
+			Mix_PlayMusic(audio, -1); //loop "infinitely"
 		}
 	}
 

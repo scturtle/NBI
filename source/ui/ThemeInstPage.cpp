@@ -14,6 +14,7 @@
 #include <sstream>
 #include <cstring>
 #include <iostream>
+#include <thread>
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
@@ -209,6 +210,8 @@ namespace inst::ui {
 				inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
 				ourPath = inst::config::appDir + "/temp_download.zip";
 				installing = 1;
+				//to do put download on a seperate thread.
+				//https://www.geeksforgeeks.org/multithreading-in-cpp/
 				bool didDownload = inst::curl::downloadFile(selectedUrls[0], ourPath.c_str(), 0, true);
 				bool didExtract = false;
 				if (didDownload) {
@@ -221,6 +224,14 @@ namespace inst::ui {
 					}
 				}
 				else {
+					if (inst::config::useSound) {
+						std::string audioPath = "";
+						std::string fail = inst::config::appDir + "audio.fail"_theme;
+						if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(fail)) audioPath = (fail);
+						else audioPath = "romfs:/audio/ohno.wav";
+						std::thread audioThread(inst::util::playAudio, audioPath);
+						audioThread.join();
+					}
 					inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.failed"_lang);
 					installing = 0;
 					inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
@@ -235,6 +246,14 @@ namespace inst::ui {
 				}
 				std::filesystem::remove(ourPath);
 				if (didExtract) {
+					if (inst::config::useSound) {
+						std::string audioPath = "";
+						std::string pass = inst::config::appDir + "audio.pass"_theme;
+						if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(pass)) audioPath = (pass);
+						else audioPath = "romfs:/audio/yipee.wav";
+						std::thread audioThread(inst::util::playAudio, audioPath);
+						audioThread.join();
+					}
 					inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.extracted"_lang);
 					std::string good = "romfs:/images/icons/good.png";
 					if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.good"_theme)) {
