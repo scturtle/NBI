@@ -1,3 +1,4 @@
+#include <thread>
 #include <filesystem>
 #include <iostream>
 #include <sstream>
@@ -143,7 +144,7 @@ namespace inst::ui {
 		SDL_Init(SDL_INIT_AUDIO);
 		Mix_Init(MIX_INIT_MP3); //enable mp3 support
 		Mix_Init(MIX_INIT_FLAC); //enable flac support
-		Mix_Init(MIX_INIT_OGG); //enable flac support
+		Mix_Init(MIX_INIT_OGG); //enable ogg support
 		Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 		std::string loadsound = "romfs:/bluesong.mod";
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "audio.music"_theme)) {
@@ -285,7 +286,10 @@ namespace inst::ui {
 		}
 		this->Add(this->optionMenu);
 		this->AddRenderCallback(mainMenuThread);
-		if (inst::config::useMusic) playmusic();
+		if (inst::config::useMusic) {
+			std::thread t(&playmusic);
+			t.join();
+		}
 	}
 
 	void MainPage::installMenuItem_Click() {
@@ -404,7 +408,8 @@ namespace inst::ui {
 		}
 
 		if (Down & Held & HidNpadButton_L) {
-			playmusic();
+			std::thread t(&playmusic);
+			t.join();   // main thread waits for the thread t to finish
 		}
 
 		if (Down & Held & HidNpadButton_R) {

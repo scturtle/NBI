@@ -27,7 +27,6 @@ namespace inst::ui {
 	extern MainApplication* mainApp;
 
 	instPage::instPage() : Layout::Layout() {
-
 		std::string infoRect_colour = "colour.inforect"_theme;
 		std::string bg_colour = "colour.background"_theme;
 		std::string tbar_colour = "colour.topbar"_theme;

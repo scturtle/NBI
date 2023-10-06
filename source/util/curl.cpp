@@ -106,7 +106,8 @@ namespace inst::curl {
 		curl_easy_setopt(curl_handle, CURLOPT_TCP_FASTOPEN, 1L);
 		curl_easy_setopt(curl_handle, CURLOPT_STREAM_WEIGHT, 256L);
 		curl_easy_setopt(curl_handle, CURLOPT_TCP_KEEPALIVE, 1L);
-		curl_easy_setopt(curl_handle, CURLOPT_MAX_RECV_SPEED_LARGE, 1L);
+		//https://curl.se/libcurl/c/CURLOPT_MAX_RECV_SPEED_LARGE.html
+		curl_easy_setopt(curl_handle, CURLOPT_MAX_RECV_SPEED_LARGE, 0L); //set to 1 slows initial network connection.
 
 		curl_easy_setopt(curl_handle, CURLOPT_URL, url);
 		curl_easy_setopt(curl_handle, CURLOPT_REFERER, url);
