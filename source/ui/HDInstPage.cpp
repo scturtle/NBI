@@ -132,11 +132,11 @@ namespace inst::ui {
 			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
 
-			std::string folder_up = "romfs:/images/icons/folder-upload.png";
-			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.folder_up"_theme)) {
-				folder_up = inst::config::appDir + "icons_others.folder_up"_theme;
+			std::string folder = "romfs:/images/icons/folder.png";
+			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.folder"_theme)) {
+				folder = inst::config::appDir + "icons_others.folder"_theme;
 			}
-			ourEntry->SetIcon(folder_up);
+			ourEntry->SetIcon(folder);
 			this->menu->AddItem(ourEntry);
 		}
 		for (auto& file : this->ourFiles) {

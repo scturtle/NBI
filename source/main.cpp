@@ -1,5 +1,6 @@
 #include <thread>
 #include <string>
+//#include <sstream>
 #include <switch.h>
 #include "util/error.hpp"
 #include "ui/MainApplication.hpp"
@@ -14,8 +15,15 @@ int main(int argc, char* argv[])
 	try {
 		Theme::Load();
 		int x = 0;
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "fonts.default"_theme)) {
-			x = 1;
+		int langInt = inst::config::languageSetting;
+		//Don't use custom fonts if Taiwanese or Japanese language is selected.
+		//but still use custom fonts if the system language is selected.
+		if (langInt != 2) {
+			if (langInt != 8) {
+				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "fonts.default"_theme)) {
+					x = 1;
+				}
+			}
 		}
 		auto renderer_opts = pu::ui::render::RendererInitOptions(SDL_INIT_EVERYTHING, pu::ui::render::RendererHardwareFlags);
 		renderer_opts.UseImage(pu::ui::render::IMGAllFlags);
