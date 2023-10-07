@@ -225,10 +225,9 @@ namespace inst::ui {
 				}
 				else {
 					if (inst::config::useSound) {
-						std::string audioPath = "";
+						std::string audioPath = "romfs:/audio/fail.mp3";
 						std::string fail = inst::config::appDir + "audio.fail"_theme;
 						if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(fail)) audioPath = (fail);
-						else audioPath = "romfs:/audio/ohno.wav";
 						std::thread audioThread(inst::util::playAudio, audioPath);
 						audioThread.join();
 					}
@@ -247,10 +246,9 @@ namespace inst::ui {
 				std::filesystem::remove(ourPath);
 				if (didExtract) {
 					if (inst::config::useSound) {
-						std::string audioPath = "";
+						std::string audioPath = "romfs:/audio/pass.mp3";
 						std::string pass = inst::config::appDir + "audio.pass"_theme;
 						if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(pass)) audioPath = (pass);
-						else audioPath = "romfs:/audio/yipee.wav";
 						std::thread audioThread(inst::util::playAudio, audioPath);
 						audioThread.join();
 					}

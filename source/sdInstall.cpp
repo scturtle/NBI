@@ -107,7 +107,7 @@ namespace nspInstStuff {
 				std::string audioPath = "";
 				std::string fail = inst::config::appDir + "audio.fail"_theme;
 				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(fail)) audioPath = (fail);
-				else audioPath = "romfs:/audio/ohno.wav";
+				else audioPath = "romfs:/audio/fail.mp3";
 				std::thread audioThread(inst::util::playAudio, audioPath);
 				audioThread.join();
 			}
@@ -151,7 +151,7 @@ namespace nspInstStuff {
 					audioPath = (pass);
 				}
 				else {
-					audioPath = "romfs:/audio/yipee.wav";
+					audioPath = "romfs:/audio/pass.mp3";
 				}
 				std::thread audioThread(inst::util::playAudio, audioPath);
 				audioThread.join();

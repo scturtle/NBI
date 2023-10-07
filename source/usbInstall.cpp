@@ -166,14 +166,9 @@ namespace usbInstStuff {
 			inst::ui::instPage::setInstBarPerc(0);
 
 			if (inst::config::useSound) {
-				std::string audioPath = "";
+				std::string audioPath = "romfs:/audio/fail.mp3";
 				std::string fail = inst::config::appDir + "audio.fail"_theme;
-				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(fail)) {
-					audioPath = (fail);
-				}
-				else {
-					audioPath = "romfs:/audio/ohno.wav";
-				}
+				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(fail)) audioPath = (fail);
 				std::thread audioThread(inst::util::playAudio, audioPath);
 				audioThread.join();
 			}
@@ -194,14 +189,9 @@ namespace usbInstStuff {
 			inst::ui::instPage::setInstBarPerc(100);
 
 			if (inst::config::useSound) {
-				std::string audioPath = "";
+				std::string audioPath = "romfs:/audio/pass.mp3";
 				std::string pass = inst::config::appDir + "audio.pass"_theme;
-				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(pass)) {
-					audioPath = (pass);
-				}
-				else {
-					audioPath = "romfs:/audio/yipee.wav";
-				}
+				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(pass)) audioPath = (pass);
 				std::thread audioThread(inst::util::playAudio, audioPath);
 				audioThread.join();
 			}

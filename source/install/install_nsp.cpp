@@ -121,8 +121,15 @@ namespace tin::install::nsp
 
 			if (!Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, Crypto::NCAHeaderSignature))
 			{
-				std::thread audioThread(inst::util::playAudio, "romfs:/audio/bark.wav");
-				int rc = inst::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang, { "common.cancel"_lang, "inst.nca_verify.opt1"_lang }, false);
+				std::string audioPath = "romfs:/audio/infobeep.mp3";
+				std::string beep = inst::config::appDir + "audio.infobeep"_theme;
+				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(beep)) audioPath = (beep);
+				std::thread audioThread(inst::util::playAudio, audioPath);
+				std::string information = "romfs:/images/icons/information.png";
+				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
+					information = inst::config::appDir + "icons_others.good"_theme;
+				}
+				int rc = inst::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang, { "common.cancel"_lang, "inst.nca_verify.opt1"_lang }, false, information);
 				audioThread.join();
 				if (rc != 1)
 					THROW_FORMAT(("inst.nca_verify.error"_lang + tin::util::GetNcaIdString(ncaId)).c_str());
