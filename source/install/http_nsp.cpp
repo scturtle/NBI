@@ -132,13 +132,17 @@ namespace tin::install::nsp
 		}
 		inst::ui::instPage::setInstBarPerc(100);
 
-		inst::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
+		//inst::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
 		inst::ui::instPage::setInstBarPerc(0);
 		while (!bufferedPlaceholderWriter.IsPlaceholderComplete() && !stopThreadsHttpNsp)
 		{
 			int installProgress = (int)(((double)bufferedPlaceholderWriter.GetSizeWrittenToPlaceholder() / (double)bufferedPlaceholderWriter.GetTotalDataSize()) * 100.0);
 
 			inst::ui::instPage::setInstBarPerc((double)installProgress);
+			//
+			std::stringstream x;
+			x << (int)(installProgress);
+			inst::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "%");
 		}
 		inst::ui::instPage::setInstBarPerc(100);
 

@@ -4,6 +4,7 @@
 #include "nx/nca_writer.h"
 #include "ui/instPage.hpp"
 #include "util/lang.hpp"
+#include <sstream>
 
 namespace tin::install::nsp
 {
@@ -38,7 +39,7 @@ namespace tin::install::nsp
 
 		try
 		{
-			inst::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
+			//inst::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
 			inst::ui::instPage::setInstBarPerc(0);
 			while (fileOff < ncaSize)
 			{
@@ -47,6 +48,10 @@ namespace tin::install::nsp
 				if (fileOff % (0x400000 * 3) == 0) {
 					LOG_DEBUG("> Progress: %lu/%lu MB (%d%s)\r", (fileOff / 1000000), (ncaSize / 1000000), (int)(progress * 100.0), "%");
 					inst::ui::instPage::setInstBarPerc((double)(progress * 100.0));
+					//
+					std::stringstream x;
+					x << (int)(progress * 100.0);
+					inst::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "%");
 				}
 
 				if (fileOff + readSize >= ncaSize) readSize = ncaSize - fileOff;

@@ -120,7 +120,7 @@ namespace tin::install::xci
 				std::thread audioThread(inst::util::playAudio, audioPath);
 				std::string information = "romfs:/images/icons/information.png";
 				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
-					information = inst::config::appDir + "icons_others.good"_theme;
+					information = inst::config::appDir + "icons_others.information"_theme;
 				}
 				int rc = inst::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang, { "common.cancel"_lang, "inst.nca_verify.opt1"_lang }, false, information);
 				audioThread.join();
