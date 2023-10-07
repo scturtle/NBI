@@ -19,7 +19,7 @@ namespace inst::ui {
 	extern MainApplication* mainApp;
 	s32 prev_touchcount = 0;
 	std::string flag = "romfs:/images/flags/en.png";
-	std::vector<std::string> languageStrings = { "Sys", "En", "Jpn", "Fr", "De", "It", "Ru", "Es", "Tw" };
+	std::vector<std::string> languageStrings = { "Sys", "En", "Jpn", "Fr", "De", "It", "Ru", "Es", "Tw", "Cn" };
 
 	optionsPage::optionsPage() : Layout::Layout() {
 		std::string infoRect_colour = "colour.inforect"_theme;
@@ -145,6 +145,7 @@ namespace inst::ui {
 		std::string ru = "romfs:/images/flags/ru.png";
 		std::string es = "romfs:/images/flags/es.png";
 		std::string tw = "romfs:/images/flags/tw.png";
+		std::string cn = "romfs:/images/flags/cn.png";
 		//
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_flags.sys"_theme)) {
 			sys = inst::config::appDir + "icons_flags.sys"_theme;
@@ -173,6 +174,9 @@ namespace inst::ui {
 		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_flags.tw"_theme)) {
 			tw = inst::config::appDir + "icons_flags.tw"_theme;
 		}
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_flags.cn"_theme)) {
+			cn = inst::config::appDir + "icons_flags.cn"_theme;
+		}
 		//
 		if (ourLangCode >= 0) {
 			if (ourLangCode == 0) flag = sys;
@@ -184,6 +188,7 @@ namespace inst::ui {
 			else if (ourLangCode == 6) flag = ru;
 			else if (ourLangCode == 7) flag = es;
 			else if (ourLangCode == 8) flag = tw;
+			else if (ourLangCode == 9) flag = cn;
 			return languageStrings[ourLangCode];
 		}
 		else {
@@ -215,6 +220,18 @@ namespace inst::ui {
 				mainApp->FadeOut();
 				mainApp->Close();
 			}
+		}
+	}
+
+	void lang_message() {
+		std::string flag = "romfs:/images/icons/flags/sys.png";
+		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_flags.sys"_theme)) {
+			flag = inst::config::appDir + "icons_flags.sys"_theme;
+		}
+		int ourResult = inst::ui::mainApp->CreateShowDialog("sig.restart"_lang, "theme.restart"_lang, { "common.no"_lang, "common.yes"_lang }, true, flag);
+		if (ourResult != 0) {
+			mainApp->FadeOut();
+			mainApp->Close();
 		}
 	}
 
@@ -583,12 +600,14 @@ namespace inst::ui {
 						case 8:
 							inst::config::languageSetting = 8;
 							break;
+						case 9:
+							inst::config::languageSetting = 9;
+							break;
 						default:
 							inst::config::languageSetting = 0;
 						}
 						inst::config::setConfig();
-						mainApp->FadeOut();
-						mainApp->Close();
+						lang_message();
 						break;
 					case 17:
 						if (inst::util::getIPAddress() == "1.0.0.127") {

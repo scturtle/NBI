@@ -20,8 +20,10 @@ int main(int argc, char* argv[])
 		//but still use custom fonts if the system language is selected.
 		if (langInt != 2) {
 			if (langInt != 8) {
-				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "fonts.default"_theme)) {
-					x = 1;
+				if (langInt != 9) {
+					if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "fonts.default"_theme)) {
+						x = 1;
+					}
 				}
 			}
 		}
