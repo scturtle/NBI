@@ -58,6 +58,11 @@ namespace inst::ui {
 	extern MainApplication* mainApp;
 }
 
+namespace inst::ui {
+	std::string neti_root = inst::config::appDir + "/theme";
+	bool neti_theme = util::themeit(neti_root); //check if we have a previous theme directory first.
+}
+
 namespace netInstStuff {
 
 	//Strip the filename from the url we are trying to download - ie list.txt, index.html etc...
@@ -165,7 +170,7 @@ namespace netInstStuff {
 				m_serverSocket = 0;
 			}
 			std::string fail = "romfs:/images/icons/fail.png";
-			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+			if (inst::ui::neti_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 				fail = inst::config::appDir + "icons_others.fail"_theme;
 			}
 
@@ -252,13 +257,13 @@ namespace netInstStuff {
 			if (inst::config::useSound) {
 				std::string audioPath = "romfs:/audio/fail.mp3";
 				std::string fail = inst::config::appDir + "audio.fail"_theme;
-				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(fail)) audioPath = (fail);
+				if (inst::ui::neti_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(fail)) audioPath = (fail);
 				std::thread audioThread(inst::util::playAudio, audioPath);
 				audioThread.join();
 			}
 
 			std::string fail = "romfs:/images/icons/fail.png";
-			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+			if (inst::ui::neti_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 				fail = inst::config::appDir + "icons_others.fail"_theme;
 			}
 
@@ -284,13 +289,13 @@ namespace netInstStuff {
 			if (inst::config::useSound) {
 				std::string audioPath = "romfs:/audio/pass.mp3";
 				std::string pass = inst::config::appDir + "audio.pass"_theme;
-				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(pass)) audioPath = (pass);
+				if (inst::ui::neti_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(pass)) audioPath = (pass);
 				std::thread audioThread(inst::util::playAudio, audioPath);
 				audioThread.join();
 			}
 
 			std::string good = "romfs:/images/icons/good.png";
-			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.good"_theme)) {
+			if (inst::ui::neti_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.good"_theme)) {
 				good = inst::config::appDir + "icons_others.good"_theme;
 			}
 
@@ -342,15 +347,15 @@ namespace netInstStuff {
 			std::vector<std::string> tmp_array;
 
 			std::string info = "romfs:/images/icons/information.png";
-			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
+			if (inst::ui::neti_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
 				info = inst::config::appDir + "icons_others.information"_theme;
 			}
 			std::string fail = "romfs:/images/icons/fail.png";
-			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+			if (inst::ui::neti_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 				fail = inst::config::appDir + "icons_others.fail"_theme;
 			}
 			std::string wait = "romfs:/images/icons/wait.png";
-			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.wait"_theme)) {
+			if (inst::ui::neti_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.wait"_theme)) {
 				wait = inst::config::appDir + "icons_others.wait"_theme;
 			}
 
@@ -598,7 +603,7 @@ namespace netInstStuff {
 			LOG_DEBUG("%s", e.what());
 			fprintf(stdout, "%s", e.what());
 			std::string fail = "romfs:/images/icons/fail.png";
-			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+			if (inst::ui::neti_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 				fail = inst::config::appDir + "icons_others.fail"_theme;
 			}
 			inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), { "common.ok"_lang }, true, fail);

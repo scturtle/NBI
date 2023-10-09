@@ -43,6 +43,11 @@ namespace inst::ui {
 	extern MainApplication* mainApp;
 }
 
+namespace inst::ui {
+	std::string themei_root = inst::config::appDir + "/theme";
+	bool themei_theme = util::themeit(themei_root); //check if we have a previous theme directory first.
+}
+
 namespace ThemeInstStuff {
 
 	//Strip the filename from the url we are trying to download - ie list.txt, index.html etc...
@@ -126,15 +131,15 @@ namespace ThemeInstStuff {
 		OnUnwound();
 
 		std::string info = "romfs:/images/icons/information.png";
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
+		if (inst::ui::themei_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
 			info = inst::config::appDir + "icons_others.information"_theme;
 		}
 		std::string fail = "romfs:/images/icons/fail.png";
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+		if (inst::ui::themei_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 			fail = inst::config::appDir + "icons_others.fail"_theme;
 		}
 		std::string wait = "romfs:/images/icons/wait.png";
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.wait"_theme)) {
+		if (inst::ui::themei_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.wait"_theme)) {
 			wait = inst::config::appDir + "icons_others.wait"_theme;
 		}
 

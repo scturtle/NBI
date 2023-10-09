@@ -42,6 +42,11 @@ namespace inst::ui {
 	extern MainApplication* mainApp;
 }
 
+namespace inst::ui {
+	std::string usbi_root = inst::config::appDir + "/theme";
+	bool usbi_theme = util::themeit(usbi_root); //check if we have a previous theme directory first.
+}
+
 namespace usbInstStuff {
 	struct TUSHeader
 	{
@@ -66,7 +71,7 @@ namespace usbInstStuff {
 		PadState pad;
 		padInitializeAny(&pad);
 		std::string info = "romfs:/images/icons/information.png";
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
+		if (inst::ui::usbi_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
 			info = inst::config::appDir + "icons_others.information"_theme;
 		}
 
@@ -107,11 +112,11 @@ namespace usbInstStuff {
 		NcmStorageId m_destStorageId = NcmStorageId_SdCard;
 
 		std::string good = "romfs:/images/icons/good.png";
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.good"_theme)) {
+		if (inst::ui::usbi_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.good"_theme)) {
 			good = inst::config::appDir + "icons_others.good"_theme;
 		}
 		std::string fail = "romfs:/images/icons/fail.png";
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+		if (inst::ui::usbi_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 			fail = inst::config::appDir + "icons_others.fail"_theme;
 		}
 
@@ -168,7 +173,7 @@ namespace usbInstStuff {
 			if (inst::config::useSound) {
 				std::string audioPath = "romfs:/audio/fail.mp3";
 				std::string fail = inst::config::appDir + "audio.fail"_theme;
-				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(fail)) audioPath = (fail);
+				if (inst::ui::usbi_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(fail)) audioPath = (fail);
 				std::thread audioThread(inst::util::playAudio, audioPath);
 				audioThread.join();
 			}
@@ -191,7 +196,7 @@ namespace usbInstStuff {
 			if (inst::config::useSound) {
 				std::string audioPath = "romfs:/audio/pass.mp3";
 				std::string pass = inst::config::appDir + "audio.pass"_theme;
-				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(pass)) audioPath = (pass);
+				if (inst::ui::usbi_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(pass)) audioPath = (pass);
 				std::thread audioThread(inst::util::playAudio, audioPath);
 				audioThread.join();
 			}

@@ -4,6 +4,7 @@
 #include "util/config.hpp"
 #include "util/lang.hpp"
 #include "util/theme.hpp"
+#include "util/util.hpp"
 #include <sys/statvfs.h>
 
 FsFileSystem* fs;
@@ -25,6 +26,8 @@ double GetSpace(const char* path)
 
 namespace inst::ui {
 	extern MainApplication* mainApp;
+	std::string inst_root = inst::config::appDir + "/theme";
+	bool inst_theme = util::themeit(inst_root); //check if we have a previous theme directory first.
 
 	instPage::instPage() : Layout::Layout() {
 		std::string infoRect_colour = "colour.inforect"_theme;
@@ -40,51 +43,51 @@ namespace inst::ui {
 		std::string progress_bg_colour = "colour.progress_bg"_theme;
 		std::string progress_fg_colour = "colour.progress_fg"_theme;
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR(infoRect_colour));
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR(infoRect_colour));
 		else this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#00000080"));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->SetBackgroundColor(COLOR(bg_colour));
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->SetBackgroundColor(COLOR(bg_colour));
 		else this->SetBackgroundColor(COLOR("#000000FF"));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR(tbar_colour));
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR(tbar_colour));
 		else this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(install_top)) this->titleImage = Image::New(0, 0, (install_top));
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(install_top)) this->titleImage = Image::New(0, 0, (install_top));
 		else this->titleImage = Image::New(0, 0, "romfs:/images/Install.png");
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
 		else this->SetBackgroundImage("romfs:/images/Background.png");
 
 		this->pageInfoText = TextBlock::New(10, 109, "");
 		this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->pageInfoText->SetColor(COLOR(pageinfo_colour));
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->pageInfoText->SetColor(COLOR(pageinfo_colour));
 		else this->pageInfoText->SetColor(COLOR("#FFFFFFFF"));
 
 		this->installInfoText = TextBlock::New(10, 640, "");
 		this->installInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->installInfoText->SetColor(COLOR(installinfo_colour));
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->installInfoText->SetColor(COLOR(installinfo_colour));
 		else this->installInfoText->SetColor(COLOR("#FFFFFFFF"));
 
 		this->sdInfoText = TextBlock::New(10, 600, "");
 		this->sdInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->sdInfoText->SetColor(COLOR(sdinfo_colour));
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->sdInfoText->SetColor(COLOR(sdinfo_colour));
 		else this->sdInfoText->SetColor(COLOR("#FFFFFFFF"));
 
 		this->nandInfoText = TextBlock::New(10, 560, "");
 		this->nandInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->nandInfoText->SetColor(COLOR(nandinfo_colour));
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->nandInfoText->SetColor(COLOR(nandinfo_colour));
 		else this->nandInfoText->SetColor(COLOR("#FFFFFFFF"));
 
 		this->countText = TextBlock::New(10, 520, "");
 		this->countText->SetFont(pu::ui::MakeDefaultFontName(30));
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->countText->SetColor(COLOR(count_colour));
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->countText->SetColor(COLOR(count_colour));
 		else this->countText->SetColor(COLOR("#FFFFFFFF"));
 
 		//this->installBar = pu::ui::elm::ProgressBar::New(10, 680, 1260, 30, 100.0f);
 		this->installBar = pu::ui::elm::ProgressBar::New(10, 675, 1260, 35, 100.0f);
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->installBar->SetBackgroundColor(COLOR(progress_bg_colour));
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->installBar->SetBackgroundColor(COLOR(progress_bg_colour));
 		else this->installBar->SetBackgroundColor(COLOR("#000000FF"));
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->installBar->SetProgressColor(COLOR(progress_fg_colour));
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->installBar->SetProgressColor(COLOR(progress_fg_colour));
 		else this->installBar->SetProgressColor(COLOR("#565759FF"));
 
 		this->Add(this->topRect);

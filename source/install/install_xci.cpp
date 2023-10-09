@@ -39,6 +39,11 @@ namespace inst::ui {
 	extern MainApplication* mainApp;
 }
 
+namespace inst::ui {
+	std::string xci_root = inst::config::appDir + "/theme";
+	bool xci_theme = util::themeit(xci_root); //check if we have a previous theme directory first.
+}
+
 namespace tin::install::xci
 {
 	XCIInstallTask::XCIInstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, const std::shared_ptr<XCI>& xci) :
@@ -116,10 +121,10 @@ namespace tin::install::xci
 			{
 				std::string audioPath = "romfs:/audio/infobeep.mp3";
 				std::string beep = inst::config::appDir + "audio.infobeep"_theme;
-				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(beep)) audioPath = (beep);
+				if (inst::ui::xci_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(beep)) audioPath = (beep);
 				std::thread audioThread(inst::util::playAudio, audioPath);
 				std::string information = "romfs:/images/icons/information.png";
-				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
+				if (inst::ui::xci_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
 					information = inst::config::appDir + "icons_others.information"_theme;
 				}
 				int rc = inst::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang, { "common.cancel"_lang, "inst.nca_verify.opt1"_lang }, false, information);

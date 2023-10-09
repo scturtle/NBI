@@ -21,6 +21,8 @@ namespace inst::util {
 	int getUsbState();
 	void playAudio(std::string audioPath); //for mp3/ogg/mod etc
 	void playWav(std::string audioPath); //for wav files
+	bool remove_theme(std::string dir);
+	bool themeit(std::string dir);
 	std::vector<std::string> checkForAppUpdate();
 	std::string SplitFilename(const std::string& str);
 }

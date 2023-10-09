@@ -8,6 +8,11 @@
 #include "util/config.hpp"
 #include "util/theme.hpp"
 
+namespace inst::ui {
+	std::string main_root = inst::config::appDir + "/theme";
+	bool main_theme = util::themeit(main_root); //check if we have a previous theme directory first.
+}
+
 using namespace pu::ui::render;
 int main(int argc, char* argv[])
 {
@@ -21,7 +26,7 @@ int main(int argc, char* argv[])
 		if (langInt != 2) {
 			if (langInt != 8) {
 				if (langInt != 9) {
-					if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "fonts.default"_theme)) {
+					if (inst::ui::main_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "fonts.default"_theme)) {
 						x = 1;
 					}
 				}

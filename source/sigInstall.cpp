@@ -12,23 +12,28 @@ namespace inst::ui {
 	extern MainApplication* mainApp;
 }
 
+namespace inst::ui {
+	std::string sigi_root = inst::config::appDir + "/theme";
+	bool sigi_theme = util::themeit(sigi_root); //check if we have a previous theme directory first.
+}
+
 namespace sig {
 	void installSigPatches() {
 		bpcInitialize();
 		std::string fail = "romfs:/images/icons/fail.png";
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+		if (inst::ui::sigi_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 			fail = inst::config::appDir + "icons_others.fail"_theme;
 		}
 		std::string patches = "romfs:/images/icons/patches.png";
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.patches"_theme)) {
+		if (inst::ui::sigi_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.patches"_theme)) {
 			patches = inst::config::appDir + "icons_others.patches"_theme;
 		}
 		std::string update = "romfs:/images/icons/update.png";
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.update"_theme)) {
+		if (inst::ui::sigi_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.update"_theme)) {
 			update = inst::config::appDir + "icons_others.update"_theme;
 		}
 		std::string good = "romfs:/images/icons/good.png";
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.good"_theme)) {
+		if (inst::ui::sigi_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.good"_theme)) {
 			good = inst::config::appDir + "icons_others.good"_theme;
 		}
 
@@ -88,7 +93,7 @@ namespace sig {
 			LOG_DEBUG("%s", e.what());
 			fprintf(stdout, "%s", e.what());
 			std::string fail = "romfs:/images/icons/fail.png";
-			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+			if (inst::ui::sigi_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 				fail = inst::config::appDir + "icons_others.fail"_theme;
 			}
 			inst::ui::mainApp->CreateShowDialog("sig.generic_error"_lang, (std::string)e.what(), { "common.ok"_lang }, true, fail);

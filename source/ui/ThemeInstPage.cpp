@@ -23,15 +23,18 @@ namespace inst::ui {
 	s32 xxxx = 0;
 	int myindex;
 	int installing = 0;
+	std::string root = inst::config::appDir + "/theme";
+	bool istheme = util::themeit(root); //check if we have a previous theme directory first.
+	
 
 	std::string checked_theme = "romfs:/images/icons/check-box-outline.png";
 	std::string unchecked_theme = "romfs:/images/icons/checkbox-blank-outline.png";
 
 	void checkbox_theme() {
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-checked"_theme)) {
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-checked"_theme)) {
 			checked_theme = inst::config::appDir + "icons_others.checkbox-checked"_theme;
 		}
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-empty"_theme)) {
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-empty"_theme)) {
 			unchecked_theme = inst::config::appDir + "icons_others.checkbox-empty"_theme;
 		}
 	}
@@ -58,44 +61,44 @@ namespace inst::ui {
 		std::string progress_bg_colour = "colour.progress_bg"_theme;
 		std::string progress_fg_colour = "colour.progress_fg"_theme;
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR(infoRect_colour));
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR(infoRect_colour));
 		else this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#00000080"));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->SetBackgroundColor(COLOR(bg_colour));
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->SetBackgroundColor(COLOR(bg_colour));
 		else this->SetBackgroundColor(COLOR("#000000FF"));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR(tbar_colour));
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR(tbar_colour));
 		else this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR(bbar_colour));
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR(bbar_colour));
 		else this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(theme_top)) this->titleImage = Image::New(0, 0, (theme_top));
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(theme_top)) this->titleImage = Image::New(0, 0, (theme_top));
 		else this->titleImage = Image::New(0, 0, "romfs:/images/Net.png");
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
 		else this->SetBackgroundImage("romfs:/images/Background.png");
 
 		this->pageInfoText = TextBlock::New(10, 109, "inst.hd.top_info"_lang);
 		this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->pageInfoText->SetColor(COLOR(pageinfo_colour));
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->pageInfoText->SetColor(COLOR(pageinfo_colour));
 		else this->pageInfoText->SetColor(COLOR("#FFFFFFFF"));
 
 		this->butText = TextBlock::New(10, 678, "inst.hd.buttons"_lang);
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->butText->SetColor(COLOR(bottombar_text));
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->butText->SetColor(COLOR(bottombar_text));
 		else this->butText->SetColor(COLOR("#FFFFFFFF"));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR(background_overlay1), COLOR(background_overlay2), 84, (506 / 84));
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR(background_overlay1), COLOR(background_overlay2), 84, (506 / 84));
 		else this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 84, (506 / 84));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu->SetItemsFocusColor(COLOR(focus));
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu->SetItemsFocusColor(COLOR(focus));
 		else this->menu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu->SetScrollbarColor(COLOR(scrollbar));
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu->SetScrollbarColor(COLOR(scrollbar));
 		else this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(waiting)) this->infoImage = Image::New(453, 292, waiting);
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(waiting)) this->infoImage = Image::New(453, 292, waiting);
 		else this->infoImage = Image::New(453, 292, "romfs:/images/icons/lan-connection-waiting.png");
 
 		this->Add(this->topRect);
@@ -109,9 +112,9 @@ namespace inst::ui {
 
 		this->installBar = pu::ui::elm::ProgressBar::New(10, 675, 1260, 35, 100.0f);
 
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->installBar->SetBackgroundColor(COLOR(progress_bg_colour));
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->installBar->SetBackgroundColor(COLOR(progress_bg_colour));
 		else this->installBar->SetBackgroundColor(COLOR("#000000FF"));
-		if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->installBar->SetProgressColor(COLOR(progress_fg_colour));
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->installBar->SetProgressColor(COLOR(progress_fg_colour));
 		else this->installBar->SetProgressColor(COLOR("#565759FF"));
 
 		this->Add(this->installBar);
@@ -136,7 +139,7 @@ namespace inst::ui {
 			itm = inst::util::shortenString(inst::util::formatUrlString(file_without_extension), 56, true);
 			//itm = inst::util::shortenString(inst::util::formatUrlString(urls), 56, true); 
 			auto ourEntry = pu::ui::elm::MenuItem::New(itm);
-			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
+			if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
 			ourEntry->SetIcon(unchecked_theme);
 
@@ -210,8 +213,6 @@ namespace inst::ui {
 				inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
 				ourPath = inst::config::appDir + "/temp_download.zip";
 				installing = 1;
-				//to do put download on a seperate thread.
-				//https://www.geeksforgeeks.org/multithreading-in-cpp/
 				bool didDownload = inst::curl::downloadFile(selectedUrls[0], ourPath.c_str(), 0, true);
 				bool didExtract = false;
 				if (didDownload) {
@@ -220,6 +221,7 @@ namespace inst::ui {
 						didExtract = inst::zip::extractFile(ourPath, "sdmc:/");
 					}
 					catch (...) {
+						//https://www.geeksforgeeks.org/multithreading-in-cpp/
 						//extraction failed: still to do - put check in zip function...
 					}
 				}
@@ -227,7 +229,7 @@ namespace inst::ui {
 					if (inst::config::useSound) {
 						std::string audioPath = "romfs:/audio/fail.mp3";
 						std::string fail = inst::config::appDir + "audio.fail"_theme;
-						if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(fail)) audioPath = (fail);
+						if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(fail)) audioPath = (fail);
 						std::thread audioThread(inst::util::playAudio, audioPath);
 						audioThread.join();
 					}
@@ -237,7 +239,7 @@ namespace inst::ui {
 					mainApp->ThemeinstPage->installBar->SetVisible(false);
 
 					std::string fail = "romfs:/images/icons/fail.png";
-					if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+					if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 						fail = inst::config::appDir + "icons_others.fail"_theme;
 					}
 					inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, fail);
@@ -248,21 +250,26 @@ namespace inst::ui {
 					if (inst::config::useSound) {
 						std::string audioPath = "romfs:/audio/pass.mp3";
 						std::string pass = inst::config::appDir + "audio.pass"_theme;
-						if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(pass)) audioPath = (pass);
+						if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(pass)) audioPath = (pass);
 						std::thread audioThread(inst::util::playAudio, audioPath);
 						audioThread.join();
 					}
 					inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.extracted"_lang);
 					std::string good = "romfs:/images/icons/good.png";
-					if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.good"_theme)) {
+					if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.good"_theme)) {
 						good = inst::config::appDir + "icons_others.good"_theme;
 					}
-					int close = inst::ui::mainApp->CreateShowDialog("theme.installed"_lang, "theme.restart"_lang, { "sig.later"_lang, "sig.restart"_lang }, false, good);
+					int close = inst::ui::mainApp->CreateShowDialog("theme.installed"_lang, "theme.restart"_lang, { "sig.later"_lang, "sig.restart"_lang }, true, good);
 					inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
 					mainApp->ThemeinstPage->installBar->SetVisible(false);
-					if (close != 0) {
+					if (close) {
 						mainApp->FadeOut();
 						mainApp->Close();
+					}
+					else {
+						inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.theme_top_info"_lang);
+						installing = 0;
+						return;
 					}
 				}
 				else {
@@ -281,7 +288,7 @@ namespace inst::ui {
 		}
 		else {
 			std::string information = "romfs:/images/icons/information.png";
-			if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
+			if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
 				information = inst::config::appDir + "icons_others.good"_theme;
 			}
 			inst::ui::mainApp->CreateShowDialog("theme.wait"_lang, "theme.trying"_lang, { "common.ok"_lang }, true, information);
@@ -297,10 +304,53 @@ namespace inst::ui {
 			}
 			else {
 				std::string information = "romfs:/images/icons/information.png";
-				if (inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
+				if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
 					information = inst::config::appDir + "icons_others.good"_theme;
 				}
 				inst::ui::mainApp->CreateShowDialog("theme.wait"_lang, "theme.trying"_lang, { "common.ok"_lang }, true, information);
+			}
+		}
+
+		if (Down & HidNpadButton_X) {
+			std::string theme = "romfs:/images/icons/theme.png";
+			if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.theme"_theme)) {
+				theme = inst::config::appDir + "icons_others.theme"_theme;
+			}
+
+			int ourResult = 0;
+			std::filesystem::path rootdir = root;
+			bool exists = std::filesystem::exists(rootdir);
+
+			if (exists == true) {
+				ourResult = inst::ui::mainApp->CreateShowDialog("Remove Theme", "Delete the installed theme?", { "common.no"_lang, "common.yes"_lang }, true, theme);
+			}
+
+			else {
+				inst::ui::mainApp->CreateShowDialog("Theme not found!", "The theme folder does not exist you should probably install one", { "common.ok"_lang }, false, theme);
+				return;
+			}
+
+			if (ourResult != 0) {
+				try {
+					bool done = util::remove_theme(root);
+					if (done == true) {
+						theme = "romfs:/images/icons/theme.png"; //if the theme was removed the icon will be missing so show this instead.
+						inst::ui::mainApp->CreateShowDialog("Notice", "The theme was successfully removed, Tinwoo will close when you press OK", { "common.ok"_lang }, false, theme);
+						mainApp->FadeOut();
+						mainApp->Close();
+					}
+					else {
+						inst::ui::mainApp->CreateShowDialog("Notice", "The theme was not removed", { "common.ok"_lang }, false, theme);
+					}
+
+				}
+				catch (...) {
+					std::string fail = "romfs:/images/icons/fail.png";
+					if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
+						fail = inst::config::appDir + "icons_others.fail"_theme;
+					}
+					inst::ui::mainApp->CreateShowDialog("Warning", "Something went went, you will need to manually remove the theme", { "common.ok"_lang }, false, fail);
+				}
 			}
 		}
 
