@@ -216,6 +216,10 @@ namespace inst::ui {
 				bool didDownload = inst::curl::downloadFile(selectedUrls[0], ourPath.c_str(), 0, true);
 				bool didExtract = false;
 				if (didDownload) {
+					//remove the previous theme first before installing if it exists
+					if (istheme == true) {
+						util::remove_theme(root);
+					}
 					inst::ui::mainApp->ThemeinstPage->pageInfoText->SetText("theme.complete"_lang);
 					try {
 						didExtract = inst::zip::extractFile(ourPath, "sdmc:/");
