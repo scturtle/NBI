@@ -322,11 +322,11 @@ namespace inst::ui {
 			bool exists = std::filesystem::exists(rootdir);
 
 			if (exists == true) {
-				ourResult = inst::ui::mainApp->CreateShowDialog("Remove Theme", "Delete the installed theme?", { "common.no"_lang, "common.yes"_lang }, true, theme);
+				ourResult = inst::ui::mainApp->CreateShowDialog("theme.remove"_lang, "theme.delete"_lang, { "common.no"_lang, "common.yes"_lang }, true, theme);
 			}
 
 			else {
-				inst::ui::mainApp->CreateShowDialog("Theme not found!", "The theme folder does not exist you should probably install one", { "common.ok"_lang }, false, theme);
+				inst::ui::mainApp->CreateShowDialog("theme.notfound"_lang, "theme.notfound2"_lang, { "common.ok"_lang }, false, theme);
 				return;
 			}
 
@@ -335,12 +335,12 @@ namespace inst::ui {
 					bool done = util::remove_theme(root);
 					if (done == true) {
 						theme = "romfs:/images/icons/theme.png"; //if the theme was removed the icon will be missing so show this instead.
-						inst::ui::mainApp->CreateShowDialog("Notice", "The theme was successfully removed, Tinwoo will close when you press OK", { "common.ok"_lang }, false, theme);
+						inst::ui::mainApp->CreateShowDialog("theme.notice"_lang, "theme.success"_lang, { "common.ok"_lang }, false, theme);
 						mainApp->FadeOut();
 						mainApp->Close();
 					}
 					else {
-						inst::ui::mainApp->CreateShowDialog("Notice", "The theme was not removed", { "common.ok"_lang }, false, theme);
+						inst::ui::mainApp->CreateShowDialog("theme.notice"_lang, "theme.notremoved"_lang, { "common.ok"_lang }, false, theme);
 					}
 
 				}
@@ -349,7 +349,7 @@ namespace inst::ui {
 					if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 						fail = inst::config::appDir + "icons_others.fail"_theme;
 					}
-					inst::ui::mainApp->CreateShowDialog("Warning", "Something went went, you will need to manually remove the theme", { "common.ok"_lang }, false, fail);
+					inst::ui::mainApp->CreateShowDialog("theme.warning"_lang, "theme.error"_lang, { "common.ok"_lang }, false, fail);
 				}
 			}
 		}

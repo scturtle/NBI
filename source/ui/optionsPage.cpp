@@ -113,9 +113,8 @@ namespace inst::ui {
 				std::filesystem::remove(downloadName);
 				//remove theme from tinwoo to prevent errors, users can download again after the update
 				util::remove_theme(op_root);
-				update = "romfs:/images/icons/update.png"; //better put this here now as the theme was removed
-				inst::ui::instPage::setInstInfoText("The theme removed to prevent possible errors ater updating!");
-				mainApp->CreateShowDialog("options.update.complete"_lang, "options.update.end_desc"_lang, { "common.ok"_lang }, false, update);
+				inst::ui::instPage::setInstInfoText("theme.warning2"_lang);
+				mainApp->CreateShowDialog("options.update.complete"_lang, "options.update.end_desc"_lang, { "common.ok"_lang }, false, "romfs:/images/icons/update.png");
 				mainApp->FadeOut();
 				mainApp->Close();
 			}
@@ -183,10 +182,11 @@ namespace inst::ui {
 		if (op_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_flags.tw"_theme)) {
 			tw = inst::config::appDir + "icons_flags.tw"_theme;
 		}
+		/* temp comment out until next update
 		if (op_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_flags.cn"_theme)) {
 			cn = inst::config::appDir + "icons_flags.cn"_theme;
 		}
-		//
+		*/
 		if (ourLangCode >= 0) {
 			if (ourLangCode == 0) flag = sys;
 			else if (ourLangCode == 1) flag = en;

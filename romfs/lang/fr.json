@@ -194,7 +194,7 @@
     "update": {
       "title": "Mise à jour disponible",
       "desc0": "TinWoo Installer ",
-      "desc1": " est disponible dès maintenant ! Prêt à mettre à jour ?",
+      "desc1": " est disponible dès maintenant !\n\n*** La mise à jour supprimera votre thème actuel pour éviter les problèmes ***\n\nAppuyez sur Mettre à jour pour continuer",
       "opt0": "Mise à jour",
       "top_info": "Mise à jour de l'installateur TinWoo ",
       "bot_info": "Téléchargement de l'installateur TinWoo ",
@@ -233,7 +233,7 @@
     "theme_error": "Aucun thème trouvé !",
     "theme_error_info": "Avez-vous entré l'URL source correcte du serveur de thème dans la page de configuration ?",
     "theme_top_info": "Sélectionnez le thème que vous souhaitez installer, puis appuyez sur le bouton \ue0ef !",
-    "buttons2": "\ue0e0 Sélectionnez Fichier \ue0ef Installer le fichier \ue0e1 Annuler",
+    "buttons2": "\ue0e0 Sélectionnez Fichier \ue0ef Installer le fichier \ue0e2 Supprimer le thème \ue0e1 Annuler",
     "please_wait": "Veuillez patienter, j'essaie de me connecter au serveur !",
     "theme_option": "Utiliser le thème",
     "theme_url": "URL source du serveur de thème : ",
@@ -249,7 +249,17 @@
     "restart": "Redémarrez Tinwoo pour voir les changements",
     "retry": "L'extraction du thème a échoué. Réessayez ?",
     "wait": "S'il vous plaît, attendez!",
-    "trying": "J'essaie actuellement d'installer un thème"
+    "trying": "J'essaie actuellement d'installer un thème",
+    "remove": "Supprimer le thème",
+    "delete": "Supprimer le thème installé ?",
+    "notfound": "Thème introuvable !",
+    "notfound2": "Le dossier du thème n'existe pas, vous devriez probablement en installer un",
+    "notice": "Avis",
+    "success": "Le thème a été supprimé avec succès, Tinwoo se fermera lorsque vous appuierez sur OK",
+    "notremoved": "Le thème n'a pas été supprimé",
+    "warning": "Avertissement",
+    "error": "Quelque chose s'est passé, vous devrez supprimer manuellement le thème",
+    "warning2": "Le thème a été supprimé pour éviter d'éventuelles erreurs après la mise à jour !"
   },
   "usage": {
     "system_size": "Taille totale du système: ",

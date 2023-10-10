@@ -194,7 +194,7 @@
     "update": {
       "title": "Actualización de",
       "desc0": "TinWoo Installer disponible",
-      "desc1": "¡Está disponible! ¿Listo para actualizar?",
+      "desc1": " ¡está disponible ahora!\n\n*** La actualización eliminará el tema actual para evitar problemas ***\n\nPresione Actualizar para continuar",
       "opt0": "Actualizar",
       "top_info": "Actualizando TinWoo Installer",
       "bot_info": "Descargando TinWoo Installer",
@@ -233,7 +233,7 @@
     "theme_error": "¡No se encontraron temas!",
     "theme_error_info": "¿Ingresó la URL de origen del servidor de temas correcta en la página de configuración?",
     "theme_top_info": "Seleccione el tema que desea instalar y luego presione el botón \ue0ef.",
-    "buttons2": "\ue0e0 Seleccionar archivo \ue0ef Instalar archivo \ue0e1 Cancelar",
+    "buttons2": "\ue0e0 Seleccionar archivo \ue0ef Instalar archivo \ue0e2 Eliminar tema \ue0e1 Cancelar",
     "please_wait": "Espere, ¡estoy intentando conectarme al servidor!",
     "theme_option": "Usar tema",
     "theme_url": "URL de origen del servidor de temas:",
@@ -249,7 +249,17 @@
     "restart": "Reinicie Tinwoo para ver los cambios.",
     "retry": "Error al extraer el tema, ¿inténtalo de nuevo?",
     "wait": "¡Espere por favor!",
-    "trying": "Actualmente estoy intentando instalar un tema."
+    "trying": "Actualmente estoy intentando instalar un tema.",
+    "remove": "Eliminar tema",
+    "delete": "¿Eliminar el tema instalado?",
+    "notfound": "¡Tema no encontrado!",
+    "notfound2": "La carpeta del tema no existe, probablemente deberías instalar una",
+    "notice": "Aviso",
+    "success": "El tema fue eliminado exitosamente, Tinwoo se cerrará cuando presiones OK",
+    "notremoved": "El tema no fue eliminado",
+    "warning": "Advertencia",
+    "error": "Algo salió mal, necesitarás eliminar el tema manualmente",
+    "warning2": "¡El tema se eliminó para evitar posibles errores después de la actualización!"
   },
   "usage": {
     "system_size": "Tamaño total del sistema: ",

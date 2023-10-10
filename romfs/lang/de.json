@@ -194,7 +194,7 @@
     "update": {
       "title": "Neue Version verfügbar",
       "desc0": "TinWoo Installer ",
-      "desc1": " ist jetzt verfügbar! Bereit zu aktualisieren?",
+      "desc1": " ist jetzt verfügbar!\n\n*** Durch die Aktualisierung wird Ihr aktuelles Design entfernt, um Probleme zu vermeiden. ***\n\nKlicken Sie auf „Aktualisieren“, um fortzufahren",
       "opt0": "Aktualisieren",
       "top_info": "Update von TinWoo Installer ",
       "bot_info": "Lade TinWoo Installer herunter ",
@@ -233,7 +233,7 @@
     "theme_error": "Keine Themen gefunden!",
     "theme_error_info": "Haben Sie auf der Konfigurationsseite die richtige Quell-URL des Theme-Servers eingegeben?",
     "theme_top_info": "Wählen Sie eine zum Installieren aus und drücken Sie dann die \ue0ef Taste!",
-    "buttons2": "\ue0e0 Datei auswählen \ue0ef Datei installieren \ue0e1 Abbrechen",
+    "buttons2": "\ue0e0 Datei auswählen \ue0ef Datei installieren \ue0e2 Thema entfernen \ue0e1 Abbrechen",
     "please_wait": "Bitte warten Sie, ich versuche, eine Verbindung zum Server herzustellen!",
     "theme_option": "Verwenden Sie ein Thema",
     "theme_url": "Quell-URL des Theme-Servers:",
@@ -249,7 +249,17 @@
     "restart": "Starten Sie Tinwoo neu, um die Änderungen zu sehen",
     "retry": "Theme-Extraktion fehlgeschlagen, erneut versuchen?",
     "wait": "Bitte warten!",
-    "trying": "Ich versuche gerade, ein Theme zu installieren"
+    "trying": "Ich versuche gerade, ein Theme zu installieren",
+    "remove": "Design entfernen",
+    "delete": "Das installierte Theme löschen?",
+    "notfound": "Theme nicht gefunden!",
+    "notfound2": "Der Theme-Ordner existiert nicht, Sie sollten wahrscheinlich einen installieren",
+    "notice": "Hinweis",
+    "success": "Das Theme wurde erfolgreich entfernt, Tinwoo wird geschlossen, wenn Sie OK drücken",
+    "notremoved": "Das Theme wurde nicht entfernt",
+    "warning": "Warnung",
+    "error": "Es ist ein Fehler aufgetreten. Sie müssen das Thema manuell entfernen",
+    "warning2": "Das Theme wurde entfernt, um mögliche Fehler nach der Aktualisierung zu verhindern!"
   },
   "usage": {
     "system_size": "Gesamtgröße des Systems:",

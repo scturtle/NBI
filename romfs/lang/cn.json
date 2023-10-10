@@ -140,7 +140,8 @@
       "您会买游戏的，对吧？任天堂感谢您！",
       "绕过 DRM 很棒，不是吗？",
       "出来混，早晚要还的！",
-      "任天堂忍者已经被派遣到您家，天诛。"
+      "任天堂忍者已经被派遣到您家，天诛。",
+      "我們甚至不需要把政治意識形態強加給你就可以到達這裡！"
     ]
   },
   "sig": {
@@ -193,7 +194,7 @@
     "update": {
       "title": "有更新可用",
       "desc0": "TinWoo Installer ",
-      "desc1": " 存在可用更新！是否更新？",
+      "desc1": " 現已推出！\n\n*** 更新將刪除您當前的主題以防止問題 ***\n\n按「更新」繼續",
       "opt0": "更新",
       "top_info": "正在更新 TinWoo Installer ",
       "bot_info": "正在下载 TinWoo Installer ",
@@ -232,7 +233,7 @@
     "theme_error": "未找到主题！",
     "theme_error_info": "配置页主题网络地址是否正确？",
     "theme_top_info": "选择主题喜爱的主题，按下 \ue0ef 键以安装！",
-    "buttons2": "\ue0e0 选择    \ue0ef 安装    \ue0e1 取消",
+    "buttons2": "\ue0e0 选择  \ue0ef 安装  \ue0e2 刪除主題  \ue0e1 取消",
     "please_wait": "请稍后，当前正在连接到服务器！",
     "theme_option": "启用主题",
     "theme_url": "主题源服务器地址：",
@@ -248,7 +249,17 @@
     "restart": "重启 Tinwoo 以应用变更",
     "retry": "主题解压失败，请重试？",
     "wait": "请稍后！",
-    "trying": "当前正在安装主题"
+    "trying": "当前正在安装主题",
+    "remove": "刪除主題",
+    "delete": "刪除已安裝的主題？",
+    "notfound": "主題找不到！",
+    "notfound2": "主題資料夾不存在，您應該安裝一個",
+    "notice": "注意",
+    "success": "主題已成功刪除，按確定後Tinwoo將關閉",
+    "notremoved": "主題未被刪除",
+    "warning": "警告",
+    "error": "出了點問題，您需要手動刪除主題",
+    "warning2": "刪除主題是為了防止更新後可能出現的錯誤！"
   },
   "usage": {
     "system_size": "系统空间总大小：",
