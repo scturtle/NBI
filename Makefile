@@ -39,9 +39,9 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source source/ui source/data source/install source/nx source/nx/ipc source/util $(CURDIR)/include/Plutonium/Plutonium/source
+SOURCES		:=	source source/ui source/data source/install source/nx source/nx/ipc source/util $(CURDIR)/include/Plutonium/Plutonium/source include/libusbhsfs/source include/libusbhsfs/source/sxos include/libusbhsfs/source/fatfs
 DATA		:=	data
-INCLUDES	:=	include include/ui include/data include/install include/nx include/nx/ipc include/util $(CURDIR)/include/Plutonium/Plutonium/include
+INCLUDES	:=	include include/ui include/data include/install include/nx include/nx/ipc include/util $(CURDIR)/include/Plutonium/Plutonium/include include/libusbhsfs/include
 APP_TITLE	:=	TinWoo Installer
 APP_AUTHOR	:=	MrDude
 APP_VERSION	:=	1.0.22
@@ -64,7 +64,7 @@ CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++20 -Wall
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:=  -lpu -lcurl -lz -lssh2 -lusbhsfs -lntfs-3g -llwext4 -lmbedtls -lmbedcrypto -lmbedx509 -lminizip -lnx -lstdc++fs -lzzip -lpu -lfreetype -lSDL2main -lSDL2_mixer -lopusfile -lopus -lmodplug -lmpg123 -lvorbisidec -lSDL2 -lc -logg -lSDL2_ttf -lSDL2_gfx -lSDL2_image -lwebp -lpng -ljpeg `sdl2-config --libs` `freetype-config --libs` -lzstd
+LIBS	:=  -lpu -lcurl -lz -lssh2 -lntfs-3g -llwext4 -lmbedtls -lmbedcrypto -lmbedx509 -lminizip -lnx -lstdc++fs -lzzip -lpu -lfreetype -lSDL2main -lSDL2_mixer -lopusfile -lopus -lmodplug -lmpg123 -lvorbisidec -lSDL2 -lc -logg -lSDL2_ttf -lSDL2_gfx -lSDL2_image -lwebp -lpng -ljpeg `sdl2-config --libs` `freetype-config --libs` -lzstd
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
