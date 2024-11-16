@@ -152,59 +152,6 @@ bool copyFile(std::string inFile, std::string outFile) {
   return true;
 }
 
-bool remove_theme(std::string dir) {
-  std::string rootimage = dir + "/images";
-  std::string rooticon = rootimage + "/icons";
-  bool exists = std::filesystem::exists(dir);
-  std::vector<std::string> folders;
-  if (exists == true) {
-    util::removeDirectory(dir); // empty all direcories of files
-    for (auto &p : std::filesystem::recursive_directory_iterator(dir)) {
-      const char *info = p.path().c_str();
-      std::string x = info;
-      // don't add root folders to the array or it will affect deleting the sub folders
-      if (x != rootimage) {
-        if (x != rooticon) {
-          folders.push_back(x);
-        }
-      }
-    }
-
-    std::sort(folders.begin(), folders.end());
-    // add these to the end of the list in this order
-    folders.push_back(rooticon);
-    folders.push_back(rootimage);
-    folders.push_back(dir);
-    // FILE * fp;
-    // fp = fopen ("folders.txt", "a+");
-    for (unsigned long int i = 0; i < folders.size(); i++) {
-      // std::string y = folders[i];
-      // const char *info2 = y.c_str();
-      // fprintf(fp, "%s\n", info2);
-      std::filesystem::path x = folders[i];
-      std::filesystem::remove(x);
-    }
-    // fclose(fp);
-    folders.clear();
-    return true;
-  } else {
-    return false;
-  }
-}
-
-bool themeit(std::string dir) {
-  bool themepath;
-  std::string root = dir;
-  std::filesystem::path path = root;
-  bool texists = std::filesystem::exists(path);
-  if (texists == true) {
-    themepath = true;
-  } else {
-    themepath = false;
-  }
-  return themepath;
-}
-
 std::string formatUrlString(std::string ourString) {
   std::stringstream ourStream(ourString);
   std::string segment;

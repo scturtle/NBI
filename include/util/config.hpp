@@ -9,7 +9,6 @@ static const std::string configPath = appDir + "/config.json";
 static const std::string appVersion = "1.0.22";
 
 extern std::string gAuthKey;
-extern std::string sigPatchesUrl;
 extern std::string httpIndexUrl;
 extern std::string httplastUrl;
 extern std::string httplastUrl2;
@@ -21,7 +20,6 @@ extern bool overClock;
 extern bool deletePrompt;
 extern bool autoUpdate;
 extern bool usbAck;
-extern bool useTheme;
 extern bool useSound;
 extern bool useMusic;
 extern bool fixticket;

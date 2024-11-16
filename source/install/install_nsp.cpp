@@ -38,18 +38,12 @@ SOFTWARE.
 #include "util/error.hpp"
 #include "util/file_util.hpp"
 #include "util/lang.hpp"
-#include "util/theme.hpp"
 #include "util/title_util.hpp"
 #include "util/util.hpp"
 
 namespace inst::ui {
 extern MainApplication *mainApp;
 }
-
-namespace inst::ui {
-std::string nspi_root = inst::config::appDir + "/theme";
-bool nspi_theme = util::themeit(nspi_root); // check if we have a previous theme directory first.
-} // namespace inst::ui
 
 namespace tin::install::nsp {
 NSPInstall::NSPInstall(NcmStorageId destStorageId, bool ignoreReqFirmVersion, const std::shared_ptr<NSP> &remoteNSP)
@@ -121,17 +115,8 @@ void NSPInstall::InstallNCA(const NcmContentId &ncaId) {
 
     if (!Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, Crypto::NCAHeaderSignature)) {
       std::string audioPath = "romfs:/audio/infobeep.mp3";
-      std::string beep = inst::config::appDir + "audio.infobeep"_theme;
-      if (inst::ui::nspi_theme && inst::config::useTheme &&
-          std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(beep))
-        audioPath = (beep);
       std::thread audioThread(inst::util::playAudio, audioPath);
       std::string information = "romfs:/images/icons/information.png";
-      if (inst::ui::nspi_theme && inst::config::useTheme &&
-          std::filesystem::exists(inst::config::appDir + "/theme/theme.json") &&
-          std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
-        information = inst::config::appDir + "icons_others.information"_theme;
-      }
       int rc =
           inst::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang,
                                               {"common.cancel"_lang, "inst.nca_verify.opt1"_lang}, false,
@@ -175,11 +160,6 @@ void NSPInstall::InstallTicketCert() {
   }
   if (ss.str().length() == 0) {
     std::string info = "romfs:/images/icons/information.png";
-    if (inst::ui::nspi_theme && inst::config::useTheme &&
-        std::filesystem::exists(inst::config::appDir + "/theme/theme.json") &&
-        std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
-      info = inst::config::appDir + "icons_others.information"_theme;
-    }
     inst::ui::mainApp->CreateShowDialog("main.usb.warn.title"_lang, "inst.nca_verify.ticket_missing"_lang,
                                         {"common.ok"_lang}, false,
                                         pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(info)));

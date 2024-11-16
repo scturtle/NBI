@@ -1,5 +1,4 @@
 #include "util/curl.hpp"
-#include "ui/ThemeinstPage.hpp"
 #include "ui/instPage.hpp"
 #include "util/config.hpp"
 #include "util/error.hpp"
@@ -27,11 +26,9 @@ int progress_callback(void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_
   if (ultotal) {
     int uploadProgress = (int)(((double)ulnow / (double)ultotal) * 100.0);
     inst::ui::instPage::setInstBarPerc(uploadProgress);
-    inst::ui::ThemeInstPage::setInstBarPerc(uploadProgress);
   } else if (dltotal) {
     int downloadProgress = (int)(((double)dlnow / (double)dltotal) * 100.0);
     inst::ui::instPage::setInstBarPerc(downloadProgress);
-    inst::ui::ThemeInstPage::setInstBarPerc(downloadProgress);
   }
   return 0;
 }

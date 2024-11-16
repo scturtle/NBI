@@ -32,7 +32,6 @@ SOFTWARE.
 #include "util/error.hpp"
 #include "util/file_util.hpp"
 #include "util/lang.hpp"
-#include "util/theme.hpp"
 #include "util/title_util.hpp"
 #include "util/util.hpp"
 #include <cstring>
@@ -46,11 +45,6 @@ SOFTWARE.
 namespace inst::ui {
 extern MainApplication *mainApp;
 }
-
-namespace inst::ui {
-std::string sdi_root = inst::config::appDir + "/theme";
-bool sdi_theme = util::themeit(sdi_root); // check if we have a previous theme directory first.
-} // namespace inst::ui
 
 namespace nspInstStuff {
 
@@ -112,23 +106,12 @@ void installNspFromFile(std::vector<std::filesystem::path> ourTitleList, int whe
 
     if (inst::config::useSound) {
       std::string audioPath = "";
-      std::string fail = inst::config::appDir + "audio.fail"_theme;
-      if (inst::ui::sdi_theme && inst::config::useTheme &&
-          std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(fail))
-        audioPath = (fail);
-      else
-        audioPath = "romfs:/audio/fail.mp3";
+      audioPath = "romfs:/audio/fail.mp3";
       std::thread audioThread(inst::util::playAudio, audioPath);
       audioThread.join();
     }
 
     std::string fail = "romfs:/images/icons/fail.png";
-    if (inst::ui::sdi_theme && inst::config::useTheme &&
-        std::filesystem::exists(inst::config::appDir + "/theme/theme.json") &&
-        std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
-      fail = inst::config::appDir + "icons_others.fail"_theme;
-    }
-
     inst::ui::mainApp->CreateShowDialog(
         "inst.info_page.failed"_lang + inst::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true) +
             "!\n",
@@ -148,33 +131,12 @@ void installNspFromFile(std::vector<std::filesystem::path> ourTitleList, int whe
     inst::ui::instPage::setInstBarPerc(100);
 
     std::string bin = "romfs:/images/icons/bin.png";
-    if (inst::ui::sdi_theme && inst::config::useTheme &&
-        std::filesystem::exists(inst::config::appDir + "/theme/theme.json") &&
-        std::filesystem::exists(inst::config::appDir + "icons_others.bin"_theme)) {
-      bin = inst::config::appDir + "icons_others.bin"_theme;
-    }
     std::string info = "romfs:/images/icons/information.png";
-    if (inst::ui::sdi_theme && inst::config::useTheme &&
-        std::filesystem::exists(inst::config::appDir + "/theme/theme.json") &&
-        std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
-      info = inst::config::appDir + "icons_others.information"_theme;
-    }
     std::string good = "romfs:/images/icons/good.png";
-    if (inst::ui::sdi_theme && inst::config::useTheme &&
-        std::filesystem::exists(inst::config::appDir + "/theme/theme.json") &&
-        std::filesystem::exists(inst::config::appDir + "icons_others.good"_theme)) {
-      good = inst::config::appDir + "icons_others.good"_theme;
-    }
 
     if (inst::config::useSound) {
       std::string audioPath = "";
-      std::string pass = inst::config::appDir + "audio.pass"_theme;
-      if (inst::ui::sdi_theme && inst::config::useTheme &&
-          std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(pass)) {
-        audioPath = (pass);
-      } else {
-        audioPath = "romfs:/audio/pass.mp3";
-      }
+      audioPath = "romfs:/audio/pass.mp3";
       std::thread audioThread(inst::util::playAudio, audioPath);
       audioThread.join();
     }

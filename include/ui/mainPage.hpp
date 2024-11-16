@@ -8,7 +8,6 @@ public:
   MainPage();
   PU_SMART_CTOR(MainPage)
   void installMenuItem_Click();
-  void netInstallMenuItem_Click();
   void usbInstallMenuItem_Click();
   void HdInstallMenuItem_Click();
   void settingsMenuItem_Click();
@@ -25,8 +24,6 @@ private:
   TextBlock::Ref appVersionText;
   pu::ui::elm::Menu::Ref optionMenu;
   pu::ui::elm::MenuItem::Ref installMenuItem;
-  pu::ui::elm::MenuItem::Ref netInstallMenuItem;
-  pu::ui::elm::MenuItem::Ref usbInstallMenuItem;
   pu::ui::elm::MenuItem::Ref HdInstallMenuItem;
   pu::ui::elm::MenuItem::Ref settingsMenuItem;
   pu::ui::elm::MenuItem::Ref exitMenuItem;
