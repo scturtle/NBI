@@ -22,32 +22,34 @@ SOFTWARE.
 
 #pragma once
 
-#include <switch/services/ns.h>
 #include <switch/services/ncm.h>
+#include <switch/services/ns.h>
 
 typedef struct {
-	u64 titleID;
-	u64 unk;
-	u64 size;
+  u64 titleID;
+  u64 unk;
+  u64 size;
 } NX_PACKED ApplicationRecord;
 
 typedef struct {
-	NcmContentMetaKey metaRecord;
-	u64 storageId;
+  NcmContentMetaKey metaRecord;
+  u64 storageId;
 } NX_PACKED ContentStorageRecord;
 
 Result nsextInitialize(void);
 void nsextExit(void);
 
-Result nsPushApplicationRecord(u64 title_id, u8 last_modified_event, ContentStorageRecord* content_records_buf, size_t buf_size);
-Result nsListApplicationRecordContentMeta(u64 offset, u64 titleID, void* out_buf, size_t out_buf_size, u32* entries_read_out);
+Result nsPushApplicationRecord(u64 title_id, u8 last_modified_event, ContentStorageRecord *content_records_buf,
+                               size_t buf_size);
+Result nsListApplicationRecordContentMeta(u64 offset, u64 titleID, void *out_buf, size_t out_buf_size,
+                                          u32 *entries_read_out);
 Result nsDeleteApplicationRecord(u64 titleID);
 Result nsLaunchApplication(u64 titleID);
 Result nsPushLaunchVersion(u64 titleID, u32 version);
 Result nsDisableApplicationAutoUpdate(u64 titleID);
-Result nsGetContentMetaStorage(const NcmContentMetaKey* record, u8* out);
+Result nsGetContentMetaStorage(const NcmContentMetaKey *record, u8 *out);
 Result nsBeginInstallApplication(u64 tid, u32 unk, u8 storageId);
 Result nsInvalidateAllApplicationControlCache(void);
 Result nsInvalidateApplicationControlCache(u64 tid);
 Result nsCheckApplicationLaunchRights(u64 tid);
-Result nsGetApplicationContentPath(u64 titleId, u8 type, char* outBuf, size_t bufSize);
+Result nsGetApplicationContentPath(u64 titleId, u8 type, char *outBuf, size_t bufSize);

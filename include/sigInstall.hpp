@@ -1,3 +1,3 @@
 namespace sig {
-	void installSigPatches();
+void installSigPatches();
 }

@@ -21,42 +21,40 @@ SOFTWARE.
 */
 
 #pragma once
-#include <switch.h>
-#include <vector>
+#include "install/nca.hpp"
 #include "nx/ncm.hpp"
 #include <memory>
-#include "install/nca.hpp"
+#include <switch.h>
+#include <vector>
 
-class NcaBodyWriter
-{
+class NcaBodyWriter {
 public:
-	NcaBodyWriter(const NcmContentId& ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage);
-	virtual ~NcaBodyWriter();
-	virtual u64 write(const  u8* ptr, u64 sz);
+  NcaBodyWriter(const NcmContentId &ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage> &contentStorage);
+  virtual ~NcaBodyWriter();
+  virtual u64 write(const u8 *ptr, u64 sz);
 
-	bool isOpen() const;
+  bool isOpen() const;
 
 protected:
-	std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
-	NcmContentId m_ncaId;
+  std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
+  NcmContentId m_ncaId;
 
-	u64 m_offset;
+  u64 m_offset;
 };
 
-class NcaWriter
-{
+class NcaWriter {
 public:
-	NcaWriter(const NcmContentId& ncaId, std::shared_ptr<nx::ncm::ContentStorage>& contentStorage);
-	virtual ~NcaWriter();
+  NcaWriter(const NcmContentId &ncaId, std::shared_ptr<nx::ncm::ContentStorage> &contentStorage);
+  virtual ~NcaWriter();
 
-	bool isOpen() const;
-	bool close();
-	u64 write(const  u8* ptr, u64 sz);
-	void flushHeader();
+  bool isOpen() const;
+  bool close();
+  u64 write(const u8 *ptr, u64 sz);
+  void flushHeader();
 
 protected:
-	NcmContentId m_ncaId;
-	std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
-	std::vector<u8> m_buffer;
-	std::shared_ptr<NcaBodyWriter> m_writer;
+  NcmContentId m_ncaId;
+  std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
+  std::vector<u8> m_buffer;
+  std::shared_ptr<NcaBodyWriter> m_writer;
 };

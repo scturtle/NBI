@@ -25,34 +25,33 @@ SOFTWARE.
 #include <functional>
 #include <vector>
 
-#include <switch/types.h>
 #include "install/hfs0.hpp"
 #include "nx/ncm.hpp"
 #include <memory>
+#include <switch/types.h>
 
-namespace tin::install::xci
-{
-	class XCI
-	{
-	protected:
-		u64 m_secureHeaderOffset;
-		std::vector<u8> m_secureHeaderBytes;
+namespace tin::install::xci {
+class XCI {
+protected:
+  u64 m_secureHeaderOffset;
+  std::vector<u8> m_secureHeaderBytes;
 
-		XCI();
+  XCI();
 
-	public:
-		virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId placeholderId) = 0;
-		virtual void BufferData(void* buf, off_t offset, size_t size) = 0;
+public:
+  virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &contentStorage,
+                                   NcmContentId placeholderId) = 0;
+  virtual void BufferData(void *buf, off_t offset, size_t size) = 0;
 
-		virtual void RetrieveHeader();
-		virtual const HFS0BaseHeader* GetSecureHeader();
-		virtual u64 GetDataOffset();
+  virtual void RetrieveHeader();
+  virtual const HFS0BaseHeader *GetSecureHeader();
+  virtual u64 GetDataOffset();
 
-		virtual const HFS0FileEntry* GetFileEntry(unsigned int index);
-		virtual const HFS0FileEntry* GetFileEntryByName(std::string name);
-		virtual const HFS0FileEntry* GetFileEntryByNcaId(const NcmContentId& ncaId);
-		virtual std::vector<const HFS0FileEntry*> GetFileEntriesByExtension(std::string extension);
+  virtual const HFS0FileEntry *GetFileEntry(unsigned int index);
+  virtual const HFS0FileEntry *GetFileEntryByName(std::string name);
+  virtual const HFS0FileEntry *GetFileEntryByNcaId(const NcmContentId &ncaId);
+  virtual std::vector<const HFS0FileEntry *> GetFileEntriesByExtension(std::string extension);
 
-		virtual const char* GetFileEntryName(const HFS0FileEntry* fileEntry);
-	};
-}
+  virtual const char *GetFileEntryName(const HFS0FileEntry *fileEntry);
+};
+} // namespace tin::install::xci

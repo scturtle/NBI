@@ -25,33 +25,32 @@ SOFTWARE.
 #include <functional>
 #include <vector>
 
-#include <switch/types.h>
 #include "install/pfs0.hpp"
 #include "nx/ncm.hpp"
 #include "util/network_util.hpp"
+#include <switch/types.h>
 
-namespace tin::install::nsp
-{
-	class NSP
-	{
-	protected:
-		std::vector<u8> m_headerBytes;
+namespace tin::install::nsp {
+class NSP {
+protected:
+  std::vector<u8> m_headerBytes;
 
-		NSP();
+  NSP();
 
-	public:
-		virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId placeholderId) = 0;
-		virtual void BufferData(void* buf, off_t offset, size_t size) = 0;
+public:
+  virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &contentStorage,
+                                   NcmContentId placeholderId) = 0;
+  virtual void BufferData(void *buf, off_t offset, size_t size) = 0;
 
-		virtual void RetrieveHeader();
-		virtual const PFS0BaseHeader* GetBaseHeader();
-		virtual u64 GetDataOffset();
+  virtual void RetrieveHeader();
+  virtual const PFS0BaseHeader *GetBaseHeader();
+  virtual u64 GetDataOffset();
 
-		virtual const PFS0FileEntry* GetFileEntry(unsigned int index);
-		virtual const PFS0FileEntry* GetFileEntryByName(std::string name);
-		virtual const PFS0FileEntry* GetFileEntryByNcaId(const NcmContentId& ncaId);
-		virtual std::vector<const PFS0FileEntry*> GetFileEntriesByExtension(std::string extension);
+  virtual const PFS0FileEntry *GetFileEntry(unsigned int index);
+  virtual const PFS0FileEntry *GetFileEntryByName(std::string name);
+  virtual const PFS0FileEntry *GetFileEntryByNcaId(const NcmContentId &ncaId);
+  virtual std::vector<const PFS0FileEntry *> GetFileEntriesByExtension(std::string extension);
 
-		virtual const char* GetFileEntryName(const PFS0FileEntry* fileEntry);
-	};
-}
+  virtual const char *GetFileEntryName(const PFS0FileEntry *fileEntry);
+};
+} // namespace tin::install::nsp

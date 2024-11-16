@@ -24,5 +24,5 @@ SOFTWARE.
 #include <filesystem>
 #include <vector>
 namespace nspInstStuff_B {
-	void installNspFromFile(std::vector<std::filesystem::path> ourNspList, int whereToInstall);
+void installNspFromFile(std::vector<std::filesystem::path> ourNspList, int whereToInstall);
 }

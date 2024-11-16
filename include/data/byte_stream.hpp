@@ -22,30 +22,27 @@ SOFTWARE.
 
 #pragma once
 
-#include <switch/types.h>
 #include "data/byte_buffer.hpp"
+#include <switch/types.h>
 
-namespace tin::data
-{
-	class ByteStream
-	{
-	protected:
-		u64 m_offset = 0;
+namespace tin::data {
+class ByteStream {
+protected:
+  u64 m_offset = 0;
 
-	public:
-		virtual void ReadBytes(void* dest, size_t length) = 0;
-	};
+public:
+  virtual void ReadBytes(void *dest, size_t length) = 0;
+};
 
-	// NOTE: This isn't generally useful, it's mainly for things like libpng
-	// which rely  on streams
-	class BufferedByteStream : public ByteStream
-	{
-	private:
-		ByteBuffer m_byteBuffer;
+// NOTE: This isn't generally useful, it's mainly for things like libpng
+// which rely  on streams
+class BufferedByteStream : public ByteStream {
+private:
+  ByteBuffer m_byteBuffer;
 
-	public:
-		BufferedByteStream(ByteBuffer buffer);
+public:
+  BufferedByteStream(ByteBuffer buffer);
 
-		void ReadBytes(void* dest, size_t length) override;
-	};
-}
+  void ReadBytes(void *dest, size_t length) override;
+};
+} // namespace tin::data

@@ -24,17 +24,17 @@ SOFTWARE.
 
 #include "install/xci.hpp"
 
-namespace tin::install::xci
-{
-	class SDMCXCI : public XCI
-	{
-	public:
-		SDMCXCI(std::string path);
-		~SDMCXCI();
+namespace tin::install::xci {
+class SDMCXCI : public XCI {
+public:
+  SDMCXCI(std::string path);
+  ~SDMCXCI();
 
-		virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId) override;
-		virtual void BufferData(void* buf, off_t offset, size_t size) override;
-	private:
-		FILE* m_xciFile;
-	};
-}
+  virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &contentStorage,
+                                   NcmContentId ncaId) override;
+  virtual void BufferData(void *buf, off_t offset, size_t size) override;
+
+private:
+  FILE *m_xciFile;
+};
+} // namespace tin::install::xci

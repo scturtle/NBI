@@ -22,34 +22,20 @@ SOFTWARE.
 
 #include "data/byte_buffer.hpp"
 
-#include "util/error.hpp"
 #include "util/debug.h"
+#include "util/error.hpp"
 
-namespace tin::data
-{
-	ByteBuffer::ByteBuffer(size_t reserveSize)
-	{
-		m_buffer.resize(reserveSize);
-	}
+namespace tin::data {
+ByteBuffer::ByteBuffer(size_t reserveSize) { m_buffer.resize(reserveSize); }
 
-	size_t ByteBuffer::GetSize()
-	{
-		return m_buffer.size();
-	}
+size_t ByteBuffer::GetSize() { return m_buffer.size(); }
 
-	u8* ByteBuffer::GetData()
-	{
-		return m_buffer.data();
-	}
+u8 *ByteBuffer::GetData() { return m_buffer.data(); }
 
-	void ByteBuffer::Resize(size_t size)
-	{
-		m_buffer.resize(size, 0);
-	}
+void ByteBuffer::Resize(size_t size) { m_buffer.resize(size, 0); }
 
-	void ByteBuffer::DebugPrintContents()
-	{
-		LOG_DEBUG("Buffer Size: 0x%lx\n", this->GetSize());
-		printBytes(this->GetData(), this->GetSize(), true);
-	}
+void ByteBuffer::DebugPrintContents() {
+  LOG_DEBUG("Buffer Size: 0x%lx\n", this->GetSize());
+  printBytes(this->GetData(), this->GetSize(), true);
 }
+} // namespace tin::data

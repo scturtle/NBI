@@ -22,8 +22,7 @@ SOFTWARE.
 
 #pragma once
 
-extern "C"
-{
+extern "C" {
 #include <switch/services/fs.h>
 }
 
@@ -31,39 +30,37 @@ extern "C"
 #include <tuple>
 #include <vector>
 
-#include "install/simple_filesystem.hpp"
 #include "data/byte_buffer.hpp"
+#include "install/simple_filesystem.hpp"
 
 #include "nx/content_meta.hpp"
 #include "nx/ipc/tin_ipc.h"
 
-namespace tin::install
-{
-	class Install
-	{
-	protected:
-		const NcmStorageId m_destStorageId;
-		bool m_ignoreReqFirmVersion = false;
-		bool m_declinedValidation = false;
+namespace tin::install {
+class Install {
+protected:
+  const NcmStorageId m_destStorageId;
+  bool m_ignoreReqFirmVersion = false;
+  bool m_declinedValidation = false;
 
-		std::vector<nx::ncm::ContentMeta> m_contentMeta;
+  std::vector<nx::ncm::ContentMeta> m_contentMeta;
 
-		Install(NcmStorageId destStorageId, bool ignoreReqFirmVersion);
+  Install(NcmStorageId destStorageId, bool ignoreReqFirmVersion);
 
-		virtual std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadCNMT() = 0;
+  virtual std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadCNMT() = 0;
 
-		virtual void InstallContentMetaRecords(tin::data::ByteBuffer& installContentMetaBuf, int i);
-		virtual void InstallApplicationRecord(int i);
-		virtual void InstallNCA(const NcmContentId& ncaId) = 0;
+  virtual void InstallContentMetaRecords(tin::data::ByteBuffer &installContentMetaBuf, int i);
+  virtual void InstallApplicationRecord(int i);
+  virtual void InstallNCA(const NcmContentId &ncaId) = 0;
 
-	public:
-		virtual ~Install();
+public:
+  virtual ~Install();
 
-		virtual void Prepare();
-		virtual void InstallTicketCert();
-		virtual void Begin();
+  virtual void Prepare();
+  virtual void InstallTicketCert();
+  virtual void Begin();
 
-		virtual u64 GetTitleId(int i = 0);
-		virtual NcmContentMetaType GetContentMetaType(int i = 0);
-	};
-}
+  virtual u64 GetTitleId(int i = 0);
+  virtual NcmContentMetaType GetContentMetaType(int i = 0);
+};
+} // namespace tin::install

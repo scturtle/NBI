@@ -25,16 +25,15 @@ SOFTWARE.
 #include "install/nsp.hpp"
 #include <memory>
 
-namespace tin::install::nsp
-{
-	class HTTPNSP : public NSP
-	{
-	public:
-		tin::network::HTTPDownload m_download;
+namespace tin::install::nsp {
+class HTTPNSP : public NSP {
+public:
+  tin::network::HTTPDownload m_download;
 
-		HTTPNSP(std::string url);
+  HTTPNSP(std::string url);
 
-		virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId placeholderId) override;
-		virtual void BufferData(void* buf, off_t offset, size_t size) override;
-	};
-}
+  virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &contentStorage,
+                                   NcmContentId placeholderId) override;
+  virtual void BufferData(void *buf, off_t offset, size_t size) override;
+};
+} // namespace tin::install::nsp

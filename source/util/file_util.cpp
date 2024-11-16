@@ -24,30 +24,28 @@ SOFTWARE.
 
 #include <memory>
 
+#include "data/byte_buffer.hpp"
 #include "install/simple_filesystem.hpp"
 #include "nx/fs.hpp"
-#include "data/byte_buffer.hpp"
 #include "util/title_util.hpp"
 
-namespace tin::util
-{
-	// TODO: do this manually so we don't have to "install" the cnmt's
-	nx::ncm::ContentMeta GetContentMetaFromNCA(const std::string& ncaPath)
-	{
-		// Create the cnmt filesystem
-		nx::fs::IFileSystem cnmtNCAFileSystem;
-		cnmtNCAFileSystem.OpenFileSystemWithId(ncaPath, FsFileSystemType_ContentMeta, 0);
-		tin::install::nsp::SimpleFileSystem cnmtNCASimpleFileSystem(cnmtNCAFileSystem, "/", ncaPath + "/");
+namespace tin::util {
+// TODO: do this manually so we don't have to "install" the cnmt's
+nx::ncm::ContentMeta GetContentMetaFromNCA(const std::string &ncaPath) {
+  // Create the cnmt filesystem
+  nx::fs::IFileSystem cnmtNCAFileSystem;
+  cnmtNCAFileSystem.OpenFileSystemWithId(ncaPath, FsFileSystemType_ContentMeta, 0);
+  tin::install::nsp::SimpleFileSystem cnmtNCASimpleFileSystem(cnmtNCAFileSystem, "/", ncaPath + "/");
 
-		// Find and read the cnmt file
-		auto cnmtName = cnmtNCASimpleFileSystem.GetFileNameFromExtension("", "cnmt");
-		auto cnmtFile = cnmtNCASimpleFileSystem.OpenFile(cnmtName);
-		u64 cnmtSize = cnmtFile.GetSize();
+  // Find and read the cnmt file
+  auto cnmtName = cnmtNCASimpleFileSystem.GetFileNameFromExtension("", "cnmt");
+  auto cnmtFile = cnmtNCASimpleFileSystem.OpenFile(cnmtName);
+  u64 cnmtSize = cnmtFile.GetSize();
 
-		tin::data::ByteBuffer cnmtBuf;
-		cnmtBuf.Resize(cnmtSize);
-		cnmtFile.Read(0x0, cnmtBuf.GetData(), cnmtSize);
+  tin::data::ByteBuffer cnmtBuf;
+  cnmtBuf.Resize(cnmtSize);
+  cnmtFile.Read(0x0, cnmtBuf.GetData(), cnmtSize);
 
-		return nx::ncm::ContentMeta(cnmtBuf.GetData(), cnmtBuf.GetSize());
-	}
+  return nx::ncm::ContentMeta(cnmtBuf.GetData(), cnmtBuf.GetSize());
 }
+} // namespace tin::util

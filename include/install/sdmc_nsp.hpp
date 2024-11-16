@@ -24,17 +24,17 @@ SOFTWARE.
 
 #include "install/nsp.hpp"
 
-namespace tin::install::nsp
-{
-	class SDMCNSP : public NSP
-	{
-	public:
-		SDMCNSP(std::string path);
-		~SDMCNSP();
+namespace tin::install::nsp {
+class SDMCNSP : public NSP {
+public:
+  SDMCNSP(std::string path);
+  ~SDMCNSP();
 
-		virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId ncaId) override;
-		virtual void BufferData(void* buf, off_t offset, size_t size) override;
-	private:
-		FILE* m_nspFile;
-	};
-}
+  virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &contentStorage,
+                                   NcmContentId ncaId) override;
+  virtual void BufferData(void *buf, off_t offset, size_t size) override;
+
+private:
+  FILE *m_nspFile;
+};
+} // namespace tin::install::nsp

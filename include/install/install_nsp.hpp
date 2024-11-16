@@ -22,24 +22,22 @@ SOFTWARE.
 
 #pragma once
 
-#include <switch.h>
-#include <string>
 #include "install/install.hpp"
 #include "install/nsp.hpp"
+#include <string>
+#include <switch.h>
 
-namespace tin::install::nsp
-{
-	class NSPInstall : public Install
-	{
-	private:
-		const std::shared_ptr<NSP> m_NSP;
+namespace tin::install::nsp {
+class NSPInstall : public Install {
+private:
+  const std::shared_ptr<NSP> m_NSP;
 
-	protected:
-		std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadCNMT() override;
-		void InstallNCA(const NcmContentId& ncaId) override;
-		void InstallTicketCert() override;
+protected:
+  std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadCNMT() override;
+  void InstallNCA(const NcmContentId &ncaId) override;
+  void InstallTicketCert() override;
 
-	public:
-		NSPInstall(NcmStorageId destStorageId, bool ignoreReqFirmVersion, const std::shared_ptr<NSP>& remoteNSP);
-	};
-}
+public:
+  NSPInstall(NcmStorageId destStorageId, bool ignoreReqFirmVersion, const std::shared_ptr<NSP> &remoteNSP);
+};
+} // namespace tin::install::nsp

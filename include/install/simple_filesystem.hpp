@@ -22,25 +22,23 @@ SOFTWARE.
 
 #pragma once
 
-#include <functional>
 #include "nx/fs.hpp"
+#include <functional>
 
-namespace tin::install::nsp
-{
-	class SimpleFileSystem final
-	{
-	private:
-		nx::fs::IFileSystem* m_fileSystem;
+namespace tin::install::nsp {
+class SimpleFileSystem final {
+private:
+  nx::fs::IFileSystem *m_fileSystem;
 
-	public:
-		const std::string m_rootPath;
-		const std::string m_absoluteRootPath;
+public:
+  const std::string m_rootPath;
+  const std::string m_absoluteRootPath;
 
-		SimpleFileSystem(nx::fs::IFileSystem& fileSystem, std::string rootPath, std::string absoluteRootPath);
-		~SimpleFileSystem();
+  SimpleFileSystem(nx::fs::IFileSystem &fileSystem, std::string rootPath, std::string absoluteRootPath);
+  ~SimpleFileSystem();
 
-		nx::fs::IFile OpenFile(std::string path);
-		bool HasFile(std::string path);
-		std::string GetFileNameFromExtension(std::string path, std::string extension);
-	};
-}
+  nx::fs::IFile OpenFile(std::string path);
+  bool HasFile(std::string path);
+  std::string GetFileNameFromExtension(std::string path, std::string extension);
+};
+} // namespace tin::install::nsp

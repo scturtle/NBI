@@ -24,79 +24,74 @@ SOFTWARE.
 
 #include <string>
 
-extern "C"
-{
-#include <switch/types.h>
+extern "C" {
 #include <switch/services/fs.h>
+#include <switch/types.h>
 }
 
 #include "nx/ipc/tin_ipc.h"
 
-namespace nx::fs
-{
-	class IFileSystem;
+namespace nx::fs {
+class IFileSystem;
 
-	class IFile
-	{
-		friend IFileSystem;
+class IFile {
+  friend IFileSystem;
 
-	private:
-		FsFile m_file;
+private:
+  FsFile m_file;
 
-		IFile(FsFile& file);
+  IFile(FsFile &file);
 
-	public:
-		// Don't allow copying, or garbage may be closed by the destructor
-		IFile& operator=(const IFile&) = delete;
-		IFile(const IFile&) = delete;
+public:
+  // Don't allow copying, or garbage may be closed by the destructor
+  IFile &operator=(const IFile &) = delete;
+  IFile(const IFile &) = delete;
 
-		~IFile();
+  ~IFile();
 
-		void Read(u64 offset, void* buf, size_t size);
-		s64 GetSize();
-	};
+  void Read(u64 offset, void *buf, size_t size);
+  s64 GetSize();
+};
 
-	class IDirectory
-	{
-		friend IFileSystem;
+class IDirectory {
+  friend IFileSystem;
 
-	private:
-		FsDir m_dir;
+private:
+  FsDir m_dir;
 
-		IDirectory(FsDir& dir);
+  IDirectory(FsDir &dir);
 
-	public:
-		// Don't allow copying, or garbage may be closed by the destructor
-		IDirectory& operator=(const IDirectory&) = delete;
-		IDirectory(const IDirectory&) = delete;
+public:
+  // Don't allow copying, or garbage may be closed by the destructor
+  IDirectory &operator=(const IDirectory &) = delete;
+  IDirectory(const IDirectory &) = delete;
 
-		~IDirectory();
+  ~IDirectory();
 
-		void Read(s64 inval, FsDirectoryEntry* buf, size_t numEntries);
-		u64 GetEntryCount();
-	};
+  void Read(s64 inval, FsDirectoryEntry *buf, size_t numEntries);
+  u64 GetEntryCount();
+};
 
-	class IFileSystem
-	{
-	private:
-		FsFileSystem m_fileSystem;
+class IFileSystem {
+private:
+  FsFileSystem m_fileSystem;
 
-	public:
-		// Don't allow copying, or garbage may be closed by the destructor
-		IFileSystem& operator=(const IFileSystem&) = delete;
-		IFileSystem(const IFileSystem&) = delete;
+public:
+  // Don't allow copying, or garbage may be closed by the destructor
+  IFileSystem &operator=(const IFileSystem &) = delete;
+  IFileSystem(const IFileSystem &) = delete;
 
-		IFileSystem();
-		~IFileSystem();
+  IFileSystem();
+  ~IFileSystem();
 
-		Result OpenSdFileSystem();
-		void OpenFileSystemWithId(std::string path, FsFileSystemType fileSystemType, u64 titleId);
-		void CloseFileSystem();
+  Result OpenSdFileSystem();
+  void OpenFileSystemWithId(std::string path, FsFileSystemType fileSystemType, u64 titleId);
+  void CloseFileSystem();
 
-		IFile OpenFile(std::string path);
-		IDirectory OpenDirectory(std::string path, int flags);
-	};
+  IFile OpenFile(std::string path);
+  IDirectory OpenDirectory(std::string path, int flags);
+};
 
-	std::string GetFreeStorageSpace();
-	std::string convertSize(s64 size);
-}
+std::string GetFreeStorageSpace();
+std::string convertSize(s64 size);
+} // namespace nx::fs

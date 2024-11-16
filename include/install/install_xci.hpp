@@ -22,26 +22,23 @@ SOFTWARE.
 
 #pragma once
 
-#include <switch.h>
 #include "install/install.hpp"
 #include "install/xci.hpp"
 #include "nx/content_meta.hpp"
 #include "nx/ipc/tin_ipc.h"
+#include <switch.h>
 
-namespace tin::install::xci
-{
-	class XCIInstallTask : public Install
-	{
-	private:
-		const std::shared_ptr<tin::install::xci::XCI> m_xci;
+namespace tin::install::xci {
+class XCIInstallTask : public Install {
+private:
+  const std::shared_ptr<tin::install::xci::XCI> m_xci;
 
-	protected:
-		std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadCNMT() override;
-		void InstallNCA(const NcmContentId& ncaId) override;
-		void InstallTicketCert() override;
+protected:
+  std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadCNMT() override;
+  void InstallNCA(const NcmContentId &ncaId) override;
+  void InstallTicketCert() override;
 
-	public:
-		XCIInstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, const std::shared_ptr<XCI>& xci);
-	};
+public:
+  XCIInstallTask(NcmStorageId destStorageId, bool ignoreReqFirmVersion, const std::shared_ptr<XCI> &xci);
 };
-
+}; // namespace tin::install::xci

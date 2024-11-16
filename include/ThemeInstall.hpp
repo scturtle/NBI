@@ -19,10 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+#include <string>
 #include <vector>
 extern bool netConnected2;
 
 namespace ThemeInstStuff {
-	void installTitleNet(std::vector<std::string> ourUrlList, int ourStorage, std::vector<std::string> urlListAltNames, std::string ourSource);
-	std::vector<std::string> OnSelected();
-}
+void installTitleNet(std::vector<std::string> ourUrlList, int ourStorage, std::vector<std::string> urlListAltNames,
+                     std::string ourSource);
+std::vector<std::string> OnSelected();
+} // namespace ThemeInstStuff

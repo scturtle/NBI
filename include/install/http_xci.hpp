@@ -26,16 +26,15 @@ SOFTWARE.
 #include "util/network_util.hpp"
 #include <memory>
 
-namespace tin::install::xci
-{
-	class HTTPXCI : public XCI
-	{
-	public:
-		tin::network::HTTPDownload m_download;
+namespace tin::install::xci {
+class HTTPXCI : public XCI {
+public:
+  tin::network::HTTPDownload m_download;
 
-		HTTPXCI(std::string url);
+  HTTPXCI(std::string url);
 
-		virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage>& contentStorage, NcmContentId placeholderId) override;
-		virtual void BufferData(void* buf, off_t offset, size_t size) override;
-	};
-}
+  virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &contentStorage,
+                                   NcmContentId placeholderId) override;
+  virtual void BufferData(void *buf, off_t offset, size_t size) override;
+};
+} // namespace tin::install::xci

@@ -24,30 +24,27 @@ SOFTWARE.
 
 #include <string.h>
 
-#include <sys/socket.h>
-#include <sys/errno.h>
 #include <arpa/inet.h>
+#include <sys/errno.h>
+#include <sys/socket.h>
 #include <unistd.h>
 
-void printBytes(u8* bytes, size_t size, bool includeHeader)
-{
+void printBytes(u8 *bytes, size_t size, bool includeHeader) {
 #ifdef NXLINK_DEBUG
-	int count = 0;
+  int count = 0;
 
-	if (includeHeader)
-	{
-		printf("\n\n00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F\n");
-		printf("-----------------------------------------------\n");
-	}
+  if (includeHeader) {
+    printf("\n\n00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F\n");
+    printf("-----------------------------------------------\n");
+  }
 
-	for (int i = 0; i < size; i++)
-	{
-		printf("%02x ", bytes[i]);
-		count++;
-		if ((count % 16) == 0)
-			printf("\n");
-	}
+  for (int i = 0; i < size; i++) {
+    printf("%02x ", bytes[i]);
+    count++;
+    if ((count % 16) == 0)
+      printf("\n");
+  }
 
-	printf("\n");
+  printf("\n");
 #endif
 }
