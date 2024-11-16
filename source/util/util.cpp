@@ -5,11 +5,8 @@
 #include "switch.h"
 #include "ui/MainApplication.hpp"
 #include "util/config.hpp"
-#include "util/curl.hpp"
-#include "util/usb_comms_tinleaf.h"
 #include <algorithm>
 #include <arpa/inet.h>
-#include <curl/curl.h>
 #include <filesystem>
 #include <fstream>
 #include <regex>
@@ -20,8 +17,6 @@
 
 // Include sdl2 headers
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
-Mix_Music *music = NULL;
 
 namespace inst::util {
 void initApp() {
@@ -30,20 +25,16 @@ void initApp() {
   if (!std::filesystem::exists(inst::config::appDir))
     std::filesystem::create_directory(inst::config::appDir);
   inst::config::parseConfig();
-
   socketInitializeDefault();
 #ifdef __DEBUG__
   nxlinkStdio();
 #endif
-  tinleaf_usbCommsInitialize();
-
   nx::hdd::init();
 }
 
 void deinitApp() {
   nx::hdd::exit();
   socketExit();
-  tinleaf_usbCommsExit();
 }
 
 void initInstallServices() {
@@ -85,18 +76,6 @@ std::vector<std::filesystem::path> getDirectoryFiles(const std::string &dir,
     }
   }
   std::sort(files.begin(), files.end(), ignoreCaseCompare);
-  // debug
-  /*
-  FILE * fp;
-  fp = fopen ("log.txt", "a+");
-  for (unsigned long int i = 0; i < files.size(); i++) {
-          std::string debug = files[i];
-    const char *info = debug.c_str();
-    fprintf(fp, "%s\n", info);
-  }
-  fclose(fp);
-  */
-  // files.erase(std::remove(files.begin(), files.end(), "Some file.x"), files.end());
   return files;
 }
 
@@ -108,18 +87,6 @@ std::vector<std::filesystem::path> getDirsAtPath(const std::string &dir) {
     }
   }
   std::sort(files.begin(), files.end(), ignoreCaseCompare);
-
-  // debug
-  /*
-  FILE * fp;
-  fp = fopen ("log2.txt", "a+");
-  for (unsigned long int i = 0; i < files.size(); i++) {
-          std::string debug = files[i];
-    const char *info = debug.c_str();
-    fprintf(fp, "%s\n", info);
-  }
-  fclose(fp);
-  */
   files.erase(std::remove(files.begin(), files.end(), "ums0:/System Volume Information"), files.end());
   return files;
 }
@@ -152,24 +119,6 @@ bool copyFile(std::string inFile, std::string outFile) {
   return true;
 }
 
-std::string formatUrlString(std::string ourString) {
-  std::stringstream ourStream(ourString);
-  std::string segment;
-  std::vector<std::string> seglist;
-
-  while (std::getline(ourStream, segment, '/')) {
-    seglist.push_back(segment);
-  }
-
-  CURL *curl = curl_easy_init();
-  int outlength;
-  std::string finalString =
-      curl_easy_unescape(curl, seglist[seglist.size() - 1].c_str(), seglist[seglist.size() - 1].length(), &outlength);
-  curl_easy_cleanup(curl);
-
-  return finalString;
-}
-
 std::string shortenString(std::string ourString, int ourLength, bool isFile) {
   std::filesystem::path ourStringAsAPath = ourString;
   std::string ourExtension = ourStringAsAPath.extension().string();
@@ -191,39 +140,6 @@ std::string readTextFromFile(std::string ourFile) {
     fflush(file);
     fclose(file);
     return url;
-  }
-  return "";
-}
-
-std::string softwareKeyboard(std::string guideText, std::string initialText, int LenMax) {
-  Result rc = 0;
-  SwkbdConfig kbd;
-  char tmpoutstr[LenMax + 1] = {0};
-  rc = swkbdCreate(&kbd, 0);
-  if (R_SUCCEEDED(rc)) {
-    swkbdConfigMakePresetDefault(&kbd);
-    swkbdConfigSetGuideText(&kbd, guideText.c_str());
-    swkbdConfigSetInitialText(&kbd, initialText.c_str());
-    swkbdConfigSetStringLenMax(&kbd, LenMax);
-    rc = swkbdShow(&kbd, tmpoutstr, sizeof(tmpoutstr));
-    swkbdClose(&kbd);
-    if (R_SUCCEEDED(rc) && tmpoutstr[0] != 0)
-      return (((std::string)(tmpoutstr)));
-  }
-  return "";
-}
-
-std::string getDriveFileName(std::string fileId) {
-  std::string htmlData = inst::curl::downloadToBuffer("https://drive.google.com/file/d/" + fileId + "/view");
-  if (htmlData.size() > 0) {
-    std::smatch ourMatches;
-    std::regex ourRegex("<title>\\s*(.+?)\\s*</title>");
-    std::regex_search(htmlData, ourMatches, ourRegex);
-    if (ourMatches.size() > 1) {
-      if (ourMatches[1].str() == "Google Drive -- Page Not Found")
-        return "";
-      return ourMatches[1].str().substr(0, ourMatches[1].str().size() - 15);
-    }
   }
   return "";
 }
@@ -287,17 +203,6 @@ std::vector<uint32_t> setClockSpeed(int deviceToClock, uint32_t clockSpeed) {
 
     return {previousHz, hz};
   }
-}
-
-std::string getIPAddress() {
-  struct in_addr addr = {(in_addr_t)gethostid()};
-  return inet_ntoa(addr);
-}
-
-int getUsbState() {
-  UsbState usbState = UsbState_Detached;
-  usbDsGetState(&usbState);
-  return (u32)usbState;
 }
 
 std::string SplitFilename(const std::string &str) {

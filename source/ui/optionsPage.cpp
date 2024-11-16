@@ -3,7 +3,6 @@
 #include "ui/instPage.hpp"
 #include "ui/mainPage.hpp"
 #include "util/config.hpp"
-#include "util/curl.hpp"
 #include "util/lang.hpp"
 #include "util/unzip.hpp"
 #include "util/util.hpp"

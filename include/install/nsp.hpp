@@ -27,7 +27,6 @@ SOFTWARE.
 
 #include "install/pfs0.hpp"
 #include "nx/ncm.hpp"
-#include "util/network_util.hpp"
 #include <switch/types.h>
 
 namespace tin::install::nsp {
