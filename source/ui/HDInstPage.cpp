@@ -19,13 +19,17 @@ namespace inst::ui {
 
 	std::string checked_hdd = "romfs:/images/icons/check-box-outline.png";
 	std::string unchecked_hdd = "romfs:/images/icons/checkbox-blank-outline.png";
+  pu::sdl2::TextureHandle::Ref checked_hdd_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(checked_hdd));
+  pu::sdl2::TextureHandle::Ref unchecked_hdd_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(unchecked_hdd));
 
 	void checkbox_hdd() {
 		if (hd_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-checked"_theme)) {
 			checked_hdd = inst::config::appDir + "icons_others.checkbox-checked"_theme;
+      checked_hdd_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(checked_hdd));
 		}
 		if (hd_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-empty"_theme)) {
 			unchecked_hdd = inst::config::appDir + "icons_others.checkbox-empty"_theme;
+      unchecked_hdd_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(unchecked_hdd));
 		}
 	}
 
@@ -55,11 +59,11 @@ namespace inst::ui {
 		if (hd_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR(bbar_colour));
 		else this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (hd_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(hd_top)) this->titleImage = Image::New(0, 0, (hd_top));
-		else this->titleImage = Image::New(0, 0, "romfs:/images/Hd.png");
+		if (hd_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(hd_top)) this->titleImage = Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(hd_top)));
+		else this->titleImage = Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Hd.png")));
 
-		if (hd_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
-		else this->SetBackgroundImage("romfs:/images/Background.png");
+		if (hd_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(default_background)));
+		else this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Background.png")));
 
 		this->pageInfoText = TextBlock::New(10, 109, "inst.hd.top_info"_lang);
 		this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
@@ -124,7 +128,7 @@ namespace inst::ui {
 			folder_up = inst::config::appDir + "icons_others.folder_up"_theme;
 		}
 
-		ourEntry->SetIcon(folder_up);
+		ourEntry->SetIcon(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(folder_up)));
 		this->menu->AddItem(ourEntry);
 
 		for (auto& file : this->ourDirectories) {
@@ -138,7 +142,7 @@ namespace inst::ui {
 			if (hd_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.folder"_theme)) {
 				folder = inst::config::appDir + "icons_others.folder"_theme;
 			}
-			ourEntry->SetIcon(folder);
+			ourEntry->SetIcon(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(folder)));
 			this->menu->AddItem(ourEntry);
 		}
 		for (auto& file : this->ourFiles) {
@@ -152,10 +156,10 @@ namespace inst::ui {
 			auto ourEntry = pu::ui::elm::MenuItem::New(itm);
 			if (hd_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
-			ourEntry->SetIcon(unchecked_hdd);
+			ourEntry->SetIcon(unchecked_hdd_tex);
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == file) {
-					ourEntry->SetIcon(checked_hdd);
+					ourEntry->SetIcon(checked_hdd_tex);
 				}
 			}
 			this->menu->AddItem(ourEntry);
@@ -185,12 +189,12 @@ namespace inst::ui {
 		int dirListSize = this->ourDirectories.size();
 		dirListSize++;
 
-		if (this->menu->GetItems()[selectedIndex]->GetIconPath() == checked_hdd) {
+		if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == checked_hdd_tex) {
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == this->ourFiles[selectedIndex - dirListSize]) this->selectedTitles.erase(this->selectedTitles.begin() + i);
 			}
 		}
-		else if (this->menu->GetItems()[selectedIndex]->GetIconPath() == unchecked_hdd) this->selectedTitles.push_back(this->ourFiles[selectedIndex - dirListSize]);
+		else if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == unchecked_hdd_tex) this->selectedTitles.push_back(this->ourFiles[selectedIndex - dirListSize]);
 		else {
 			this->followDirectory();
 			return;
@@ -205,9 +209,9 @@ namespace inst::ui {
 			install = inst::config::appDir + "icons_others.install"_theme;
 		}
 		if (this->selectedTitles.size() == 1) {
-			dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ":\n\n" + inst::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) + "\n\n" + "inst.target.desc1"_lang, "\n\n\n\n\n\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, install);
+			dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ":\n\n" + inst::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) + "\n\n" + "inst.target.desc1"_lang, "\n\n\n\n\n\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(install)));
 		}
-		else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, install);
+		else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(install)));
 		if (dialogResult == -1) return;
 		nspInstStuff_B::installNspFromFile(this->selectedTitles, dialogResult);
 	}
@@ -241,7 +245,7 @@ namespace inst::ui {
 				int topDir = 0;
 				topDir++;
 				for (long unsigned int i = this->ourDirectories.size() + topDir; i < this->menu->GetItems().size(); i++) {
-					if (this->menu->GetItems()[i]->GetIconPath() == checked_hdd) continue;
+					if (this->menu->GetItems()[i]->GetIconTexture() == checked_hdd_tex) continue;
 					else this->selectNsp(i);
 				}
 				this->drawMenuItems(false, currentDir);
@@ -253,11 +257,11 @@ namespace inst::ui {
 			if (hd_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
 				information = inst::config::appDir + "icons_others.information"_theme;
 			}
-			inst::ui::mainApp->CreateShowDialog("inst.hd.help.title"_lang, "inst.hd.help.desc"_lang, { "common.ok"_lang }, true, information);
+			inst::ui::mainApp->CreateShowDialog("inst.hd.help.title"_lang, "inst.hd.help.desc"_lang, { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(information)));
 		}
 
 		if (Down & HidNpadButton_Plus) {
-			if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconPath() == unchecked_hdd) {
+			if (this->selectedTitles.size() == 0 && this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconTexture() == unchecked_hdd_tex) {
 				this->selectNsp(this->menu->GetSelectedIndex());
 			}
 			if (this->selectedTitles.size() > 0) this->startInstall();

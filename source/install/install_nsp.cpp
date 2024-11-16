@@ -134,7 +134,7 @@ namespace tin::install::nsp
 				if (inst::ui::nspi_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
 					information = inst::config::appDir + "icons_others.information"_theme;
 				}
-				int rc = inst::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang, { "common.cancel"_lang, "inst.nca_verify.opt1"_lang }, false, information);
+				int rc = inst::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang, { "common.cancel"_lang, "inst.nca_verify.opt1"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(information)));
 				audioThread.join();
 				if (rc != 1)
 					THROW_FORMAT(("inst.nca_verify.error"_lang + tin::util::GetNcaIdString(ncaId)).c_str());
@@ -182,7 +182,7 @@ namespace tin::install::nsp
 			if (inst::ui::nspi_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
 				info = inst::config::appDir + "icons_others.information"_theme;
 			}
-			inst::ui::mainApp->CreateShowDialog("main.usb.warn.title"_lang, "inst.nca_verify.ticket_missing"_lang, { "common.ok"_lang }, false, info);
+			inst::ui::mainApp->CreateShowDialog("main.usb.warn.title"_lang, "inst.nca_verify.ticket_missing"_lang, { "common.ok"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(info)));
 			return; //don't bother trying to install the ticket or cert if it doesn't exist.
 		}
 		// end of ticket check

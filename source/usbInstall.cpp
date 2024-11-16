@@ -82,7 +82,7 @@ namespace usbInstStuff {
 			u64 kDown = padGetButtonsDown(&pad);
 
 			if (kDown & HidNpadButton_B) return {};
-			if (kDown & HidNpadButton_X) inst::ui::mainApp->CreateShowDialog("inst.usb.help.title"_lang, "inst.usb.help.desc"_lang, { "common.ok"_lang }, true, info);
+			if (kDown & HidNpadButton_X) inst::ui::mainApp->CreateShowDialog("inst.usb.help.title"_lang, "inst.usb.help.desc"_lang, { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(info)));
 			if (inst::util::getUsbState() != 5) return {};
 		}
 
@@ -178,7 +178,7 @@ namespace usbInstStuff {
 				audioThread.join();
 			}
 
-			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + fileNames[fileItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true, fail);
+			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + fileNames[fileItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 			nspInstalled = false;
 		}
 
@@ -201,8 +201,8 @@ namespace usbInstStuff {
 				audioThread.join();
 			}
 
-			if (ourTitleList.size() > 1) inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, good);
-			else inst::ui::mainApp->CreateShowDialog(fileNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, good);
+			if (ourTitleList.size() > 1) inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(good)));
+			else inst::ui::mainApp->CreateShowDialog(fileNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(good)));
 		}
 
 		LOG_DEBUG("Done");

@@ -29,13 +29,17 @@ namespace inst::ui {
 
 	std::string checked_theme = "romfs:/images/icons/check-box-outline.png";
 	std::string unchecked_theme = "romfs:/images/icons/checkbox-blank-outline.png";
+  pu::sdl2::TextureHandle::Ref checked_theme_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(checked_theme));
+  pu::sdl2::TextureHandle::Ref unchecked_theme_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(unchecked_theme));
 
 	void checkbox_theme() {
 		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-checked"_theme)) {
 			checked_theme = inst::config::appDir + "icons_others.checkbox-checked"_theme;
+      checked_theme_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(checked_theme));
 		}
 		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-empty"_theme)) {
 			unchecked_theme = inst::config::appDir + "icons_others.checkbox-empty"_theme;
+      unchecked_theme_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(unchecked_theme));
 		}
 	}
 
@@ -73,11 +77,11 @@ namespace inst::ui {
 		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR(bbar_colour));
 		else this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(theme_top)) this->titleImage = Image::New(0, 0, (theme_top));
-		else this->titleImage = Image::New(0, 0, "romfs:/images/Net.png");
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(theme_top)) this->titleImage = Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage((theme_top))));
+		else this->titleImage = Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Net.png")));
 
-		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
-		else this->SetBackgroundImage("romfs:/images/Background.png");
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(default_background)));
+		else this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Background.png")));
 
 		this->pageInfoText = TextBlock::New(10, 109, "inst.hd.top_info"_lang);
 		this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
@@ -98,8 +102,8 @@ namespace inst::ui {
 		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu->SetScrollbarColor(COLOR(scrollbar));
 		else this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
 
-		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(waiting)) this->infoImage = Image::New(453, 292, waiting);
-		else this->infoImage = Image::New(453, 292, "romfs:/images/icons/lan-connection-waiting.png");
+		if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(waiting)) this->infoImage = Image::New(453, 292, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(waiting)));
+		else this->infoImage = Image::New(453, 292, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/lan-connection-waiting.png")));
 
 		this->Add(this->topRect);
 		this->Add(this->infoRect);
@@ -141,12 +145,12 @@ namespace inst::ui {
 			auto ourEntry = pu::ui::elm::MenuItem::New(itm);
 			if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
-			ourEntry->SetIcon(unchecked_theme);
+			ourEntry->SetIcon(unchecked_theme_tex);
 
 			long unsigned int i;
 			for (i = 0; i < this->selectedUrls.size(); i++) {
 				if (this->selectedUrls[i] == urls) {
-					ourEntry->SetIcon(checked_theme);
+					ourEntry->SetIcon(checked_theme_tex);
 				}
 			}
 			this->menu->AddItem(ourEntry);
@@ -246,7 +250,7 @@ namespace inst::ui {
 					if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 						fail = inst::config::appDir + "icons_others.fail"_theme;
 					}
-					inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, fail);
+					inst::ui::mainApp->CreateShowDialog("theme.theme_error"_lang, "theme.theme_error_info"_lang, { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 					return;
 				}
 				std::filesystem::remove(ourPath);
@@ -263,7 +267,7 @@ namespace inst::ui {
 					if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.good"_theme)) {
 						good = inst::config::appDir + "icons_others.good"_theme;
 					}
-					int close = inst::ui::mainApp->CreateShowDialog("theme.installed"_lang, "theme.restart"_lang, { "sig.later"_lang, "sig.restart"_lang }, true, good);
+					int close = inst::ui::mainApp->CreateShowDialog("theme.installed"_lang, "theme.restart"_lang, { "sig.later"_lang, "sig.restart"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(good)));
 					inst::ui::mainApp->ThemeinstPage->setInstBarPerc(0);
 					mainApp->ThemeinstPage->installBar->SetVisible(false);
 					if (close) {
@@ -295,7 +299,7 @@ namespace inst::ui {
 			if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
 				information = inst::config::appDir + "icons_others.good"_theme;
 			}
-			inst::ui::mainApp->CreateShowDialog("theme.wait"_lang, "theme.trying"_lang, { "common.ok"_lang }, true, information);
+			inst::ui::mainApp->CreateShowDialog("theme.wait"_lang, "theme.trying"_lang, { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(information)));
 		}
 		installing = 0;
 	}
@@ -311,7 +315,7 @@ namespace inst::ui {
 				if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.information"_theme)) {
 					information = inst::config::appDir + "icons_others.good"_theme;
 				}
-				inst::ui::mainApp->CreateShowDialog("theme.wait"_lang, "theme.trying"_lang, { "common.ok"_lang }, true, information);
+				inst::ui::mainApp->CreateShowDialog("theme.wait"_lang, "theme.trying"_lang, { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(information)));
 			}
 		}
 
@@ -326,11 +330,11 @@ namespace inst::ui {
 			bool exists = std::filesystem::exists(rootdir);
 
 			if (exists == true) {
-				ourResult = inst::ui::mainApp->CreateShowDialog("theme.remove"_lang, "theme.delete"_lang, { "common.no"_lang, "common.yes"_lang }, true, theme);
+				ourResult = inst::ui::mainApp->CreateShowDialog("theme.remove"_lang, "theme.delete"_lang, { "common.no"_lang, "common.yes"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(theme)));
 			}
 
 			else {
-				inst::ui::mainApp->CreateShowDialog("theme.notfound"_lang, "theme.notfound2"_lang, { "common.ok"_lang }, false, theme);
+				inst::ui::mainApp->CreateShowDialog("theme.notfound"_lang, "theme.notfound2"_lang, { "common.ok"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(theme)));
 				return;
 			}
 
@@ -339,12 +343,12 @@ namespace inst::ui {
 					bool done = util::remove_theme(root);
 					if (done == true) {
 						theme = "romfs:/images/icons/theme.png"; //if the theme was removed the icon will be missing so show this instead.
-						inst::ui::mainApp->CreateShowDialog("theme.notice"_lang, "theme.success"_lang, { "common.ok"_lang }, false, theme);
+						inst::ui::mainApp->CreateShowDialog("theme.notice"_lang, "theme.success"_lang, { "common.ok"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(theme)));
 						mainApp->FadeOut();
 						mainApp->Close();
 					}
 					else {
-						inst::ui::mainApp->CreateShowDialog("theme.notice"_lang, "theme.notremoved"_lang, { "common.ok"_lang }, false, theme);
+						inst::ui::mainApp->CreateShowDialog("theme.notice"_lang, "theme.notremoved"_lang, { "common.ok"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(theme)));
 					}
 
 				}
@@ -353,7 +357,7 @@ namespace inst::ui {
 					if (istheme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 						fail = inst::config::appDir + "icons_others.fail"_theme;
 					}
-					inst::ui::mainApp->CreateShowDialog("theme.warning"_lang, "theme.error"_lang, { "common.ok"_lang }, false, fail);
+					inst::ui::mainApp->CreateShowDialog("theme.warning"_lang, "theme.error"_lang, { "common.ok"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 				}
 			}
 		}
@@ -373,7 +377,7 @@ namespace inst::ui {
 						auto s = std::to_string(var);
 						if (s != "0") {
 							myindex = this->menu->GetSelectedIndex(); //store index so when page redraws we can get the last item we checked.
-							if (this->menu->GetItems()[myindex]->GetIconPath() == checked_theme) {
+							if (this->menu->GetItems()[myindex]->GetIconTexture() == checked_theme_tex) {
 							}
 							this->selectedUrls.push_back(this->ourUrls[myindex]);
 							this->drawMenuItems(false);

@@ -52,11 +52,11 @@ namespace inst::ui {
 		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR(tbar_colour));
 		else this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
 
-		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(install_top)) this->titleImage = Image::New(0, 0, (install_top));
-		else this->titleImage = Image::New(0, 0, "romfs:/images/Install.png");
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(install_top)) this->titleImage = Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage((install_top))));
+		else this->titleImage = Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Install.png")));
 
-		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
-		else this->SetBackgroundImage("romfs:/images/Background.png");
+		if (inst::ui::inst_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage((default_background))));
+		else this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Background.png")));
 
 		this->pageInfoText = TextBlock::New(10, 109, "");
 		this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));

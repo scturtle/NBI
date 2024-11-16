@@ -32,28 +32,34 @@ int main(int argc, char* argv[])
 				}
 			}
 		}
-		auto renderer_opts = pu::ui::render::RendererInitOptions(SDL_INIT_EVERYTHING, pu::ui::render::RendererHardwareFlags);
+		auto renderer_opts = pu::ui::render::RendererInitOptions(SDL_INIT_EVERYTHING, pu::ui::render::RendererHardwareFlags, pu::ui::render::BaseScreenWidth, pu::ui::render::BaseScreenHeight);
 		renderer_opts.UseImage(pu::ui::render::IMGAllFlags);
 		renderer_opts.UseAudio(pu::ui::render::MixerAllFlags);
 		if (x == 1) {
 			const auto default_font_path = (inst::config::appDir + "fonts.default"_theme);
-			renderer_opts.UseTTF(default_font_path);
+			renderer_opts.AddDefaultFontPath(default_font_path);
 		}
-		renderer_opts.UseTTF();
+		renderer_opts.AddDefaultAllSharedFonts();
 		if (x == 1) {
 			std::string size = "fonts.default_size"_theme;
 			int myint1 = stoi(size);
-			renderer_opts.SetExtraDefaultFontSize(myint1);
+			renderer_opts.AddExtraDefaultFontSize(myint1);
 		}
 		renderer_opts.UseRomfs();
+
+    renderer_opts.SetInputPlayerCount(1);
+    renderer_opts.AddInputNpadStyleTag(HidNpadStyleSet_NpadStandard);
+    renderer_opts.AddInputNpadIdType(HidNpadIdType_Handheld);
+    renderer_opts.AddInputNpadIdType(HidNpadIdType_No1);
+
 		auto renderer = pu::ui::render::Renderer::New(renderer_opts);
 
 		auto main = inst::ui::MainApplication::New(renderer);
-		std::thread updateThread;
-		if (inst::config::autoUpdate && inst::util::getIPAddress() != "1.0.0.127") updateThread = std::thread(inst::util::checkForAppUpdate);
+		// std::thread updateThread;
+		// if (inst::config::autoUpdate && inst::util::getIPAddress() != "1.0.0.127") updateThread = std::thread(inst::util::checkForAppUpdate);
 		main->Prepare();
 		main->ShowWithFadeIn();
-		updateThread.join();
+		// updateThread.join();
 	}
 	catch (std::exception& e) {
 		LOG_DEBUG("An error occurred:\n%s", e.what());

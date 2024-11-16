@@ -39,14 +39,14 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source source/ui source/data source/install source/nx source/nx/ipc source/util $(CURDIR)/include/Plutonium/Plutonium/source include/libusbhsfs/source include/libusbhsfs/source/sxos include/libusbhsfs/source/fatfs
+SOURCES		:=	source source/ui source/data source/install source/nx source/nx/ipc source/util
 DATA		:=	data
-INCLUDES	:=	include include/ui include/data include/install include/nx include/nx/ipc include/util $(CURDIR)/include/Plutonium/Plutonium/include include/libusbhsfs/include
+INCLUDES	:=	include include/ui include/data include/install include/nx include/nx/ipc include/util
 APP_TITLE	:=	TinWoo Installer
 APP_AUTHOR	:=	MrDude
 APP_VERSION	:=	1.0.22
 ROMFS		:=	romfs
-APP_ICON	:=	icon.jpg
+NO_ICON		:=	1
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -56,21 +56,21 @@ ARCH	:=	-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE
 CFLAGS	:=	-g -Wall -O2 -ffunction-sections \
 			$(ARCH) $(DEFINES)
 
-CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -Wno-deprecated -Wall #-D__DEBUG__ -DNXLINK_DEBUG
+CFLAGS	+=	$(INCLUDE) -D__SWITCH__
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++20 -Wall
-
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++20 -Wall -Wno-deprecated # -fno-exceptions
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:=  -lpu -lcurl -lz -lssh2 -lntfs-3g -llwext4 -lmbedtls -lmbedcrypto -lmbedx509 -lminizip -lnx -lstdc++fs -lzzip -lpu -lfreetype -lSDL2main -lSDL2_mixer -lopusfile -lopus -lmodplug -lmpg123 -lvorbisidec -lSDL2 -lc -logg -lSDL2_ttf -lSDL2_gfx -lSDL2_image -lwebp -lpng -ljpeg `sdl2-config --libs` `freetype-config --libs` -lzstd
+LIBS	:=  -lpu -lcurl -lz -lssh2 -lusbhsfs -lntfs-3g -llwext4 -lmbedtls -lmbedcrypto -lmbedx509 -lminizip -lnx -lstdc++fs -lzzip -lpu -lfreetype -lSDL2main -lSDL2_mixer -lopusfile -lopus -lmodplug -lmpg123 -lvorbisidec -lSDL2 -lc -logg -lSDL2_ttf -lSDL2_gfx -lSDL2_image -lwebp -lpng -ljpeg `sdl2-config --libs` `freetype-config --libs` -lzstd
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= $(PORTLIBS) $(CURDIR)/include/Plutonium/Plutonium $(DEVKITPRO)/libnx
+LIBDIRS	:= $(PORTLIBS) $(LIBNX) $(CURDIR)/3rdparty/Plutonium/Plutonium $(CURDIR)/3rdparty/libusbhsfs $(CURDIR)/3rdparty/json
+
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -132,8 +132,12 @@ endif
 
 ifeq ($(strip $(ICON)),)
 	icons := $(wildcard *.jpg)
-	ifneq (,$(findstring icon.jpg,$(icons)))
-		export APP_ICON := $(TOPDIR)/icon.jpg
+	ifneq (,$(findstring $(TARGET).jpg,$(icons)))
+		export APP_ICON := $(TOPDIR)/$(TARGET).jpg
+	else
+		ifneq (,$(findstring icon.jpg,$(icons)))
+			export APP_ICON := $(TOPDIR)/icon.jpg
+		endif
 	endif
 else
 	export APP_ICON := $(TOPDIR)/$(ICON)
@@ -155,15 +159,13 @@ ifneq ($(ROMFS),)
 	export NROFLAGS += --romfsdir=$(CURDIR)/$(ROMFS)
 endif
 
-$(info $$NROFLAGS is [${NROFLAGS}])
-
 .PHONY: $(BUILD) clean all
 
 #---------------------------------------------------------------------------------
 all:
 
 	@echo making everything
-	#@$(MAKE) --no-print-directory -C $(CURDIR) -f Makefile libusb
+	@$(MAKE) --no-print-directory -C $(CURDIR) -f Makefile libusb
 	@$(MAKE) --no-print-directory -C $(CURDIR) -f Makefile plutonium
 	@$(MAKE) --no-print-directory -C $(CURDIR) -f Makefile tinwoo
 
@@ -178,24 +180,11 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 plutonium:
 	@echo making plutonium
-	@$(MAKE) --no-print-directory -C $(CURDIR)/include/Plutonium -f Makefile
-#---------------------------------------------------------------------------------
-cleanplutonium:
-	@echo cleaning plutonium
-	@$(MAKE) --no-print-directory -C $(CURDIR)/include/Plutonium -f Makefile clean
+	@$(MAKE) --no-print-directory -C $(CURDIR)/3rdparty/Plutonium -f Makefile
 #---------------------------------------------------------------------------------
 libusb:
 	@echo making libusbhsfs
-	@$(MAKE) --no-print-directory -C $(CURDIR)/include/libusbhsfs -f Makefile BUILD_TYPE=GPL install
-#---------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------
-libusbclean:
-	@echo cleaning libusbhsfs
-	@$(MAKE) --no-print-directory -C $(CURDIR)/include/libusbhsfs -f Makefile clean
-	@rm -fr $(CURDIR)/include/libusbhsfs/liblwext4/*.zip
-	@rm -fr $(CURDIR)/include/libusbhsfs/liblwext4/*.zst
-	@rm -fr $(CURDIR)/include/libusbhsfs/libntfs-3g/*.tgz
-	@rm -fr $(CURDIR)/include/libusbhsfs/libntfs-3g/*.zst
+	@$(MAKE) --no-print-directory -C $(CURDIR)/3rdparty/libusbhsfs -f Makefile BUILD_TYPE=GPL
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
@@ -204,17 +193,9 @@ ifeq ($(strip $(APP_JSON)),)
 else
 	@rm -fr $(BUILD) $(TARGET).nsp $(TARGET).nso $(TARGET).npdm $(TARGET).elf
 endif
+	@$(MAKE) --no-print-directory -C $(CURDIR)/3rdparty/Plutonium -f Makefile clean
+	@$(MAKE) --no-print-directory -C $(CURDIR)/3rdparty/libusbhsfs -f Makefile clean
 
-#---------------------------------------------------------------------------------
-cleanall:
-
-	@echo making everything
-	@$(MAKE) --no-print-directory -C $(CURDIR) -f Makefile clean
-	@$(MAKE) --no-print-directory -C $(CURDIR) -f Makefile libusbclean
-	@$(MAKE) --no-print-directory -C $(CURDIR) -f Makefile cleanplutonium
-	@rm -f $(CURDIR)/*.elf
-	@rm -f $(CURDIR)/*.nacp
-	@rm -f $(CURDIR)/*.nro
 
 #---------------------------------------------------------------------------------
 else

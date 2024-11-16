@@ -174,7 +174,7 @@ namespace netInstStuff {
 				fail = inst::config::appDir + "icons_others.fail"_theme;
 			}
 
-			inst::ui::mainApp->CreateShowDialog("Failed to initialize server socket!", (std::string)e.what(), { "OK" }, true, fail);
+			inst::ui::mainApp->CreateShowDialog("Failed to initialize server socket!", (std::string)e.what(), { "OK" }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 		}
 	}
 
@@ -267,7 +267,7 @@ namespace netInstStuff {
 				fail = inst::config::appDir + "icons_others.fail"_theme;
 			}
 
-			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + urlNames[urlItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true, fail);
+			inst::ui::mainApp->CreateShowDialog("inst.info_page.failed"_lang + urlNames[urlItr] + "!", "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 			nspInstalled = false;
 		}
 
@@ -300,10 +300,10 @@ namespace netInstStuff {
 			}
 
 			if (ourUrlList.size() > 1) {
-				inst::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, good);
+				inst::ui::mainApp->CreateShowDialog(std::to_string(ourUrlList.size()) + "inst.info_page.desc0"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(good)));
 			}
 			else {
-				inst::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, good);
+				inst::ui::mainApp->CreateShowDialog(urlNames[0] + "inst.info_page.desc1"_lang, Language::GetRandomMsg(), { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(good)));
 			}
 		}
 
@@ -383,7 +383,7 @@ namespace netInstStuff {
 				}
 				if (kDown & HidNpadButton_X)
 				{
-					inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.desc"_lang, { "common.ok"_lang }, true, info);
+					inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.desc"_lang, { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(info)));
 				}
 
 				if (kDown & HidNpadButton_Minus) {
@@ -405,7 +405,7 @@ namespace netInstStuff {
 
 					if (url == "") {
 						url = ("http://127.0.0.1");
-						inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.blank"_lang, { "common.ok"_lang }, true, info);
+						inst::ui::mainApp->CreateShowDialog("inst.net.help.title"_lang, "inst.net.help.blank"_lang, { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(info)));
 						inst::config::httpIndexUrl = url;
 						inst::config::setConfig();
 						//refresh options page
@@ -416,7 +416,7 @@ namespace netInstStuff {
 					else {
 						std::string response;
 						if (inst::util::formatUrlString(url) == "" || url == "https://" || url == "http://" || url == "HTTP://" || url == "HTTPS://") {
-							inst::ui::mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false, fail);
+							inst::ui::mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 							break;
 						}
 						else {
@@ -429,7 +429,7 @@ namespace netInstStuff {
 							if (response.empty()) {
 								response = inst::curl::html_to_buffer(url);
 								if (response.empty()) {
-									inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, fail);
+									inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 									break;
 								}
 							}
@@ -453,7 +453,7 @@ namespace netInstStuff {
 							else if (!response.empty()) {
 								std::size_t index = 0;
 								if (!inst::config::listoveride) {
-									inst::ui::mainApp->CreateShowDialog("inst.net.url.listwait"_lang + std::to_string(maxlist) + "inst.net.url.listwait2"_lang, "", { "common.ok"_lang }, false, wait);
+									inst::ui::mainApp->CreateShowDialog("inst.net.url.listwait"_lang + std::to_string(maxlist) + "inst.net.url.listwait2"_lang, "", { "common.ok"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(wait)));
 								}
 								while (index < response.size()) {
 									std::string link;
@@ -535,7 +535,7 @@ namespace netInstStuff {
 								}
 
 								else {
-									inst::ui::mainApp->CreateShowDialog("inst.net.url.nolinks"_lang, "", { "common.ok"_lang }, false, fail);
+									inst::ui::mainApp->CreateShowDialog("inst.net.url.nolinks"_lang, "", { "common.ok"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 									LOG_DEBUG("Failed to parse games from HTML\n");
 									break;
 								}
@@ -543,14 +543,14 @@ namespace netInstStuff {
 							}
 
 							else {
-								inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, fail);
+								inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 								break;
 							}
 						}
 
 						else {
 							LOG_DEBUG("Failed to fetch game list\n");
-							inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, "romfs:/images/icons/fail.png");
+							inst::ui::mainApp->CreateShowDialog("inst.net.index_error"_lang, "inst.net.index_error_info"_lang, { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/fail.png")));
 							break;
 						}
 					}
@@ -606,7 +606,7 @@ namespace netInstStuff {
 			if (inst::ui::neti_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 				fail = inst::config::appDir + "icons_others.fail"_theme;
 			}
-			inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), { "common.ok"_lang }, true, fail);
+			inst::ui::mainApp->CreateShowDialog("inst.net.failed"_lang, (std::string)e.what(), { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 			return {};
 		}
 	}

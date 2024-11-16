@@ -20,13 +20,17 @@ namespace inst::ui {
 	s32 xxx = 0;
 	std::string checked_net = "romfs:/images/icons/check-box-outline.png";
 	std::string unchecked_net = "romfs:/images/icons/checkbox-blank-outline.png";
+  pu::sdl2::TextureHandle::Ref checked_net_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(checked_net));
+  pu::sdl2::TextureHandle::Ref unchecked_net_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(unchecked_net));
 
 	void checkbox_net() {
 		if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-checked"_theme)) {
 			checked_net = inst::config::appDir + "icons_others.checkbox-checked"_theme;
+      checked_net_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(checked_net));
 		}
 		if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-empty"_theme)) {
 			unchecked_net = inst::config::appDir + "icons_others.checkbox-empty"_theme;
+      unchecked_net_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(unchecked_net));
 		}
 	}
 
@@ -62,11 +66,11 @@ namespace inst::ui {
 		if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR(bbar_colour));
 		else this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(net_top)) this->titleImage = Image::New(0, 0, (net_top));
-		else this->titleImage = Image::New(0, 0, "romfs:/images/Net.png");
+		if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(net_top)) this->titleImage = Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage((net_top))));
+		else this->titleImage = Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Net.png")));
 
-		if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
-		else this->SetBackgroundImage("romfs:/images/Background.png");
+		if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(default_background)));
+		else this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Background.png")));
 
 		this->pageInfoText = TextBlock::New(10, 109, "inst.hd.top_info"_lang);
 		this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
@@ -88,8 +92,8 @@ namespace inst::ui {
 		if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu->SetScrollbarColor(COLOR(scrollbar));
 		else this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
 
-		if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(waiting)) this->infoImage = Image::New(453, 292, waiting);
-		else this->infoImage = Image::New(453, 292, "romfs:/images/icons/lan-connection-waiting.png");
+		if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(waiting)) this->infoImage = Image::New(453, 292, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(waiting)));
+		else this->infoImage = Image::New(453, 292, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/lan-connection-waiting.png")));
 
 		this->Add(this->topRect);
 		this->Add(this->infoRect);
@@ -117,11 +121,11 @@ namespace inst::ui {
 			if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
 
-			ourEntry->SetIcon(unchecked_net);
+			ourEntry->SetIcon(unchecked_net_tex);
 			long unsigned int i;
 			for (i = 0; i < this->selectedUrls.size(); i++) {
 				if (this->selectedUrls[i] == urls) {
-					ourEntry->SetIcon(checked_net);
+					ourEntry->SetIcon(checked_net_tex);
 				}
 			}
 			this->menu->AddItem(ourEntry);
@@ -169,11 +173,11 @@ namespace inst::ui {
 			if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
 
-			ourEntry->SetIcon(unchecked_net);
+			ourEntry->SetIcon(unchecked_net_tex);
 			long unsigned int i;
 			for (i = 0; i < this->selectedUrls.size(); i++) {
 				if (this->selectedUrls[i] == urls) {
-					ourEntry->SetIcon(checked_net);
+					ourEntry->SetIcon(checked_net_tex);
 				}
 			}
 			this->menu->AddItem(ourEntry);
@@ -182,7 +186,7 @@ namespace inst::ui {
 	}
 
 	void netInstPage::selectTitle(int selectedIndex) {
-		if (this->menu->GetItems()[selectedIndex]->GetIconPath() == checked_net) {
+		if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == checked_net_tex) {
 			for (long unsigned int i = 0; i < this->selectedUrls.size(); i++) {
 				if (this->selectedUrls[i] == this->ourUrls[selectedIndex]) this->selectedUrls.erase(this->selectedUrls.begin() + i);
 			}
@@ -211,7 +215,7 @@ namespace inst::ui {
 			if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.update"_theme)) {
 				update = inst::config::appDir + "icons_others.update"_theme;
 			}
-			switch (mainApp->CreateShowDialog("inst.net.src.title"_lang, "common.cancel_desc"_lang, { "inst.net.src.opt0"_lang, "inst.net.src.opt1"_lang }, false, update)) {
+			switch (mainApp->CreateShowDialog("inst.net.src.title"_lang, "common.cancel_desc"_lang, { "inst.net.src.opt0"_lang, "inst.net.src.opt1"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(update)))) {
 			case 0:
 				keyboardResult = inst::util::softwareKeyboard("inst.net.url.hint"_lang, inst::config::httplastUrl, 500);
 				if (keyboardResult.size() > 0) {
@@ -230,7 +234,7 @@ namespace inst::ui {
 						if (net_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 							fail = inst::config::appDir + "icons_others.fail"_theme;
 						}
-						mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false, fail);
+						mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", { "common.ok"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 						break;
 					}
 					sourceString = "inst.net.url.source_string"_lang;
@@ -285,9 +289,9 @@ namespace inst::ui {
 				ourUrlString = inst::util::shortenString(inst::util::formatUrlString(this->selectedUrls[0]), 32, true);
 			}
 
-			dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ":\n\n" + ourUrlString + "\n\n" + "inst.target.desc1"_lang, "\n\n\n\n\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, install);
+			dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ":\n\n" + ourUrlString + "\n\n" + "inst.target.desc1"_lang, "\n\n\n\n\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(install)));
 		}
-		else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedUrls.size()) + "inst.target.desc01"_lang, "\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, install);
+		else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedUrls.size()) + "inst.target.desc01"_lang, "\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(install)));
 		if (dialogResult == -1 && !urlMode) return;
 		else if (dialogResult == -1 && urlMode) {
 			this->startNetwork();
@@ -347,7 +351,7 @@ namespace inst::ui {
 			if (this->selectedUrls.size() == this->menu->GetItems().size()) this->drawMenuItems(true);
 			else {
 				for (long unsigned int i = 0; i < this->menu->GetItems().size(); i++) {
-					if (this->menu->GetItems()[i]->GetIconPath() == checked_net) continue;
+					if (this->menu->GetItems()[i]->GetIconTexture() == checked_net_tex) continue;
 					else this->selectTitle(i);
 				}
 				this->drawMenuItems(false);

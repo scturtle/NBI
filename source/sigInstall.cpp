@@ -45,21 +45,21 @@ namespace sig {
 				versionText = "\n\n" + "sig.version_text"_lang + patchesVersion + ".";
 				installButtonText = "sig.update"_lang;
 			}
-			int ourResult = inst::ui::mainApp->CreateShowDialog("sig.title0"_lang, "sig.desc0"_lang + versionText, { installButtonText, "sig.uninstall"_lang, "common.cancel"_lang }, true, patches);
+			int ourResult = inst::ui::mainApp->CreateShowDialog("sig.title0"_lang, "sig.desc0"_lang + versionText, { installButtonText, "sig.uninstall"_lang, "common.cancel"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(patches)));
 			if (ourResult == 0) {
 				if (inst::util::getIPAddress() == "1.0.0.127") {
-					inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, { "common.ok"_lang }, true, update);
+					inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(update)));
 					return;
 				}
 				if (!inst::util::copyFile("sdmc:/bootloader/patches.ini", inst::config::appDir + "/patches.ini.old")) {
-					if (inst::ui::mainApp->CreateShowDialog("sig.backup_failed"_lang, "sig.backup_failed_desc"_lang, { "common.yes"_lang, "common.no"_lang }, false, fail)) return;
+					if (inst::ui::mainApp->CreateShowDialog("sig.backup_failed"_lang, "sig.backup_failed_desc"_lang, { "common.yes"_lang, "common.no"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)))) return;
 				}
 				std::string ourPath = inst::config::appDir + "/patches.zip";
 				bool didDownload = inst::curl::downloadFile(inst::config::sigPatchesUrl, ourPath.c_str());
 				bool didExtract = false;
 				if (didDownload) didExtract = inst::zip::extractFile(ourPath, "sdmc:/");
 				else {
-					inst::ui::mainApp->CreateShowDialog("sig.download_failed"_lang, "sig.download_failed_desc"_lang, { "common.ok"_lang }, true, fail);
+					inst::ui::mainApp->CreateShowDialog("sig.download_failed"_lang, "sig.download_failed_desc"_lang, { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 					return;
 				}
 				std::filesystem::remove(ourPath);
@@ -67,23 +67,23 @@ namespace sig {
 					patchesVersion = inst::util::readTextFromFile("sdmc:/atmosphere/exefs_patches/es_patches/patches.txt");
 					versionText = "";
 					if (patchesVersion != "") versionText = "sig.version_text2"_lang + patchesVersion + "! ";
-					if (inst::ui::mainApp->CreateShowDialog("sig.install_complete"_lang, versionText + "\n\n" + "sig.complete_desc"_lang, { "sig.restart"_lang, "sig.later"_lang }, false, good) == 0) bpcRebootSystem();
+					if (inst::ui::mainApp->CreateShowDialog("sig.install_complete"_lang, versionText + "\n\n" + "sig.complete_desc"_lang, { "sig.restart"_lang, "sig.later"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(good))) == 0) bpcRebootSystem();
 				}
 				else {
-					inst::ui::mainApp->CreateShowDialog("sig.extract_failed"_lang, "", { "common.ok"_lang }, true, fail);
+					inst::ui::mainApp->CreateShowDialog("sig.extract_failed"_lang, "", { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 					return;
 				}
 				return;
 			}
 			else if (ourResult == 1) {
 				if (!inst::util::copyFile(inst::config::appDir + "/patches.ini.old", "sdmc:/bootloader/patches.ini")) {
-					if (inst::ui::mainApp->CreateShowDialog("sig.restore_failed"_lang, "", { "common.yes"_lang, "common.no"_lang }, false, fail)) return;
+					if (inst::ui::mainApp->CreateShowDialog("sig.restore_failed"_lang, "", { "common.yes"_lang, "common.no"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)))) return;
 				}
 				else std::filesystem::remove(inst::config::appDir + "/patches.ini.old");
 				if (inst::util::removeDirectory("sdmc:/atmosphere/exefs_patches/es_patches")) {
-					if (inst::ui::mainApp->CreateShowDialog("sig.uninstall_complete"_lang, "sig.complete_desc"_lang, { "sig.restart"_lang, "sig.later"_lang }, false, good) == 0) bpcRebootSystem();
+					if (inst::ui::mainApp->CreateShowDialog("sig.uninstall_complete"_lang, "sig.complete_desc"_lang, { "sig.restart"_lang, "sig.later"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(good))) == 0) bpcRebootSystem();
 				}
-				else inst::ui::mainApp->CreateShowDialog("sig.remove_failed"_lang, "sig.remove_failed_desc"_lang, { "common.ok"_lang }, true, fail);
+				else inst::ui::mainApp->CreateShowDialog("sig.remove_failed"_lang, "sig.remove_failed_desc"_lang, { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 			}
 			else return;
 		}
@@ -96,7 +96,7 @@ namespace sig {
 			if (inst::ui::sigi_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.fail"_theme)) {
 				fail = inst::config::appDir + "icons_others.fail"_theme;
 			}
-			inst::ui::mainApp->CreateShowDialog("sig.generic_error"_lang, (std::string)e.what(), { "common.ok"_lang }, true, fail);
+			inst::ui::mainApp->CreateShowDialog("sig.generic_error"_lang, (std::string)e.what(), { "common.ok"_lang }, true, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
 		}
 		bpcExit();
 	}

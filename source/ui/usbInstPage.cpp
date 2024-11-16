@@ -17,13 +17,17 @@ namespace inst::ui {
 
 	std::string checked_usb = "romfs:/images/icons/check-box-outline.png";
 	std::string unchecked_usb = "romfs:/images/icons/checkbox-blank-outline.png";
+  pu::sdl2::TextureHandle::Ref checked_usb_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(checked_usb));
+  pu::sdl2::TextureHandle::Ref unchecked_usb_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(unchecked_usb));
 
 	void checkbox_usb() {
 		if (usb_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-checked"_theme)) {
 			checked_usb = inst::config::appDir + "icons_others.checkbox-checked"_theme;
+      checked_usb_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(checked_usb));
 		}
 		if (usb_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(inst::config::appDir + "icons_others.checkbox-empty"_theme)) {
 			unchecked_usb = inst::config::appDir + "icons_others.checkbox-empty"_theme;
+      unchecked_usb_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(unchecked_usb));
 		}
 	}
 
@@ -55,11 +59,11 @@ namespace inst::ui {
 		if (usb_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR(bbar_colour));
 		else this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
 
-		if (usb_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(usb_top)) this->titleImage = Image::New(0, 0, (usb_top));
-		else this->titleImage = Image::New(0, 0, "romfs:/images/Usb.png");
+		if (usb_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(usb_top)) this->titleImage = Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage((usb_top))));
+		else this->titleImage = Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Usb.png")));
 
-		if (usb_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(default_background);
-		else this->SetBackgroundImage("romfs:/images/Background.png");
+		if (usb_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(default_background)) this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(default_background)));
+		else this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Background.png")));
 
 		this->pageInfoText = TextBlock::New(10, 109, "inst.hd.top_info"_lang);
 		this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
@@ -81,8 +85,8 @@ namespace inst::ui {
 		if (usb_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) this->menu->SetScrollbarColor(COLOR(scrollbar));
 		else this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
 
-		if (usb_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(waiting)) this->infoImage = Image::New(453, 292, waiting);
-		else this->infoImage = Image::New(453, 292, "romfs:/images/icons/usb-connection-waiting.png");
+		if (usb_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json") && std::filesystem::exists(waiting)) this->infoImage = Image::New(453, 292, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(waiting)));
+		else this->infoImage = Image::New(453, 292, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/usb-connection-waiting.png")));
 
 		this->Add(this->topRect);
 		this->Add(this->infoRect);
@@ -107,10 +111,10 @@ namespace inst::ui {
 			if (usb_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
 
-			ourEntry->SetIcon(unchecked_usb);
+			ourEntry->SetIcon(unchecked_usb_tex);
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == url) {
-					ourEntry->SetIcon(checked_usb);
+					ourEntry->SetIcon(checked_usb_tex);
 				}
 			}
 			this->menu->AddItem(ourEntry);
@@ -135,11 +139,11 @@ namespace inst::ui {
 
 			if (usb_theme && inst::config::useTheme && std::filesystem::exists(inst::config::appDir + "/theme/theme.json")) ourEntry->SetColor(COLOR(text_colour));
 			else ourEntry->SetColor(COLOR("#FFFFFFFF"));
-			ourEntry->SetIcon(unchecked_usb);
+			ourEntry->SetIcon(unchecked_usb_tex);
 
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == url) {
-					ourEntry->SetIcon(checked_usb);
+					ourEntry->SetIcon(checked_usb_tex);
 				}
 			}
 			this->menu->AddItem(ourEntry);
@@ -148,7 +152,7 @@ namespace inst::ui {
 	}
 
 	void usbInstPage::selectTitle(int selectedIndex) {
-		if (this->menu->GetItems()[selectedIndex]->GetIconPath() == checked_usb) {
+		if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == checked_usb_tex) {
 			for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
 				if (this->selectedTitles[i] == this->ourTitles[selectedIndex]) this->selectedTitles.erase(this->selectedTitles.begin() + i);
 			}
@@ -192,10 +196,10 @@ namespace inst::ui {
 		}
 
 		if (this->selectedTitles.size() == 1) {
-			dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ":\n\n" + inst::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) + "\n\n" + "inst.target.desc1"_lang, "\n\n\n\n\n\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, install);
+			dialogResult = mainApp->CreateShowDialog("inst.target.desc0"_lang + ":\n\n" + inst::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) + "\n\n" + "inst.target.desc1"_lang, "\n\n\n\n\n\n\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(install)));
 		}
 		//else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false);
-		else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, install);
+		else dialogResult = mainApp->CreateShowDialog("inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang, "\n" + "common.cancel_desc"_lang, { "inst.target.opt0"_lang, "inst.target.opt1"_lang }, false, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(install)));
 		if (dialogResult == -1) return;
 		usbInstStuff::installTitleUsb(this->selectedTitles, dialogResult);
 		return;
@@ -234,7 +238,7 @@ namespace inst::ui {
 			if (this->selectedTitles.size() == this->menu->GetItems().size()) this->drawMenuItems(true);
 			else {
 				for (long unsigned int i = 0; i < this->menu->GetItems().size(); i++) {
-					if (this->menu->GetItems()[i]->GetIconPath() == checked_usb) continue;
+					if (this->menu->GetItems()[i]->GetIconTexture() == checked_usb_tex) continue;
 					else this->selectTitle(i);
 				}
 				this->drawMenuItems(false);
