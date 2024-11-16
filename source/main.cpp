@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
   inst::util::initApp();
   try {
     auto renderer_opts =
-        pu::ui::render::RendererInitOptions(SDL_INIT_EVERYTHING, pu::ui::render::RendererSoftwareFlags);
+        pu::ui::render::RendererInitOptions(SDL_INIT_EVERYTHING, pu::ui::render::RendererHardwareFlags);
     renderer_opts.UseImage(pu::ui::render::IMGAllFlags);
     // renderer_opts.UseAudio(pu::ui::render::MixerAllFlags);
     renderer_opts.AddDefaultAllSharedFonts();

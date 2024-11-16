@@ -54,39 +54,6 @@ optionsPage::optionsPage() : Layout::Layout() {
   this->setMenuText();
   this->Add(this->menu);
 }
-void optionsPage::askToUpdate(std::vector<std::string> updateInfo) {
-
-  std::string update = "romfs:/images/icons/update.png";
-
-  if (!mainApp->CreateShowDialog("options.update.title"_lang,
-                                 "options.update.desc0"_lang + updateInfo[0] + "options.update.desc1"_lang,
-                                 {"options.update.opt0"_lang, "common.cancel"_lang}, false,
-                                 pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(update)))) {
-    inst::ui::instPage::loadInstallScreen();
-    inst::ui::instPage::setTopInstInfoText("options.update.top_info"_lang + updateInfo[0]);
-    inst::ui::instPage::setInstBarPerc(0);
-    inst::ui::instPage::setInstInfoText("options.update.bot_info"_lang + updateInfo[0]);
-    try {
-      std::string downloadName = inst::config::appDir + "/temp_download.zip";
-      inst::curl::downloadFile(updateInfo[1], downloadName.c_str(), 0, true);
-      romfsExit();
-      inst::ui::instPage::setInstInfoText("options.update.bot_info2"_lang + updateInfo[0]);
-      inst::zip::extractFile(downloadName, "sdmc:/");
-      std::filesystem::remove(downloadName);
-      mainApp->CreateShowDialog(
-          "options.update.complete"_lang, "options.update.end_desc"_lang, {"common.ok"_lang}, false,
-          pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/update.png")));
-      mainApp->FadeOut();
-      mainApp->Close();
-    } catch (...) {
-      std::string fail = "romfs:/images/icons/fail.png";
-      mainApp->CreateShowDialog("options.update.failed"_lang, "options.update.end_desc"_lang, {"common.ok"_lang}, false,
-                                pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
-      return;
-    }
-  }
-  return;
-}
 
 std::string optionsPage::getMenuOptionIcon(bool ourBool) {
   std::string checked = "romfs:/images/icons/checked.png";
@@ -174,24 +141,6 @@ void optionsPage::setMenuText() {
       pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(this->getMenuOptionIcon(inst::config::deletePrompt))));
   this->menu->AddItem(deletePromptOption);
 
-  auto autoUpdateOption = pu::ui::elm::MenuItem::New("options.menu_items.auto_update"_lang);
-  autoUpdateOption->SetColor(COLOR("#FFFFFFFF"));
-  autoUpdateOption->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(this->getMenuOptionIcon(inst::config::autoUpdate))));
-  this->menu->AddItem(autoUpdateOption);
-
-  auto useSoundOption = pu::ui::elm::MenuItem::New("options.menu_items.useSound"_lang);
-  useSoundOption->SetColor(COLOR("#FFFFFFFF"));
-  useSoundOption->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(this->getMenuOptionIcon(inst::config::useSound))));
-  this->menu->AddItem(useSoundOption);
-
-  auto useMusicOption = pu::ui::elm::MenuItem::New("options.menu_items.useMusic"_lang);
-  useMusicOption->SetColor(COLOR("#FFFFFFFF"));
-  useMusicOption->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(this->getMenuOptionIcon(inst::config::useMusic))));
-  this->menu->AddItem(useMusicOption);
-
   auto fixticket = pu::ui::elm::MenuItem::New("options.menu_items.fixticket"_lang);
   fixticket->SetColor(COLOR("#FFFFFFFF"));
   fixticket->SetIcon(
@@ -204,31 +153,12 @@ void optionsPage::setMenuText() {
       pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(this->getMenuOptionIcon(inst::config::listoveride))));
   this->menu->AddItem(listoveride);
 
-  auto httpkeyboard = pu::ui::elm::MenuItem::New("options.menu_items.usehttpkeyboard"_lang);
-  httpkeyboard->SetColor(COLOR("#FFFFFFFF"));
-  httpkeyboard->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(this->getMenuOptionIcon(inst::config::httpkeyboard))));
-  this->menu->AddItem(httpkeyboard);
-
-  auto httpServerUrlOption = pu::ui::elm::MenuItem::New(
-      "options.menu_items.http_url"_lang + inst::util::shortenString(inst::config::httpIndexUrl, 42, false));
-  httpServerUrlOption->SetColor(COLOR("#FFFFFFFF"));
-  std::string neturl = "romfs:/images/icons/url.png";
-  httpServerUrlOption->SetIcon(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(neturl)));
-  this->menu->AddItem(httpServerUrlOption);
-
   auto languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang +
                                                    this->getMenuLanguage(inst::config::languageSetting));
   languageOption->SetColor(COLOR("#FFFFFFFF"));
   std::string lang = "romfs:/images/icons/speak.png";
   languageOption->SetIcon(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(lang)));
   this->menu->AddItem(languageOption);
-
-  auto updateOption = pu::ui::elm::MenuItem::New("options.menu_items.check_update"_lang);
-  updateOption->SetColor(COLOR("#FFFFFFFF"));
-  std::string upd = "romfs:/images/icons/update2.png";
-  updateOption->SetIcon(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(upd)));
-  this->menu->AddItem(updateOption);
 
   auto creditsOption = pu::ui::elm::MenuItem::New("options.menu_items.credits"_lang);
   creditsOption->SetColor(COLOR("#FFFFFFFF"));
@@ -310,32 +240,6 @@ void optionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_p
           this->menu->SetSelectedIndex(index);
           break;
         case 4:
-          inst::config::autoUpdate = !inst::config::autoUpdate;
-          inst::config::setConfig();
-          this->setMenuText();
-          this->menu->SetSelectedIndex(index);
-          break;
-        case 5:
-          if (inst::config::useSound) {
-            inst::config::useSound = false;
-          } else {
-            inst::config::useSound = true;
-          }
-          this->setMenuText();
-          this->menu->SetSelectedIndex(index);
-          inst::config::setConfig();
-          break;
-        case 6:
-          if (inst::config::useMusic) {
-            inst::config::useMusic = false;
-          } else {
-            inst::config::useMusic = true;
-          }
-          this->setMenuText();
-          this->menu->SetSelectedIndex(index);
-          inst::config::setConfig();
-          break;
-        case 7:
           if (inst::config::fixticket) {
             inst::config::fixticket = false;
           } else {
@@ -345,7 +249,7 @@ void optionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_p
           this->menu->SetSelectedIndex(index);
           inst::config::setConfig();
           break;
-        case 8:
+        case 5:
           if (inst::config::listoveride) {
             inst::config::listoveride = false;
           } else {
@@ -355,27 +259,7 @@ void optionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_p
           this->menu->SetSelectedIndex(index);
           inst::config::setConfig();
           break;
-        case 9:
-          if (inst::config::httpkeyboard) {
-            inst::config::httpkeyboard = false;
-          } else {
-            inst::config::httpkeyboard = true;
-          }
-          this->setMenuText();
-          this->menu->SetSelectedIndex(index);
-          inst::config::setConfig();
-          break;
-        case 10:
-          keyboardResult =
-              inst::util::softwareKeyboard("inst.net.url.hint"_lang, inst::config::httpIndexUrl.c_str(), 500);
-          if (keyboardResult.size() > 0) {
-            inst::config::httpIndexUrl = keyboardResult;
-            inst::config::setConfig();
-            this->setMenuText();
-            this->menu->SetSelectedIndex(index);
-          }
-          break;
-        case 11:
+        case 6:
           languageList = languageStrings;
           languageList[0] = "options.language.system_language"_lang; // replace "sys" with local language string
           rc = inst::ui::mainApp->CreateShowDialog("options.language.title"_lang, "options.language.desc"_lang,
@@ -420,24 +304,7 @@ void optionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_p
           inst::config::setConfig();
           lang_message();
           break;
-        case 12:
-          if (inst::util::getIPAddress() == "1.0.0.127") {
-            std::string update = "romfs:/images/icons/update.png";
-            inst::ui::mainApp->CreateShowDialog("main.net.title"_lang, "main.net.desc"_lang, {"common.ok"_lang}, true,
-                                                pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(update)));
-            break;
-          }
-          downloadUrl = inst::util::checkForAppUpdate();
-          if (!downloadUrl.size()) {
-            std::string fail = "romfs:/images/icons/fail.png";
-            mainApp->CreateShowDialog("options.update.title_check_fail"_lang, "options.update.desc_check_fail"_lang,
-                                      {"common.ok"_lang}, false,
-                                      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
-            break;
-          }
-          this->askToUpdate(downloadUrl);
-          break;
-        case 13:
+        case 7:
           inst::ui::mainApp->CreateShowDialog(
               "options.credits.title"_lang, "options.credits.desc"_lang, {"common.close"_lang}, true,
               pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/credits.png")));

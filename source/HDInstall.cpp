@@ -108,12 +108,6 @@ void installNspFromFile(std::vector<std::filesystem::path> ourTitleList, int whe
         "inst.info_page.failed"_lang + inst::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true));
     inst::ui::instPage::setInstBarPerc(0);
 
-    if (inst::config::useSound) {
-      std::string audioPath = "romfs:/audio/fail.mp3";
-      std::thread audioThread(inst::util::playAudio, audioPath);
-      audioThread.join();
-    }
-
     inst::ui::mainApp->CreateShowDialog(
         "inst.info_page.failed"_lang + inst::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true) +
             "!",
@@ -131,12 +125,6 @@ void installNspFromFile(std::vector<std::filesystem::path> ourTitleList, int whe
   if (nspInstalled) {
     inst::ui::instPage::setInstInfoText("inst.info_page.complete"_lang);
     inst::ui::instPage::setInstBarPerc(100);
-
-    if (inst::config::useSound) {
-      std::string audioPath = "romfs:/audio/pass.mp3";
-      std::thread audioThread(inst::util::playAudio, audioPath);
-      audioThread.join();
-    }
 
     if (ourTitleList.size() > 1) {
       if (inst::config::deletePrompt) {

@@ -16,7 +16,6 @@ public:
 
 private:
   bool appletFinished;
-  bool updateFinished;
   TextBlock::Ref butText;
   Rectangle::Ref topRect;
   Rectangle::Ref botRect;

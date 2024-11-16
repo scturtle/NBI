@@ -51,7 +51,6 @@ double totalsize(const char *path) {
 namespace inst::ui {
 extern MainApplication *mainApp;
 bool appletFinished = false;
-bool updateFinished = false;
 
 void mathstuff() {
   double math = (GetAvailableSpace("./") / 1024) / 1024; // megabytes
@@ -135,13 +134,6 @@ void mainMenuThread() {
   } else if (!appletFinished) {
     inst::ui::appletFinished = true;
     tin::data::NUM_BUFFER_SEGMENTS = 128;
-  }
-  if (!updateFinished && (!inst::config::autoUpdate || inst::util::getIPAddress() == "1.0.0.127"))
-    updateFinished = true;
-
-  if (!updateFinished && menuLoaded && inst::config::updateInfo.size()) {
-    updateFinished = true;
-    optionsPage::askToUpdate(inst::config::updateInfo);
   }
 }
 

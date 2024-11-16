@@ -21,8 +21,6 @@ std::string getDriveFileName(std::string fileId);
 std::vector<uint32_t> setClockSpeed(int deviceToClock, uint32_t clockSpeed);
 std::string getIPAddress();
 int getUsbState();
-void playAudio(std::string audioPath); // for mp3/ogg/mod etc
-void playWav(std::string audioPath);   // for wav files
 std::vector<std::string> checkForAppUpdate();
 std::string SplitFilename(const std::string &str);
 } // namespace inst::util
