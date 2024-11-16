@@ -20,51 +20,41 @@ double GetSpace(const char *path) {
 
 #define COLOR(hex) pu::ui::Color::FromHex(hex)
 
-// using namespace std;
-
 namespace inst::ui {
 extern MainApplication *mainApp;
 
 instPage::instPage() : Layout::Layout() {
 
-  this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#00000080"));
-
   this->SetBackgroundColor(COLOR("#000000FF"));
-
-  this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
-
-  this->titleImage =
-      Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Install.png")));
-
-  this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Background.png")));
+  this->infoRect = Rectangle::New(0, 95, 1920, 60, COLOR("#00000080"));
+  this->topRect = Rectangle::New(0, 0, 1920, 94, COLOR("#000000FF"));
 
   this->pageInfoText = TextBlock::New(10, 109, "");
   this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
   this->pageInfoText->SetColor(COLOR("#FFFFFFFF"));
 
-  this->installInfoText = TextBlock::New(10, 640, "");
-  this->installInfoText->SetColor(COLOR("#FFFFFFFF"));
-
-  this->sdInfoText = TextBlock::New(10, 600, "");
-  this->sdInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
-  this->sdInfoText->SetColor(COLOR("#FFFFFFFF"));
-
-  this->nandInfoText = TextBlock::New(10, 560, "");
-  this->nandInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
-  this->nandInfoText->SetColor(COLOR("#FFFFFFFF"));
-
-  this->countText = TextBlock::New(10, 520, "");
+  this->countText = TextBlock::New(10, 150, "");
   this->countText->SetFont(pu::ui::MakeDefaultFontName(30));
   this->countText->SetColor(COLOR("#FFFFFFFF"));
 
-  // this->installBar = pu::ui::elm::ProgressBar::New(10, 680, 1260, 30, 100.0f);
-  this->installBar = pu::ui::elm::ProgressBar::New(10, 675, 1260, 35, 100.0f);
+  this->nandInfoText = TextBlock::New(10, 190, "");
+  this->nandInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
+  this->nandInfoText->SetColor(COLOR("#FFFFFFFF"));
+
+  this->sdInfoText = TextBlock::New(10, 230, "");
+  this->sdInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
+  this->sdInfoText->SetColor(COLOR("#FFFFFFFF"));
+
+  this->installInfoText = TextBlock::New(10, 270, "");
+  this->sdInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
+  this->installInfoText->SetColor(COLOR("#FFFFFFFF"));
+
+  this->installBar = pu::ui::elm::ProgressBar::New(10, 310, 1900, 35, 100.0f);
   this->installBar->SetBackgroundColor(COLOR("#000000FF"));
   this->installBar->SetProgressColor(COLOR("#565759FF"));
 
   this->Add(this->topRect);
   this->Add(this->infoRect);
-  this->Add(this->titleImage);
   this->Add(this->pageInfoText);
   this->Add(this->installInfoText);
   this->Add(this->sdInfoText);
@@ -112,15 +102,12 @@ void instPage::filecount(std::string ourText) {
 
 void instPage::setInstInfoText(std::string ourText) {
   mainApp->instpage->installInfoText->SetText(ourText);
-  //
   std::string info = std::to_string(sdfreespace());
   std::string message = ("inst.net.sd"_lang + info + " MB");
   mainApp->instpage->sdInfoText->SetText(message);
-  //
   info = std::to_string(sysfreespace());
   message = ("inst.net.nand"_lang + info + " MB");
   mainApp->instpage->nandInfoText->SetText(message);
-  //
   mainApp->CallForRender();
 }
 

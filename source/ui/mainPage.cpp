@@ -139,16 +139,13 @@ void mainMenuThread() {
 
 MainPage::MainPage() : Layout::Layout() {
   this->SetBackgroundColor(COLOR("#000000FF"));
-  this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
-  this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
-  this->titleImage =
-      Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Main.png")));
-  this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Background.png")));
+  this->topRect = Rectangle::New(0, 0, 1920, 94, COLOR("#000000FF"));
+  this->botRect = Rectangle::New(0, 1019, 1920, 61, COLOR("#000000FF"));
 
-  this->butText = TextBlock::New(10, 678, "main.buttons"_lang);
+  this->butText = TextBlock::New(10, 1028, "main.buttons"_lang);
   this->butText->SetColor(COLOR("#FFFFFFFF"));
 
-  this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1280, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 94, 6);
+  this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1920, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 94, 10);
   this->optionMenu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
   this->optionMenu->SetScrollbarColor(COLOR("#1A1919FF"));
 
@@ -174,30 +171,24 @@ MainPage::MainPage() : Layout::Layout() {
 
   this->Add(this->topRect);
   this->Add(this->botRect);
-  this->Add(this->titleImage);
   this->Add(this->butText);
   this->optionMenu->AddItem(this->installMenuItem);
   this->optionMenu->AddItem(this->HdInstallMenuItem);
   this->optionMenu->AddItem(this->settingsMenuItem);
   this->optionMenu->AddItem(this->exitMenuItem);
-  if (nx::hdd::count() && nx::hdd::rootPath()) {
-    this->hdd = Image::New(
-        1156, 669, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/usb-hd-connected.png")));
-    this->Add(this->hdd);
-  }
   this->Add(this->optionMenu);
   this->AddRenderCallback(mainMenuThread);
 }
 
 void MainPage::installMenuItem_Click() {
-  mainApp->sdinstPage->drawMenuItems(true, "sdmc:/");
+  mainApp->sdinstPage->drawMenuItems("sdmc:/");
   mainApp->sdinstPage->menu->SetSelectedIndex(0);
   mainApp->LoadLayout(mainApp->sdinstPage);
 }
 
 void MainPage::HdInstallMenuItem_Click() {
   if (nx::hdd::count() && nx::hdd::rootPath()) {
-    mainApp->HDinstPage->drawMenuItems(true, nx::hdd::rootPath());
+    mainApp->HDinstPage->drawMenuItems(nx::hdd::rootPath());
     mainApp->HDinstPage->menu->SetSelectedIndex(0);
     mainApp->LoadLayout(mainApp->HDinstPage);
   } else {

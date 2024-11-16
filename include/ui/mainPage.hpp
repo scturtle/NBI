@@ -19,13 +19,11 @@ private:
   TextBlock::Ref butText;
   Rectangle::Ref topRect;
   Rectangle::Ref botRect;
-  Image::Ref titleImage;
   TextBlock::Ref appVersionText;
   pu::ui::elm::Menu::Ref optionMenu;
   pu::ui::elm::MenuItem::Ref installMenuItem;
   pu::ui::elm::MenuItem::Ref HdInstallMenuItem;
   pu::ui::elm::MenuItem::Ref settingsMenuItem;
   pu::ui::elm::MenuItem::Ref exitMenuItem;
-  Image::Ref hdd;
 };
 } // namespace inst::ui

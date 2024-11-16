@@ -1,5 +1,3 @@
-// #include <switch.h>
-// #include <string>
 #include "ui/sdInstPage.hpp"
 #include "sdInstall.hpp"
 #include "ui/MainApplication.hpp"
@@ -13,66 +11,53 @@
 
 namespace inst::ui {
 extern MainApplication *mainApp;
-s32 yyy = 0;
-bool show_ext;
-std::string checked = "romfs:/images/icons/check-box-outline.png";
-std::string unchecked = "romfs:/images/icons/checkbox-blank-outline.png";
-pu::sdl2::TextureHandle::Ref checked_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(checked));
-pu::sdl2::TextureHandle::Ref unchecked_tex = pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(unchecked));
 
 sdInstPage::sdInstPage() : Layout::Layout() {
-  this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#00000080"));
+
   this->SetBackgroundColor(COLOR("#000000FF"));
-  this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
-  this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
-  this->titleImage = Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Sd.png")));
-  this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Background.png")));
+  this->infoRect = Rectangle::New(0, 95, 1920, 60, COLOR("#00000080"));
+  this->topRect = Rectangle::New(0, 0, 1920, 94, COLOR("#000000FF"));
+  this->botRect = Rectangle::New(0, 1019, 1920, 61, COLOR("#000000FF"));
 
   this->pageInfoText = TextBlock::New(10, 109, "inst.sd.top_info"_lang);
   this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
   this->pageInfoText->SetColor(COLOR("#FFFFFFFF"));
 
-  this->butText = TextBlock::New(10, 678, "inst.sd.buttons"_lang);
+  this->butText = TextBlock::New(10, 1028, "inst.sd.buttons"_lang);
   this->butText->SetColor(COLOR("#FFFFFFFF"));
-  this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 84, (506 / 84));
+
+  this->menu = pu::ui::elm::Menu::New(0, 156, 1920, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 84, 10);
   this->menu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
   this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
 
   this->Add(this->topRect);
   this->Add(this->infoRect);
   this->Add(this->botRect);
-  this->Add(this->titleImage);
   this->Add(this->butText);
   this->Add(this->pageInfoText);
   this->Add(this->menu);
 }
 
-void sdInstPage::drawMenuItems(bool clearItems, std::filesystem::path ourPath) {
+void sdInstPage::drawMenuItems(std::filesystem::path ourPath) {
   int myindex = this->menu->GetSelectedIndex(); // store index so when page redraws we can get the last item we checked.
 
-  if (clearItems)
-    this->selectedTitles = {};
   this->currentDir = ourPath;
-
   auto pathStr = this->currentDir.string();
-
   if (pathStr.length()) {
     if (pathStr[pathStr.length() - 1] == ':') {
       this->currentDir = this->currentDir / "";
     }
   }
 
-  this->menu->ClearItems();
   try {
     this->ourDirectories = util::getDirsAtPath(this->currentDir);
     this->ourFiles = util::getDirectoryFiles(this->currentDir, {".nsp", ".nsz", ".xci", ".xcz"});
-  }
-
-  catch (std::exception &e) {
-    this->drawMenuItems(false, this->currentDir.parent_path());
+  } catch (std::exception &e) {
+    this->drawMenuItems(this->currentDir.parent_path());
     return;
   }
 
+  this->menu->ClearItems();
   std::string itm = "..";
   auto ourEntry = pu::ui::elm::MenuItem::New(itm);
   ourEntry->SetColor(COLOR("#FFFFFFFF"));
@@ -80,8 +65,6 @@ void sdInstPage::drawMenuItems(bool clearItems, std::filesystem::path ourPath) {
   this->menu->AddItem(ourEntry);
 
   for (auto &file : this->ourDirectories) {
-    if (file == "..")
-      break;
     std::string itm = file.filename().string();
     auto ourEntry = pu::ui::elm::MenuItem::New(itm);
     ourEntry->SetColor(COLOR("#FFFFFFFF"));
@@ -90,80 +73,38 @@ void sdInstPage::drawMenuItems(bool clearItems, std::filesystem::path ourPath) {
   }
 
   for (auto &file : this->ourFiles) {
-    std::string itm;
-    if (show_ext == false) {
-      itm = inst::util::SplitFilename(file);
-    } else {
-      itm = file.filename().string();
-    }
+    std::string itm = file.filename().string();
     auto ourEntry = pu::ui::elm::MenuItem::New(itm);
     ourEntry->SetColor(COLOR("#FFFFFFFF"));
-    ourEntry->SetIcon(unchecked_tex);
-
-    for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
-      if (this->selectedTitles[i] == file) {
-        ourEntry->SetIcon(checked_tex);
-      }
-    }
     this->menu->AddItem(ourEntry);
-    this->menu->SetSelectedIndex(myindex); // jump to the index we saved from above
   }
+
+  this->menu->SetSelectedIndex(myindex); // jump to the index we saved from above
 }
 
-void sdInstPage::followDirectory() {
+void sdInstPage::select() {
   int selectedIndex = this->menu->GetSelectedIndex();
   int dirListSize = this->ourDirectories.size();
-
-  dirListSize++;
-  selectedIndex--;
-
-  if (selectedIndex < dirListSize) {
-    if (this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetName() == ".." &&
-        this->menu->GetSelectedIndex() == 0) {
-      this->drawMenuItems(true, this->currentDir.parent_path());
-    } else {
-      this->drawMenuItems(true, this->ourDirectories[selectedIndex]);
-    }
+  if (this->menu->GetItems()[selectedIndex]->GetName() == "..") {
+    this->drawMenuItems(this->currentDir.parent_path());
     this->menu->SetSelectedIndex(0);
-  }
-}
-
-void sdInstPage::selectNsp(int selectedIndex) {
-  int dirListSize = this->ourDirectories.size();
-  dirListSize++;
-
-  if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == checked_tex) {
-    for (long unsigned int i = 0; i < this->selectedTitles.size(); i++) {
-      if (this->selectedTitles[i] == this->ourFiles[selectedIndex - dirListSize])
-        this->selectedTitles.erase(this->selectedTitles.begin() + i);
-    }
-  } else if (this->menu->GetItems()[selectedIndex]->GetIconTexture() == unchecked_tex)
-    this->selectedTitles.push_back(this->ourFiles[selectedIndex - dirListSize]);
-  else {
-    this->followDirectory();
-    return;
-  }
-  this->drawMenuItems(false, currentDir);
-}
-
-void sdInstPage::startInstall() {
-  int dialogResult = -1;
-  std::string install = "romfs:/images/icons/install.png";
-  if (this->selectedTitles.size() == 1) {
+  } else if (selectedIndex - 1 < dirListSize) {
+    this->drawMenuItems(this->ourDirectories[selectedIndex - 1]);
+    this->menu->SetSelectedIndex(0);
+  } else {
+    auto file = this->ourFiles[selectedIndex - 1 - dirListSize];
+    int dialogResult = -1;
+    std::string install = "romfs:/images/icons/install.png";
     dialogResult = mainApp->CreateShowDialog(
         "inst.target.desc0"_lang + ":\n\n" +
-            inst::util::shortenString(std::filesystem::path(this->selectedTitles[0]).filename().string(), 32, true) +
-            "\n\n" + "inst.target.desc1"_lang,
+            inst::util::shortenString(std::filesystem::path(file).filename().string(), 32, true) + "\n\n" +
+            "inst.target.desc1"_lang,
         "\n\n\n\n\n\n\n" + "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false,
         pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(install)));
-  } else
-    dialogResult = mainApp->CreateShowDialog(
-        "inst.target.desc00"_lang + std::to_string(this->selectedTitles.size()) + "inst.target.desc01"_lang,
-        "\n" + "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false,
-        pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(install)));
-  if (dialogResult == -1)
-    return;
-  nspInstStuff::installNspFromFile(this->selectedTitles, dialogResult);
+    if (dialogResult == -1)
+      return;
+    nspInstStuff::installNspFromFile({file}, dialogResult);
+  }
 }
 
 void sdInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_pos) {
@@ -173,68 +114,27 @@ void sdInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_po
   }
 
   HidTouchScreenState state = {0};
-
+  static s32 yyy = 0;
   if (hidGetTouchScreenStates(&state, 1)) {
-
     if ((Down & HidNpadButton_A) || (state.count != yyy)) {
       yyy = state.count;
-
       if (yyy != 1) {
-        int var = this->menu->GetItems().size();
-        auto s = std::to_string(var);
-
-        if (s != "0") {
-          this->selectNsp(this->menu->GetSelectedIndex());
-
-          if (this->ourFiles.size() == 1 && this->selectedTitles.size() == 1) {
-            this->startInstall();
-          }
-        }
+        this->select();
       }
     }
-  }
-
-  if ((Down & HidNpadButton_Y)) {
-    if (this->selectedTitles.size() == this->ourFiles.size())
-      this->drawMenuItems(true, currentDir);
-    else {
-      int topDir = 0;
-      topDir++;
-      for (long unsigned int i = this->ourDirectories.size() + topDir; i < this->menu->GetItems().size(); i++) {
-        if (this->menu->GetItems()[i]->GetIconTexture() == checked_tex)
-          continue;
-        else
-          this->selectNsp(i);
-      }
-      this->drawMenuItems(false, currentDir);
-    }
-  }
-
-  if ((Down & HidNpadButton_X)) {
-    std::string information = "romfs:/images/icons/information.png";
-    inst::ui::mainApp->CreateShowDialog("inst.sd.help.title"_lang, "inst.sd.help.desc"_lang, {"common.ok"_lang}, true,
-                                        pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(information)));
   }
 
   if (Down & HidNpadButton_Plus) {
-    int var = this->menu->GetItems().size();
-    auto s = std::to_string(var);
-
-    if (s != "0") {
-      if (this->selectedTitles.size() == 0 &&
-          this->menu->GetItems()[this->menu->GetSelectedIndex()]->GetIconTexture() == unchecked_tex) {
-        this->selectNsp(this->menu->GetSelectedIndex());
-      }
-      if (this->selectedTitles.size() > 0)
-        this->startInstall();
-    }
+    this->select();
   }
 
+  // page up
   if (Down & HidNpadButton_ZL)
-    this->menu->SetSelectedIndex(std::max(0, this->menu->GetSelectedIndex() - 6));
+    this->menu->SetSelectedIndex(std::max(0, this->menu->GetSelectedIndex() - 10));
 
+  // page down
   if (Down & HidNpadButton_ZR)
-    this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + 6));
+    this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + 10));
 
   // goto top of list
   if (Down & HidNpadButton_L) {
@@ -246,18 +146,6 @@ void sdInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_po
   if (Down & HidNpadButton_R) {
     int x = this->menu->GetItems().size() - 1;
     this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + x));
-  }
-
-  // don't show file extensions - refresh page
-  if (Down & HidNpadButton_Left) {
-    show_ext = false;
-    this->drawMenuItems(true, currentDir);
-    // this->drawMenuItems(true);
-  }
-
-  if (Down & HidNpadButton_Right) {
-    show_ext = true;
-    this->drawMenuItems(true, currentDir);
   }
 }
 } // namespace inst::ui

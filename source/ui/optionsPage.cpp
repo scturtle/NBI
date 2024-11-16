@@ -21,13 +21,10 @@ std::string flag = "romfs:/images/flags/en.png";
 std::vector<std::string> languageStrings = {"Sys", "En", "Jpn", "Fr", "De", "It", "Ru", "Es", "Tw", "Cn"};
 
 optionsPage::optionsPage() : Layout::Layout() {
-  this->infoRect = Rectangle::New(0, 95, 1280, 60, COLOR("#00000080"));
+  this->infoRect = Rectangle::New(0, 95, 1920, 60, COLOR("#00000080"));
   this->SetBackgroundColor(COLOR("#000000FF"));
-  this->topRect = Rectangle::New(0, 0, 1280, 94, COLOR("#000000FF"));
-  this->botRect = Rectangle::New(0, 659, 1280, 61, COLOR("#000000FF"));
-  this->titleImage =
-      Image::New(0, 0, pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Settings.png")));
-  this->SetBackgroundImage(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/Background.png")));
+  this->topRect = Rectangle::New(0, 0, 1920, 94, COLOR("#000000FF"));
+  this->botRect = Rectangle::New(0, 1019, 1920, 61, COLOR("#000000FF"));
 
   this->appVersionText = TextBlock::New(1200, 680, "v" + inst::config::appVersion);
   this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
@@ -36,17 +33,16 @@ optionsPage::optionsPage() : Layout::Layout() {
   this->pageInfoText = TextBlock::New(10, 109, "options.title"_lang);
   this->pageInfoText->SetColor(COLOR("#FFFFFFFF"));
 
-  this->butText = TextBlock::New(10, 678, "options.buttons"_lang);
+  this->butText = TextBlock::New(10, 1028, "options.buttons"_lang);
   this->butText->SetColor(COLOR("#FFFFFFFF"));
 
-  this->menu = pu::ui::elm::Menu::New(0, 156, 1280, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 84, (506 / 84));
+  this->menu = pu::ui::elm::Menu::New(0, 156, 1920, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 84, 10);
   this->menu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
   this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
 
   this->Add(this->topRect);
   this->Add(this->infoRect);
   this->Add(this->botRect);
-  this->Add(this->titleImage);
   this->Add(this->appVersionText);
   this->Add(this->butText);
   this->Add(this->pageInfoText);
@@ -173,10 +169,10 @@ void optionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_p
   }
 
   if (Down & HidNpadButton_ZL)
-    this->menu->SetSelectedIndex(std::max(0, this->menu->GetSelectedIndex() - 6));
+    this->menu->SetSelectedIndex(std::max(0, this->menu->GetSelectedIndex() - 10));
 
   if (Down & HidNpadButton_ZR)
-    this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + 6));
+    this->menu->SetSelectedIndex(std::min((s32)this->menu->GetItems().size() - 1, this->menu->GetSelectedIndex() + 10));
 
   // goto top of list
   if (Down & HidNpadButton_L) {

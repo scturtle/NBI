@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include <functional>
 #include <vector>
+#include <memory>
 
 #include "install/pfs0.hpp"
 #include "nx/ncm.hpp"

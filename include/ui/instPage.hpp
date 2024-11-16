@@ -24,6 +24,5 @@ public:
 private:
   Rectangle::Ref infoRect;
   Rectangle::Ref topRect;
-  Image::Ref titleImage;
 };
 } // namespace inst::ui
