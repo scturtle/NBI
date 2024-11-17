@@ -39,6 +39,7 @@ optionsPage::optionsPage() : Layout::Layout() {
   this->menu = pu::ui::elm::Menu::New(0, 156, 1920, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 84, 10);
   this->menu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
   this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
+  this->menu->SetItemAlphaIncrementSteps(1);
 
   this->Add(this->topRect);
   this->Add(this->infoRect);

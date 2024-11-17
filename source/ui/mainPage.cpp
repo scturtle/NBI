@@ -148,6 +148,7 @@ MainPage::MainPage() : Layout::Layout() {
   this->optionMenu = pu::ui::elm::Menu::New(0, 95, 1920, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 94, 10);
   this->optionMenu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
   this->optionMenu->SetScrollbarColor(COLOR("#1A1919FF"));
+  this->optionMenu->SetItemAlphaIncrementSteps(1);
 
   this->installMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
   this->installMenuItem->SetColor(COLOR("#FFFFFFFF"));
