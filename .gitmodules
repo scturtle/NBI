@@ -1,0 +1,9 @@
+[submodule "3rdparty/json"]
+	path = 3rdparty/json
+	url = https://github.com/nlohmann/json
+[submodule "3rdparty/libusbhsfs"]
+	path = 3rdparty/libusbhsfs
+	url = https://github.com/DarkMatterCore/libusbhsfs
+[submodule "3rdparty/Plutonium"]
+	path = 3rdparty/Plutonium
+	url = https://github.com/XorTroll/Plutonium
