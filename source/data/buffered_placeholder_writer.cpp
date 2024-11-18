@@ -22,7 +22,6 @@ SOFTWARE.
 
 #include "data/buffered_placeholder_writer.hpp"
 
-#include "util/debug.h"
 #include "util/error.hpp"
 #include <algorithm>
 #include <climits>
@@ -178,12 +177,4 @@ size_t BufferedPlaceholderWriter::GetSizeBuffered() { return m_sizeBuffered; }
 
 size_t BufferedPlaceholderWriter::GetSizeWrittenToPlaceholder() { return m_sizeWrittenToPlaceholder; }
 
-void BufferedPlaceholderWriter::DebugPrintBuffers() {
-  LOG_DEBUG("BufferedPlaceholderWriter Buffers: \n");
-
-  for (int i = 0; i < NUM_BUFFER_SEGMENTS; i++) {
-    LOG_DEBUG("Buffer %u:\n", i);
-    printBytes(m_bufferSegments[i].data, BUFFER_SEGMENT_DATA_SIZE, true);
-  }
-}
 } // namespace tin::data

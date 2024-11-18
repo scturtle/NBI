@@ -21,7 +21,6 @@ SOFTWARE.
 */
 
 #include "install/xci.hpp"
-#include "debug.h"
 #include "error.hpp"
 #include "util/title_util.hpp"
 
@@ -39,9 +38,6 @@ void XCI::RetrieveHeader() {
   m_headerBytes.resize(sizeof(HFS0BaseHeader), 0);
   this->BufferData(m_headerBytes.data(), hfs0Offset, sizeof(HFS0BaseHeader));
 
-  LOG_DEBUG("Base header: \n");
-  printBytes(m_headerBytes.data(), sizeof(HFS0BaseHeader), true);
-
   // Retrieve full header
   HFS0BaseHeader *header = reinterpret_cast<HFS0BaseHeader *>(m_headerBytes.data());
   if (header->magic != MAGIC_HFS0)
@@ -51,9 +47,6 @@ void XCI::RetrieveHeader() {
   m_headerBytes.resize(sizeof(HFS0BaseHeader) + remainingHeaderSize, 0);
   this->BufferData(m_headerBytes.data() + sizeof(HFS0BaseHeader), hfs0Offset + sizeof(HFS0BaseHeader),
                    remainingHeaderSize);
-
-  LOG_DEBUG("Base header: \n");
-  printBytes(m_headerBytes.data(), sizeof(HFS0BaseHeader) + remainingHeaderSize, true);
 
   // Find Secure partition
   header = reinterpret_cast<HFS0BaseHeader *>(m_headerBytes.data());
@@ -68,9 +61,6 @@ void XCI::RetrieveHeader() {
     m_secureHeaderBytes.resize(sizeof(HFS0BaseHeader), 0);
     this->BufferData(m_secureHeaderBytes.data(), m_secureHeaderOffset, sizeof(HFS0BaseHeader));
 
-    LOG_DEBUG("Secure header: \n");
-    printBytes(m_secureHeaderBytes.data(), sizeof(HFS0BaseHeader), true);
-
     if (this->GetSecureHeader()->magic != MAGIC_HFS0)
       THROW_FORMAT("hfs0 magic doesn't match at 0x%lx\n", m_secureHeaderOffset);
 
@@ -81,8 +71,6 @@ void XCI::RetrieveHeader() {
     this->BufferData(m_secureHeaderBytes.data() + sizeof(HFS0BaseHeader), m_secureHeaderOffset + sizeof(HFS0BaseHeader),
                      remainingHeaderSize);
 
-    LOG_DEBUG("Base header: \n");
-    printBytes(m_secureHeaderBytes.data(), sizeof(HFS0BaseHeader) + remainingHeaderSize, true);
     return;
   }
   THROW_FORMAT("couldn't optain secure hfs0 header\n");

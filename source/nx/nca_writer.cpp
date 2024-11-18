@@ -260,21 +260,6 @@ public:
 
       auto header = (NczHeader *)m_buffer.data();
 
-      // debug code -- ignore....
-      /*
-      int x =0;
-      if (x == 0) {
-              char aByte = m_buffer.data()[0];
-              //aByte = 0x10+(aByte*0x40);
-              int one = sizeof(NczHeader);
-              std::ostringstream ss;
-              ss << "0x" << std::hex << one;
-              std::string result = ss.str();
-              inst::ui::mainApp->CreateShowDialog("Debug info", result, { "common.ok"_lang }, true,
-      "romfs:/images/icons/information.png"); x++;
-      }
-      */
-
       if (m_buffer.size() + sz > header->size()) {
         u64 remainder = header->size() - m_buffer.size();
         append(m_buffer, ptr, remainder);

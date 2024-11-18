@@ -25,7 +25,6 @@ SOFTWARE.
 #include "install/nsp.hpp"
 
 #include "data/buffered_placeholder_writer.hpp"
-#include "util/debug.h"
 #include "util/error.hpp"
 #include "util/title_util.hpp"
 #include <threads.h>
@@ -49,24 +48,11 @@ void NSP::RetrieveHeader() {
   m_headerBytes.resize(sizeof(PFS0BaseHeader), 0);
   this->BufferData(m_headerBytes.data(), 0x0, sizeof(PFS0BaseHeader));
 
-  LOG_DEBUG("Base header: \n");
-  printBytes(m_headerBytes.data(), sizeof(PFS0BaseHeader), true);
-
   // Retrieve the full header
   size_t remainingHeaderSize =
       this->GetBaseHeader()->numFiles * sizeof(PFS0FileEntry) + this->GetBaseHeader()->stringTableSize;
   m_headerBytes.resize(sizeof(PFS0BaseHeader) + remainingHeaderSize, 0);
   this->BufferData(m_headerBytes.data() + sizeof(PFS0BaseHeader), sizeof(PFS0BaseHeader), remainingHeaderSize);
-
-  LOG_DEBUG("Full header: \n");
-  printBytes(m_headerBytes.data(), m_headerBytes.size(), true);
-
-  /* debug print header
-  FILE * pFile;
-  pFile = fopen ("header.hxd", "wb");
-  fwrite (m_headerBytes.data(), sizeof(char), m_headerBytes.size(), pFile);
-  fclose (pFile);
-  */
 }
 
 const PFS0FileEntry *NSP::GetFileEntry(unsigned int index) {

@@ -26,10 +26,6 @@ SOFTWARE.
 #include <machine/endian.h>
 
 namespace tin::util {
-u64 GetRightsIdTid(RightsId rightsId) { return __bswap64(*(u64 *)rightsId.c); }
-
-u64 GetRightsIdKeyGen(RightsId rightsId) { return __bswap64(*(u64 *)(rightsId.c + 8)); }
-
 std::string GetNcaIdString(const NcmContentId &ncaId) {
   char ncaIdStr[FS_MAX_PATH] = {0};
   u64 ncaIdLower = __bswap64(*(u64 *)ncaId.c);
@@ -64,54 +60,4 @@ u64 GetBaseTitleId(u64 titleId, NcmContentMetaType contentMetaType) {
   }
 }
 
-std::string GetBaseTitleName(u64 baseTitleId) {
-  Result rc = 0;
-  NsApplicationControlData appControlData;
-  size_t sizeRead;
-
-  if (R_FAILED(rc = nsGetApplicationControlData(NsApplicationControlSource_Storage, baseTitleId, &appControlData,
-                                                sizeof(NsApplicationControlData), &sizeRead))) {
-    LOG_DEBUG("Failed to get application control data. Error code: 0x%08x\n", rc);
-    return "Unknown";
-  }
-
-  if (sizeRead < sizeof(appControlData.nacp)) {
-    LOG_DEBUG("Incorrect size for nacp\n");
-    return "Unknown";
-  }
-
-  NacpLanguageEntry *languageEntry;
-
-  if (R_FAILED(rc = nacpGetLanguageEntry(&appControlData.nacp, &languageEntry))) {
-    LOG_DEBUG("Failed to get language entry. Error code: 0x%08x\n", rc);
-    return "Unknown";
-  }
-
-  if (languageEntry == NULL) {
-    LOG_DEBUG("Language entry is null! Error code: 0x%08x\n", rc);
-    return "Unknown";
-  }
-
-  return languageEntry->name;
-}
-
-std::string GetTitleName(u64 titleId, NcmContentMetaType contentMetaType) {
-  u64 baseTitleId = GetBaseTitleId(titleId, contentMetaType);
-  std::string titleName = GetBaseTitleName(baseTitleId);
-
-  switch (contentMetaType) {
-  case NcmContentMetaType_Patch:
-    titleName += " (Update)";
-    break;
-
-  case NcmContentMetaType_AddOnContent:
-    titleName += " (DLC)";
-    break;
-
-  default:
-    break;
-  }
-
-  return titleName;
-}
 } // namespace tin::util

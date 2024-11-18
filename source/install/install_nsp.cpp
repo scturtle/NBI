@@ -34,7 +34,6 @@ SOFTWARE.
 #include "ui/MainApplication.hpp"
 #include "util/config.hpp"
 #include "util/crypto.hpp"
-#include "util/debug.h"
 #include "util/error.hpp"
 #include "util/file_util.hpp"
 #include "util/lang.hpp"
@@ -114,11 +113,9 @@ void NSPInstall::InstallNCA(const NcmContentId &ncaId) {
       THROW_FORMAT("Invalid NCA magic");
 
     if (!Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, Crypto::NCAHeaderSignature)) {
-      std::string information = "romfs:/images/icons/information.png";
-      int rc =
-          inst::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang,
-                                              {"common.cancel"_lang, "inst.nca_verify.opt1"_lang}, false,
-                                              pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(information)));
+      int rc = inst::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang,
+                                                   {"common.cancel"_lang, "inst.nca_verify.opt1"_lang}, false,
+                                                   inst::util::LoadTexture(inst::icon::info));
       if (rc != 1)
         THROW_FORMAT(("inst.nca_verify.error"_lang + tin::util::GetNcaIdString(ncaId)).c_str());
       m_declinedValidation = true;
@@ -156,10 +153,8 @@ void NSPInstall::InstallTicketCert() {
     ss << *it;
   }
   if (ss.str().length() == 0) {
-    std::string info = "romfs:/images/icons/information.png";
     inst::ui::mainApp->CreateShowDialog("main.usb.warn.title"_lang, "inst.nca_verify.ticket_missing"_lang,
-                                        {"common.ok"_lang}, false,
-                                        pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(info)));
+                                        {"common.ok"_lang}, false, inst::util::LoadTexture(inst::icon::info));
     return; // don't bother trying to install the ticket or cert if it doesn't exist.
   }
   // end of ticket check

@@ -116,9 +116,8 @@ void mathstuff() {
                       "usage.gb"_lang + "usage.sd_used"_lang + percent + "usage.percent_symbol"_lang);
 
   std::string drive = "romfs:/images/icons/drive.png";
-  inst::ui::mainApp->CreateShowDialog(
-      "usage.space_info"_lang, Info, {"common.ok"_lang}, true,
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/drive.png")));
+  inst::ui::mainApp->CreateShowDialog("usage.space_info"_lang, Info, {"common.ok"_lang}, true,
+                                      inst::util::LoadTexture("romfs:/images/icons/drive.png"));
 }
 
 void mainMenuThread() {
@@ -127,9 +126,8 @@ void mainMenuThread() {
     tin::data::NUM_BUFFER_SEGMENTS = 2;
     if (menuLoaded) {
       inst::ui::appletFinished = true;
-      std::string information = "romfs:/images/icons/information.png";
       mainApp->CreateShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, {"common.ok"_lang}, true,
-                                pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(information)));
+                                inst::util::LoadTexture(inst::icon::info));
     }
   } else if (!appletFinished) {
     inst::ui::appletFinished = true;
@@ -152,23 +150,19 @@ MainPage::MainPage() : Layout::Layout() {
 
   this->installMenuItem = pu::ui::elm::MenuItem::New("main.menu.sd"_lang);
   this->installMenuItem->SetColor(COLOR("#FFFFFFFF"));
-  this->installMenuItem->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/micro-sd.png")));
+  this->installMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/micro-sd.png"));
 
   this->HdInstallMenuItem = pu::ui::elm::MenuItem::New("main.menu.hdd"_lang);
   this->HdInstallMenuItem->SetColor(COLOR("#FFFFFFFF"));
-  this->HdInstallMenuItem->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/usb-hd.png")));
+  this->HdInstallMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/usb-hd.png"));
 
   this->settingsMenuItem = pu::ui::elm::MenuItem::New("main.menu.set"_lang);
   this->settingsMenuItem->SetColor(COLOR("#FFFFFFFF"));
-  this->settingsMenuItem->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/settings.png")));
+  this->settingsMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/settings.png"));
 
   this->exitMenuItem = pu::ui::elm::MenuItem::New("main.menu.exit"_lang);
   this->exitMenuItem->SetColor(COLOR("#FFFFFFFF"));
-  this->exitMenuItem->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/exit-run.png")));
+  this->exitMenuItem->SetIcon(inst::util::LoadTexture("romfs:/images/icons/exit-run.png"));
 
   this->Add(this->topRect);
   this->Add(this->botRect);
@@ -195,7 +189,7 @@ void MainPage::HdInstallMenuItem_Click() {
   } else {
     std::string drive = "romfs:/images/icons/drive.png";
     inst::ui::mainApp->CreateShowDialog("main.hdd.title"_lang, "main.hdd.notfound"_lang, {"common.ok"_lang}, true,
-                                        pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(drive)));
+                                        inst::util::LoadTexture(drive));
   }
 }
 

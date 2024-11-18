@@ -3,6 +3,7 @@
 #include "util/config.hpp"
 #include <cstring>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <switch.h>

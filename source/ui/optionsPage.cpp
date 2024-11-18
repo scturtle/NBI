@@ -4,7 +4,6 @@
 #include "ui/mainPage.hpp"
 #include "util/config.hpp"
 #include "util/lang.hpp"
-#include "util/unzip.hpp"
 #include "util/util.hpp"
 #include <dirent.h>
 #include <experimental/filesystem>
@@ -101,9 +100,9 @@ std::string optionsPage::getMenuLanguage(int ourLangCode) {
 
 void lang_message() {
   std::string flag = "romfs:/images/icons/flags/sys.png";
-  int ourResult = inst::ui::mainApp->CreateShowDialog("sig.restart"_lang, "theme.restart"_lang,
-                                                      {"common.no"_lang, "common.yes"_lang}, true,
-                                                      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(flag)));
+  int ourResult =
+      inst::ui::mainApp->CreateShowDialog("sig.restart"_lang, "theme.restart"_lang,
+                                          {"common.no"_lang, "common.yes"_lang}, true, inst::util::LoadTexture(flag));
   if (ourResult != 0) {
     mainApp->FadeOut();
     mainApp->Close();
@@ -115,51 +114,45 @@ void optionsPage::setMenuText() {
 
   auto ignoreFirmOption = pu::ui::elm::MenuItem::New("options.menu_items.ignore_firm"_lang);
   ignoreFirmOption->SetColor(COLOR("#FFFFFFFF"));
-  ignoreFirmOption->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(this->getMenuOptionIcon(inst::config::ignoreReqVers))));
+  ignoreFirmOption->SetIcon(inst::util::LoadTexture(this->getMenuOptionIcon(inst::config::ignoreReqVers)));
   this->menu->AddItem(ignoreFirmOption);
 
   auto validateOption = pu::ui::elm::MenuItem::New("options.menu_items.nca_verify"_lang);
   validateOption->SetColor(COLOR("#FFFFFFFF"));
-  validateOption->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(this->getMenuOptionIcon(inst::config::validateNCAs))));
+  validateOption->SetIcon(inst::util::LoadTexture(this->getMenuOptionIcon(inst::config::validateNCAs)));
   this->menu->AddItem(validateOption);
 
   auto overclockOption = pu::ui::elm::MenuItem::New("options.menu_items.boost_mode"_lang);
   overclockOption->SetColor(COLOR("#FFFFFFFF"));
-  overclockOption->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(this->getMenuOptionIcon(inst::config::overClock))));
+  overclockOption->SetIcon(inst::util::LoadTexture(this->getMenuOptionIcon(inst::config::overClock)));
   this->menu->AddItem(overclockOption);
 
   auto deletePromptOption = pu::ui::elm::MenuItem::New("options.menu_items.ask_delete"_lang);
   deletePromptOption->SetColor(COLOR("#FFFFFFFF"));
-  deletePromptOption->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(this->getMenuOptionIcon(inst::config::deletePrompt))));
+  deletePromptOption->SetIcon(inst::util::LoadTexture(this->getMenuOptionIcon(inst::config::deletePrompt)));
   this->menu->AddItem(deletePromptOption);
 
   auto fixticket = pu::ui::elm::MenuItem::New("options.menu_items.fixticket"_lang);
   fixticket->SetColor(COLOR("#FFFFFFFF"));
-  fixticket->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(this->getMenuOptionIcon(inst::config::fixticket))));
+  fixticket->SetIcon(inst::util::LoadTexture(this->getMenuOptionIcon(inst::config::fixticket)));
   this->menu->AddItem(fixticket);
 
   auto listoveride = pu::ui::elm::MenuItem::New("options.menu_items.listoveride"_lang);
   listoveride->SetColor(COLOR("#FFFFFFFF"));
-  listoveride->SetIcon(
-      pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(this->getMenuOptionIcon(inst::config::listoveride))));
+  listoveride->SetIcon(inst::util::LoadTexture(this->getMenuOptionIcon(inst::config::listoveride)));
   this->menu->AddItem(listoveride);
 
   auto languageOption = pu::ui::elm::MenuItem::New("options.menu_items.language"_lang +
                                                    this->getMenuLanguage(inst::config::languageSetting));
   languageOption->SetColor(COLOR("#FFFFFFFF"));
   std::string lang = "romfs:/images/icons/speak.png";
-  languageOption->SetIcon(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(lang)));
+  languageOption->SetIcon(inst::util::LoadTexture(lang));
   this->menu->AddItem(languageOption);
 
   auto creditsOption = pu::ui::elm::MenuItem::New("options.menu_items.credits"_lang);
   creditsOption->SetColor(COLOR("#FFFFFFFF"));
   std::string credit = "romfs:/images/icons/credits2.png";
-  creditsOption->SetIcon(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(credit)));
+  creditsOption->SetIcon(inst::util::LoadTexture(credit));
   this->menu->AddItem(creditsOption);
 }
 
@@ -212,10 +205,9 @@ void optionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_p
           break;
         case 1:
           if (inst::config::validateNCAs) {
-            std::string info = "romfs:/images/icons/information.png";
             if (inst::ui::mainApp->CreateShowDialog("options.nca_warn.title"_lang, "options.nca_warn.desc"_lang,
                                                     {"common.cancel"_lang, "options.nca_warn.opt1"_lang}, false,
-                                                    pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(info))) == 1)
+                                                    inst::util::LoadTexture(inst::icon::info)) == 1)
               inst::config::validateNCAs = false;
           } else
             inst::config::validateNCAs = true;
@@ -259,8 +251,7 @@ void optionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_p
           languageList = languageStrings;
           languageList[0] = "options.language.system_language"_lang; // replace "sys" with local language string
           rc = inst::ui::mainApp->CreateShowDialog("options.language.title"_lang, "options.language.desc"_lang,
-                                                   languageList, false,
-                                                   pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(flag)));
+                                                   languageList, false, inst::util::LoadTexture(flag));
           if (rc == -1)
             break;
           switch (rc) {
@@ -301,9 +292,9 @@ void optionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_p
           lang_message();
           break;
         case 7:
-          inst::ui::mainApp->CreateShowDialog(
-              "options.credits.title"_lang, "options.credits.desc"_lang, {"common.close"_lang}, true,
-              pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/credits.png")));
+          inst::ui::mainApp->CreateShowDialog("options.credits.title"_lang, "options.credits.desc"_lang,
+                                              {"common.close"_lang}, true,
+                                              inst::util::LoadTexture("romfs:/images/icons/credits.png"));
           break;
         default:
           break;

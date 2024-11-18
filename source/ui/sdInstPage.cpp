@@ -62,14 +62,14 @@ void sdInstPage::drawMenuItems(std::filesystem::path ourPath) {
   std::string itm = "..";
   auto ourEntry = pu::ui::elm::MenuItem::New(itm);
   ourEntry->SetColor(COLOR("#FFFFFFFF"));
-  ourEntry->SetIcon(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/folder-upload.png")));
+  ourEntry->SetIcon(inst::util::LoadTexture(inst::icon::upper));
   this->menu->AddItem(ourEntry);
 
   for (auto &file : this->ourDirectories) {
     std::string itm = file.filename().string();
     auto ourEntry = pu::ui::elm::MenuItem::New(itm);
     ourEntry->SetColor(COLOR("#FFFFFFFF"));
-    ourEntry->SetIcon(pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage("romfs:/images/icons/folder.png")));
+    ourEntry->SetIcon(inst::util::LoadTexture(inst::icon::folder));
     this->menu->AddItem(ourEntry);
   }
 
@@ -95,13 +95,12 @@ void sdInstPage::select() {
   } else {
     auto file = this->ourFiles[selectedIndex - 1 - dirListSize];
     int dialogResult = -1;
-    std::string install = "romfs:/images/icons/install.png";
     dialogResult = mainApp->CreateShowDialog(
         "inst.target.desc0"_lang + ":\n\n" +
             inst::util::shortenString(std::filesystem::path(file).filename().string(), 32, true) + "\n\n" +
             "inst.target.desc1"_lang,
         "\n\n\n\n\n\n\n" + "common.cancel_desc"_lang, {"inst.target.opt0"_lang, "inst.target.opt1"_lang}, false,
-        pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(install)));
+        inst::util::LoadTexture(inst::icon::install));
     if (dialogResult == -1)
       return;
     nspInstStuff::installNspFromFile({file}, dialogResult);

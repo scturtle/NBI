@@ -28,13 +28,7 @@ SOFTWARE.
 #include <switch/types.h>
 
 namespace tin::util {
-u64 GetRightsIdTid(RightsId rightsId);
-u64 GetRightsIdKeyGen(RightsId rightsId);
-
 std::string GetNcaIdString(const NcmContentId &ncaId);
 NcmContentId GetNcaIdFromString(std::string ncaIdStr);
-
 u64 GetBaseTitleId(u64 titleId, NcmContentMetaType contentMetaType);
-std::string GetBaseTitleName(u64 baseTitleId);
-std::string GetTitleName(u64 titleId, NcmContentMetaType contentMetaType);
 } // namespace tin::util

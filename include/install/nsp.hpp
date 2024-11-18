@@ -23,8 +23,8 @@ SOFTWARE.
 #pragma once
 
 #include <functional>
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "install/pfs0.hpp"
 #include "nx/ncm.hpp"

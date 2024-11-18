@@ -22,7 +22,6 @@ SOFTWARE.
 
 #include "data/byte_buffer.hpp"
 
-#include "util/debug.h"
 #include "util/error.hpp"
 
 namespace tin::data {
@@ -34,8 +33,4 @@ u8 *ByteBuffer::GetData() { return m_buffer.data(); }
 
 void ByteBuffer::Resize(size_t size) { m_buffer.resize(size, 0); }
 
-void ByteBuffer::DebugPrintContents() {
-  LOG_DEBUG("Buffer Size: 0x%lx\n", this->GetSize());
-  printBytes(this->GetData(), this->GetSize(), true);
-}
 } // namespace tin::data

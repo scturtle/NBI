@@ -22,7 +22,6 @@ SOFTWARE.
 
 #pragma once
 
-#include "util/debug.h"
 #include <cstring>
 #include <stdexcept>
 #include <stdio.h>

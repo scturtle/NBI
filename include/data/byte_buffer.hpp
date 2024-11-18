@@ -38,8 +38,6 @@ public:
   u8 *GetData(); // TODO: Remove this, it shouldn't be needed
   void Resize(size_t size);
 
-  void DebugPrintContents();
-
   template <typename T> T Read(u64 offset) {
     if (offset + sizeof(T) <= m_buffer.size())
       return *((T *)&m_buffer.data()[offset]);

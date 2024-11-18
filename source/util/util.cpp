@@ -59,7 +59,7 @@ auto caseInsensitiveLess = [](auto &x, auto &y) -> bool {
   return toupper(static_cast<unsigned char>(x)) < toupper(static_cast<unsigned char>(y));
 };
 
-bool ignoreCaseCompare(const std::string &a, const std::string &b) {
+static bool ignoreCaseCompare(const std::string &a, const std::string &b) {
   return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(), caseInsensitiveLess);
 }
 
@@ -91,34 +91,6 @@ std::vector<std::filesystem::path> getDirsAtPath(const std::string &dir) {
   return files;
 }
 
-bool removeDirectory(std::string dir) {
-  try {
-    for (auto &p : std::filesystem::recursive_directory_iterator(dir)) {
-      if (std::filesystem::is_regular_file(p)) {
-        std::filesystem::remove(p);
-      }
-    }
-    // to do - https://www.geeksforgeeks.org/sort-array-strings-according-string-lengths/
-    rmdir(dir.c_str());
-    return true;
-  } catch (std::filesystem::filesystem_error &e) {
-    return false;
-  }
-}
-
-bool copyFile(std::string inFile, std::string outFile) {
-  char ch;
-  std::ifstream f1(inFile);
-  std::ofstream f2(outFile);
-
-  if (!f1 || !f2)
-    return false;
-
-  while (f1 && f1.get(ch))
-    f2.put(ch);
-  return true;
-}
-
 std::string shortenString(std::string ourString, int ourLength, bool isFile) {
   std::filesystem::path ourStringAsAPath = ourString;
   std::string ourExtension = ourStringAsAPath.extension().string();
@@ -129,19 +101,6 @@ std::string shortenString(std::string ourString, int ourLength, bool isFile) {
       return (std::string)ourString.substr(0, ourLength) + "...";
   } else
     return ourString;
-}
-
-std::string readTextFromFile(std::string ourFile) {
-  if (std::filesystem::exists(ourFile)) {
-    FILE *file = fopen(ourFile.c_str(), "r");
-    char line[1024];
-    fgets(line, 1024, file);
-    std::string url = line;
-    fflush(file);
-    fclose(file);
-    return url;
-  }
-  return "";
 }
 
 std::vector<uint32_t> setClockSpeed(int deviceToClock, uint32_t clockSpeed) {
@@ -205,10 +164,4 @@ std::vector<uint32_t> setClockSpeed(int deviceToClock, uint32_t clockSpeed) {
   }
 }
 
-std::string SplitFilename(const std::string &str) {
-  std::string base_filename = str.substr(str.find_last_of("/") + 1); // just get the filename
-  std::string::size_type const p(base_filename.find_last_of('.'));
-  std::string file_without_extension = base_filename.substr(0, p); // strip of file extension
-  return file_without_extension;
-}
 } // namespace inst::util

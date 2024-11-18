@@ -104,12 +104,11 @@ void installNspFromFile(std::vector<std::filesystem::path> ourTitleList, int whe
         "inst.info_page.failed"_lang + inst::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true));
     inst::ui::instPage::setInstBarPerc(0);
 
-    std::string fail = "romfs:/images/icons/fail.png";
     inst::ui::mainApp->CreateShowDialog(
         "inst.info_page.failed"_lang + inst::util::shortenString(ourTitleList[titleItr].filename().string(), 42, true) +
             "!\n",
         "inst.info_page.failed_desc"_lang + "\n\n" + (std::string)e.what(), {"common.ok"_lang}, true,
-        pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(fail)));
+        inst::util::LoadTexture(inst::icon::fail));
     nspInstalled = false;
   }
 
@@ -123,16 +122,11 @@ void installNspFromFile(std::vector<std::filesystem::path> ourTitleList, int whe
     inst::ui::instPage::setInstInfoText("inst.info_page.complete"_lang);
     inst::ui::instPage::setInstBarPerc(100);
 
-    std::string bin = "romfs:/images/icons/bin.png";
-    std::string info = "romfs:/images/icons/information.png";
-    std::string good = "romfs:/images/icons/good.png";
-
     if (ourTitleList.size() > 1) {
       if (inst::config::deletePrompt) {
         if (inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.sd.delete_info_multi"_lang,
                                                 "inst.sd.delete_desc"_lang, {"common.no"_lang, "common.yes"_lang},
-                                                false,
-                                                pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(bin))) == 1) {
+                                                false, inst::util::LoadTexture(inst::icon::bin)) == 1) {
           for (long unsigned int i = 0; i < ourTitleList.size(); i++) {
             if (std::filesystem::exists(ourTitleList[i])) {
               std::filesystem::remove(ourTitleList[i]);
@@ -142,21 +136,20 @@ void installNspFromFile(std::vector<std::filesystem::path> ourTitleList, int whe
       } else {
         inst::ui::mainApp->CreateShowDialog(std::to_string(ourTitleList.size()) + "inst.info_page.desc0"_lang,
                                             Language::GetRandomMsg(), {"common.ok"_lang}, true,
-                                            pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(good)));
+                                            inst::util::LoadTexture(inst::icon::good));
       }
     } else {
       if (inst::config::deletePrompt) {
         if (inst::ui::mainApp->CreateShowDialog(
                 inst::util::shortenString(ourTitleList[0].filename().string(), 32, true) + "inst.sd.delete_info"_lang,
                 "inst.sd.delete_desc"_lang, {"common.no"_lang, "common.yes"_lang}, false,
-                pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(bin))) == 1)
+                inst::util::LoadTexture(inst::icon::bin)) == 1)
           if (std::filesystem::exists(ourTitleList[0]))
             std::filesystem::remove(ourTitleList[0]);
       } else
-        inst::ui::mainApp->CreateShowDialog(inst::util::shortenString(ourTitleList[0].filename().string(), 42, true) +
-                                                "inst.info_page.desc1"_lang,
-                                            Language::GetRandomMsg(), {"common.ok"_lang}, true,
-                                            pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(info)));
+        inst::ui::mainApp->CreateShowDialog(
+            inst::util::shortenString(ourTitleList[0].filename().string(), 42, true) + "inst.info_page.desc1"_lang,
+            Language::GetRandomMsg(), {"common.ok"_lang}, true, inst::util::LoadTexture(inst::icon::info));
     }
   }
 

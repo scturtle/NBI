@@ -22,7 +22,6 @@ SOFTWARE.
 
 #include "nx/content_meta.hpp"
 
-#include "util/debug.h"
 #include "util/error.hpp"
 #include "util/title_util.hpp"
 #include <string.h>
