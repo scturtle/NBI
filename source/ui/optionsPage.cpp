@@ -20,32 +20,21 @@ std::string flag = "romfs:/images/flags/en.png";
 std::vector<std::string> languageStrings = {"Sys", "En", "Jpn", "Fr", "De", "It", "Ru", "Es", "Tw", "Cn"};
 
 optionsPage::optionsPage() : Layout::Layout() {
-  this->infoRect = Rectangle::New(0, 95, 1920, 60, COLOR("#00000080"));
   this->SetBackgroundColor(COLOR("#000000FF"));
-  this->topRect = Rectangle::New(0, 0, 1920, 94, COLOR("#000000FF"));
-  this->botRect = Rectangle::New(0, 1019, 1920, 61, COLOR("#000000FF"));
 
-  this->appVersionText = TextBlock::New(1200, 680, "v" + inst::config::appVersion);
-  this->appVersionText->SetColor(COLOR("#FFFFFFFF"));
-  this->appVersionText->SetFont(pu::ui::MakeDefaultFontName(20));
-
-  this->pageInfoText = TextBlock::New(10, 109, "options.title"_lang);
-  this->pageInfoText->SetColor(COLOR("#FFFFFFFF"));
-
+  this->topText = TextBlock::New(10, 14, "options.title"_lang);
+  this->topText->SetColor(COLOR("#FFFFFFFF"));
   this->butText = TextBlock::New(10, 1028, "options.buttons"_lang);
   this->butText->SetColor(COLOR("#FFFFFFFF"));
 
-  this->menu = pu::ui::elm::Menu::New(0, 156, 1920, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 84, 10);
+  this->menu = pu::ui::elm::Menu::New(0, 61, 1920, COLOR("#FFFFFF00"), COLOR("#4f4f4d33"), 84, 11);
   this->menu->SetItemsFocusColor(COLOR("#4f4f4dAA"));
-  this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
+  // this->menu->SetScrollbarColor(COLOR("#1A1919FF"));
   this->menu->SetItemAlphaIncrementSteps(1);
+  this->menu->SetShadowBaseAlpha(0);
 
-  this->Add(this->topRect);
-  this->Add(this->infoRect);
-  this->Add(this->botRect);
-  this->Add(this->appVersionText);
+  this->Add(this->topText);
   this->Add(this->butText);
-  this->Add(this->pageInfoText);
   this->setMenuText();
   this->Add(this->menu);
 }

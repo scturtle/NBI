@@ -106,10 +106,9 @@ void XCIInstallTask::InstallNCA(const NcmContentId &ncaId) {
       THROW_FORMAT("Invalid NCA magic");
 
     if (!Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, Crypto::NCAHeaderSignature)) {
-      int rc = inst::ui::mainApp->CreateShowDialog(
-          "inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang,
-          {"common.cancel"_lang, "inst.nca_verify.opt1"_lang}, false,
-          inst::util::LoadTexture(inst::icon::info));
+      int rc = inst::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang,
+                                                   {"common.cancel"_lang, "inst.nca_verify.opt1"_lang}, false,
+                                                   inst::util::LoadTexture(inst::icon::info));
       if (rc != 1)
         THROW_FORMAT(("inst.nca_verify.error"_lang + tin::util::GetNcaIdString(ncaId)).c_str());
       m_declinedValidation = true;

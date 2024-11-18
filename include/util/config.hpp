@@ -6,7 +6,7 @@
 namespace inst::config {
 static const std::string appDir = "sdmc:/switch/tinwoo";
 static const std::string configPath = appDir + "/config.json";
-static const std::string appVersion = "1.0.22";
+static const std::string appVersion = "1.0.0";
 
 extern int languageSetting;
 extern bool ignoreReqVers;

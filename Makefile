@@ -42,9 +42,9 @@ BUILD		:=	build
 SOURCES		:=	source source/ui source/data source/install source/nx source/nx/ipc source/util
 DATA		:=	data
 INCLUDES	:=	include include/ui include/data include/install include/nx include/nx/ipc include/util
-APP_TITLE	:=	TinWoo Installer
-APP_AUTHOR	:=	MrDude
-APP_VERSION	:=	1.0.22
+APP_TITLE	:=	NBI
+APP_AUTHOR	:=	scturtle
+APP_VERSION	:=	1.0.0
 ROMFS		:=	romfs
 NO_ICON		:=	1
 
@@ -167,11 +167,11 @@ all:
 	@echo making everything
 	@$(MAKE) --no-print-directory -C $(CURDIR) -f Makefile libusb
 	@$(MAKE) --no-print-directory -C $(CURDIR) -f Makefile plutonium
-	@$(MAKE) --no-print-directory -C $(CURDIR) -f Makefile tinwoo
+	@$(MAKE) --no-print-directory -C $(CURDIR) -f Makefile NBI
 
 #---------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------
-tinwoo: $(BUILD)
+NBI: $(BUILD)
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@

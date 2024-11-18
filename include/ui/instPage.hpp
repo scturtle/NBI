@@ -20,9 +20,5 @@ public:
   static void setInstBarPerc(double ourPercent);
   static void loadMainMenu();
   static void loadInstallScreen();
-
-private:
-  Rectangle::Ref infoRect;
-  Rectangle::Ref topRect;
 };
 } // namespace inst::ui

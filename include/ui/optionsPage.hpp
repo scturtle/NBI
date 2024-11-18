@@ -11,12 +11,8 @@ public:
   void setMenuText();
 
 private:
+  TextBlock::Ref topText;
   TextBlock::Ref butText;
-  Rectangle::Ref topRect;
-  Rectangle::Ref infoRect;
-  Rectangle::Ref botRect;
-  TextBlock::Ref appVersionText;
-  TextBlock::Ref pageInfoText;
   pu::ui::elm::Menu::Ref menu;
   // void setMenuText();
   std::string getMenuOptionIcon(bool ourBool);

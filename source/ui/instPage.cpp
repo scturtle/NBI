@@ -26,35 +26,26 @@ extern MainApplication *mainApp;
 instPage::instPage() : Layout::Layout() {
 
   this->SetBackgroundColor(COLOR("#000000FF"));
-  this->infoRect = Rectangle::New(0, 95, 1920, 60, COLOR("#00000080"));
-  this->topRect = Rectangle::New(0, 0, 1920, 94, COLOR("#000000FF"));
 
-  this->pageInfoText = TextBlock::New(10, 109, "");
-  this->pageInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
+  this->pageInfoText = TextBlock::New(10, 14, "");
   this->pageInfoText->SetColor(COLOR("#FFFFFFFF"));
 
-  this->countText = TextBlock::New(10, 150, "");
-  this->countText->SetFont(pu::ui::MakeDefaultFontName(30));
+  this->countText = TextBlock::New(10, 55, "");
   this->countText->SetColor(COLOR("#FFFFFFFF"));
 
-  this->nandInfoText = TextBlock::New(10, 190, "");
-  this->nandInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
+  this->nandInfoText = TextBlock::New(10, 95, "");
   this->nandInfoText->SetColor(COLOR("#FFFFFFFF"));
 
-  this->sdInfoText = TextBlock::New(10, 230, "");
-  this->sdInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
+  this->sdInfoText = TextBlock::New(10, 135, "");
   this->sdInfoText->SetColor(COLOR("#FFFFFFFF"));
 
-  this->installInfoText = TextBlock::New(10, 270, "");
-  this->sdInfoText->SetFont(pu::ui::MakeDefaultFontName(30));
+  this->installInfoText = TextBlock::New(10, 175, "");
   this->installInfoText->SetColor(COLOR("#FFFFFFFF"));
 
-  this->installBar = pu::ui::elm::ProgressBar::New(10, 310, 1900, 35, 100.0f);
+  this->installBar = pu::ui::elm::ProgressBar::New(10, 215, 1900, 35, 100.0f);
   this->installBar->SetBackgroundColor(COLOR("#000000FF"));
   this->installBar->SetProgressColor(COLOR("#565759FF"));
 
-  this->Add(this->topRect);
-  this->Add(this->infoRect);
   this->Add(this->pageInfoText);
   this->Add(this->installInfoText);
   this->Add(this->sdInfoText);

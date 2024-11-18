@@ -16,11 +16,9 @@ public:
 
 private:
   bool appletFinished;
+  TextBlock::Ref topText;
   TextBlock::Ref butText;
-  Rectangle::Ref topRect;
-  Rectangle::Ref botRect;
-  TextBlock::Ref appVersionText;
-  pu::ui::elm::Menu::Ref optionMenu;
+  pu::ui::elm::Menu::Ref menu;
   pu::ui::elm::MenuItem::Ref installMenuItem;
   pu::ui::elm::MenuItem::Ref HdInstallMenuItem;
   pu::ui::elm::MenuItem::Ref settingsMenuItem;
