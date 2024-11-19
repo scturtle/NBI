@@ -225,18 +225,6 @@ void NSPInstall::InstallTicketCert() {
         tikBuf.get()[RSA_4096] = 0x0;
         tikBuf.get()[RSA_4096 - 1] = 0x10;
       }
-
-      // printout the cert and ticket to a file in the tinwoo directory for testing.
-      /*
-      FILE * pFile;
-      pFile = fopen ("cert.hxd", "wb");
-      fwrite (certBuf.get(), sizeof(char), certSize, pFile);
-      fclose (pFile);
-
-      pFile = fopen ("tik.hxd", "wb");
-      fwrite (tikBuf.get(), sizeof(char), tikSize, pFile);
-      fclose (pFile);
-      */
     }
 
     // Finally, let's actually import the ticket

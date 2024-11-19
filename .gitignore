@@ -1,4 +1,4 @@
 /opt/
-/TinWoo.elf
-/TinWoo.nacp
-/TinWoo.nro
+/*.elf
+/*.nacp
+/*.nro
