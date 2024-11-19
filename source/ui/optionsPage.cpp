@@ -11,11 +11,8 @@
 #include <switch.h>
 #include <sys/stat.h>
 
-#define COLOR(hex) pu::ui::Color::FromHex(hex)
-
 namespace inst::ui {
 extern MainApplication *mainApp;
-s32 prev_touchcount = 0;
 std::string flag = "romfs:/images/flags/en.png";
 std::vector<std::string> languageStrings = {"Sys", "En", "Jpn", "Fr", "De", "It", "Ru", "Es", "Tw", "Cn"};
 
@@ -173,6 +170,7 @@ void optionsPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_p
 
   if (hidGetTouchScreenStates(&state, 1)) {
 
+    static s32 prev_touchcount = 0;
     if ((Down & HidNpadButton_A) || (state.count != prev_touchcount)) {
       prev_touchcount = state.count;
 

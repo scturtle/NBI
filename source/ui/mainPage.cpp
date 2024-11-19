@@ -11,111 +11,39 @@
 #include <iostream>
 #include <sstream>
 #include <switch.h>
-#include <sys/statvfs.h>
 #include <thread>
-
-// Include sdl2 headers
-#include <SDL2/SDL.h>
-
-#define COLOR(hex) pu::ui::Color::FromHex(hex)
-
-int statvfs(const char *path, struct statvfs *buf);
-s32 prev_touchcount = 0;
-
-double GetAvailableSpace(const char *path) {
-  struct statvfs stat;
-  if (statvfs(path, &stat) != 0)
-    return -1;
-  return stat.f_bsize * stat.f_bavail;
-}
-
-double amountOfDiskSpaceUsed(const char *path) {
-  struct statvfs stat;
-  if (statvfs(path, &stat) != 0)
-    return -1;
-  const auto total = static_cast<unsigned long>(stat.f_blocks);
-  const auto available = static_cast<unsigned long>(stat.f_bavail);
-  const auto availableToRoot = static_cast<unsigned long>(stat.f_bfree);
-  const auto used = total - availableToRoot;
-  const auto nonRootTotal = used + available;
-  return 100.0 * static_cast<double>(used) / static_cast<double>(nonRootTotal);
-}
-
-double totalsize(const char *path) {
-  struct statvfs stat;
-  if (statvfs(path, &stat) != 0)
-    return -1;
-  return stat.f_blocks * stat.f_frsize;
-}
 
 namespace inst::ui {
 extern MainApplication *mainApp;
 bool appletFinished = false;
 
-void mathstuff() {
-  double math = (GetAvailableSpace("./") / 1024) / 1024; // megabytes
-  float math2 = ((float)math / 1024);                    // gigabytes
-
-  double used = (amountOfDiskSpaceUsed("./")); // same file path as sdmc
-
-  double total = (totalsize("sdmc:/") / 1024) / 1024; // megabytes
-  float total2 = ((float)total / 1024);               // gigabytes
-  //
-  float GB = math2;
-  std::stringstream stream;
-  stream << std::fixed << std::setprecision(2) << GB; // only show 2 decimal places
-  std::string freespace = stream.str();
-
-  float GB2 = total2;
-  std::stringstream stream2;
-  stream2 << std::fixed << std::setprecision(2) << GB2; // only show 2 decimal places
-  std::string sdsize = stream2.str();
-
-  // printf("\nSdCard Free Space in MB: %li", math);
-  // printf("\nSdCard Free Space in GB: %.2f", math2);
-  std::stringstream stream3;
-  stream3 << std::fixed << std::setprecision(2) << used; // only show 2 decimal places
-  std::string percent = stream3.str();
-
-  // unmount sd here and mount system....
-  // fsdevUnmountDevice("sdmc");
+void showSpaceInfo() {
   FsFileSystem nandFS;
   fsOpenBisFileSystem(&nandFS, FsBisPartitionId_User, "");
   fsdevMountDevice("user", nandFS);
-
-  double math3 = (GetAvailableSpace("user:/") / 1024) / 1024; // megabytes
-  float math4 = ((float)math3 / 1024);                        // gigabytes
-
-  double used2 = (amountOfDiskSpaceUsed("user:/")); // same file path as sdmc
-
-  double total3 = (totalsize("user:/") / 1024) / 1024; // megabytes
-  float total4 = ((float)total3 / 1024);               // gigabytes
-  //
-  float GB3 = math4;
-  std::stringstream stream4;
-  stream4 << std::fixed << std::setprecision(2) << GB3; // only show 2 decimal places
-  std::string freespace2 = stream4.str();
-
-  float GB4 = total4;
-  std::stringstream stream5;
-  stream5 << std::fixed << std::setprecision(2) << GB4; // only show 2 decimal places
-  std::string sdsize2 = stream5.str();
-
-  // printf("\nSdCard Free Space in MB: %li", math);
-  // printf("\nSdCard Free Space in GB: %.2f", math2);
-  std::stringstream stream6;
-  stream6 << std::fixed << std::setprecision(2) << used2; // only show 2 decimal places
-  std::string percent2 = stream6.str();
-
-  // unmount user now as we already know how much space we have
+  auto [sysFree, sysUsed, sysTotal] = inst::util::getSpaceInfo("user:/");
   fsdevUnmountDevice("user");
 
-  std::string Info = ("usage.system_size"_lang + sdsize2 + "usage.gb"_lang + "usage.freespace"_lang + freespace2 +
-                      "usage.gb"_lang + "usage.percent_used"_lang + percent2 + "usage.percent"_lang +
-                      "usage.sd_size"_lang + sdsize + "usage.gb"_lang + "usage.sd_space"_lang + freespace +
-                      "usage.gb"_lang + "usage.sd_used"_lang + percent + "usage.percent_symbol"_lang);
+  auto [sdFree, sdUsed, sdTotal] = inst::util::getSpaceInfo("sdmc:/");
 
-  std::string drive = "romfs:/images/icons/drive.png";
+  auto toGB = [](double size) -> std::string {
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(2) << (size / 1024 / 1024 / 1024);
+    return ss.str();
+  };
+
+  auto toPercent = [](double a, double b) -> std::string {
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(2) << (b == 0.0 ? 0 : a / b * 100);
+    return ss.str();
+  };
+
+  std::string Info = "usage.system_size"_lang + toGB(sysTotal) + "usage.gb"_lang + "usage.freespace"_lang +
+                     toGB(sysFree) + "usage.gb"_lang + "usage.percent_used"_lang + toPercent(sysUsed, sysTotal) +
+                     "usage.percent"_lang + "usage.sd_size"_lang + toGB(sdTotal) + "usage.gb"_lang +
+                     "usage.sd_space"_lang + toGB(sdFree) + "usage.gb"_lang + "usage.sd_used"_lang +
+                     toPercent(sdUsed, sdTotal) + "usage.percent_symbol"_lang;
+
   inst::ui::mainApp->CreateShowDialog("usage.space_info"_lang, Info, {"common.ok"_lang}, true,
                                       inst::util::LoadTexture("romfs:/images/icons/drive.png"));
 }
@@ -214,6 +142,7 @@ void MainPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_pos)
 
   if (hidGetTouchScreenStates(&state, 1)) {
 
+    static s32 prev_touchcount = 0;
     if ((Down & HidNpadButton_A) || (state.count != prev_touchcount)) {
       prev_touchcount = state.count;
 
@@ -240,7 +169,7 @@ void MainPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_pos)
   }
 
   if (Down & HidNpadButton_Y) {
-    mathstuff();
+    showSpaceInfo();
   }
 }
 } // namespace inst::ui

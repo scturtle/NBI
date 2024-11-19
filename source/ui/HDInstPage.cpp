@@ -7,8 +7,6 @@
 #include "util/util.hpp"
 #include <filesystem>
 
-#define COLOR(hex) pu::ui::Color::FromHex(hex)
-
 namespace inst::ui {
 extern MainApplication *mainApp;
 

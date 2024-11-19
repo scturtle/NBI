@@ -10,13 +10,9 @@ public:
   void onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_pos);
   TextBlock::Ref pageInfoText;
   TextBlock::Ref installInfoText;
-  TextBlock::Ref sdInfoText;
-  TextBlock::Ref nandInfoText;
-  TextBlock::Ref countText;
   pu::ui::elm::ProgressBar::Ref installBar;
   static void setTopInstInfoText(std::string ourText);
   static void setInstInfoText(std::string ourText);
-  static void filecount(std::string ourText);
   static void setInstBarPerc(double ourPercent);
   static void loadMainMenu();
   static void loadInstallScreen();

@@ -69,7 +69,7 @@ void installNspFromFile(std::vector<std::filesystem::path> ourTitleList, int whe
     int togo = ourTitleList.size();
     for (titleItr = 0; titleItr < ourTitleList.size(); titleItr++) {
       auto s = std::to_string(togo);
-      inst::ui::instPage::filecount("inst.info_page.queue"_lang + s);
+      // inst::ui::instPage::filecount("inst.info_page.queue"_lang + s);
       inst::ui::instPage::setTopInstInfoText(
           "inst.info_page.top_info0"_lang +
           inst::util::shortenString(ourTitleList[titleItr].filename().string(), 40, true) +
@@ -95,7 +95,7 @@ void installNspFromFile(std::vector<std::filesystem::path> ourTitleList, int whe
       togo = (togo - 1);
     }
 
-    inst::ui::instPage::filecount("inst.info_page.queue"_lang + "0");
+    // inst::ui::instPage::filecount("inst.info_page.queue"_lang + "0");
   } catch (std::exception &e) {
     LOG_DEBUG("Failed to install");
     LOG_DEBUG("%s", e.what());

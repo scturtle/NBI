@@ -1,8 +1,11 @@
 #pragma once
 #include <filesystem>
+#include <tuple>
 #include <vector>
 
 #include <pu/ui/render/render_SDL2.hpp>
+
+#define COLOR(hex) pu::ui::Color::FromHex(hex)
 
 namespace inst::icon {
 constexpr const char *fail = "romfs:/images/icons/fail.png";
@@ -19,6 +22,7 @@ void initApp();
 void deinitApp();
 void initInstallServices();
 void deinitInstallServices();
+std::tuple<double, double, double> getSpaceInfo(const char *path);
 std::vector<std::filesystem::path> getDirectoryFiles(const std::string &dir,
                                                      const std::vector<std::string> &extensions);
 std::vector<std::filesystem::path> getDirsAtPath(const std::string &dir);

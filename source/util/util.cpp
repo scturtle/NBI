@@ -12,11 +12,12 @@
 #include <regex>
 #include <sstream>
 #include <string>
+#include <sys/statvfs.h>
+#include <tuple>
 #include <unistd.h>
 #include <vector>
 
-// Include sdl2 headers
-#include <SDL2/SDL.h>
+int statvfs(const char *path, struct statvfs *buf);
 
 namespace inst::util {
 void initApp() {
@@ -53,6 +54,18 @@ void deinitInstallServices() {
   esExit();
   splCryptoExit();
   splExit();
+}
+
+std::tuple<double, double, double> getSpaceInfo(const char *path) {
+  struct statvfs stat;
+  if (statvfs(path, &stat) != 0)
+    return {0, 0, 0};
+  long total = stat.f_blocks;
+  long free = stat.f_bavail;
+  long freeForRoot = stat.f_bfree;
+  long used = total - freeForRoot;
+  long nonRootTotal = used + free;
+  return {stat.f_frsize * free, stat.f_frsize * used, stat.f_frsize * nonRootTotal};
 }
 
 auto caseInsensitiveLess = [](auto &x, auto &y) -> bool {
