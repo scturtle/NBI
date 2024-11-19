@@ -43,16 +43,5 @@ void instPage::setInstBarPerc(double ourPercent) {
   mainApp->CallForRender();
 }
 
-void instPage::loadMainMenu() { mainApp->LoadLayout(mainApp->mainPage); }
-
-void instPage::loadInstallScreen() {
-  mainApp->instpage->pageInfoText->SetText("");
-  mainApp->instpage->installInfoText->SetText("");
-  mainApp->instpage->installBar->SetProgress(0);
-  mainApp->instpage->installBar->SetVisible(false);
-  mainApp->LoadLayout(mainApp->instpage);
-  mainApp->CallForRender();
-}
-
 void instPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_pos) {}
 } // namespace inst::ui

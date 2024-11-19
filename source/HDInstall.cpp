@@ -50,7 +50,7 @@ namespace nspInstStuff_B {
 
 void installNspFromFile(std::vector<std::filesystem::path> ourTitleList, int whereToInstall) {
   inst::util::initInstallServices();
-  inst::ui::instPage::loadInstallScreen();
+  inst::ui::mainApp->LoadInstPage();
   bool nspInstalled = true;
   NcmStorageId m_destStorageId = NcmStorageId_SdCard;
 
@@ -152,7 +152,7 @@ void installNspFromFile(std::vector<std::filesystem::path> ourTitleList, int whe
   }
 
   LOG_DEBUG("Done");
-  inst::ui::instPage::loadMainMenu();
+  inst::ui::mainApp->LoadMainPage();
   inst::util::deinitInstallServices();
   return;
 }

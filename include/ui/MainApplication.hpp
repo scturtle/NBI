@@ -17,5 +17,7 @@ public:
   HDInstPage::Ref HDinstPage;
   instPage::Ref instpage;
   optionsPage::Ref optionspage;
+  void LoadMainPage();
+  void LoadInstPage();
 };
 } // namespace inst::ui

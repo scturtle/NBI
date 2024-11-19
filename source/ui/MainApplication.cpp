@@ -26,4 +26,15 @@ void MainApplication::OnLoad() {
                                           std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
   this->LoadLayout(this->mainPage);
 }
+
+void MainApplication::LoadMainPage() { this->LoadLayout(this->mainPage); }
+void MainApplication::LoadInstPage() {
+  this->instpage->pageInfoText->SetText("");
+  this->instpage->installInfoText->SetText("");
+  this->instpage->installBar->SetProgress(0);
+  this->instpage->installBar->SetVisible(false);
+  this->LoadLayout(this->instpage);
+  this->CallForRender();
+}
+
 } // namespace inst::ui

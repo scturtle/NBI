@@ -14,7 +14,5 @@ public:
   static void setTopInstInfoText(std::string ourText);
   static void setInstInfoText(std::string ourText);
   static void setInstBarPerc(double ourPercent);
-  static void loadMainMenu();
-  static void loadInstallScreen();
 };
 } // namespace inst::ui
