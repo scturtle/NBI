@@ -42,12 +42,5 @@ SOFTWARE.
     throw std::runtime_error(error_prefix);                                                                            \
   }
 
-#ifdef NXLINK_DEBUG
-#define LOG_DEBUG(format, ...)                                                                                         \
-  {                                                                                                                    \
-    printf("%s:%u: ", __func__, __LINE__);                                                                             \
-    printf(format, ##__VA_ARGS__);                                                                                     \
-  }
-#else
+// TODO: loggging
 #define LOG_DEBUG(format, ...) ;
-#endif

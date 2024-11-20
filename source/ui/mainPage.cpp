@@ -1,9 +1,7 @@
 #include "ui/mainPage.hpp"
-#include "HDInstall.hpp"
 #include "data/buffered_placeholder_writer.hpp"
 #include "nx/usbhdd.h"
 #include "ui/MainApplication.hpp"
-#include "usbhsfs.h"
 #include "util/config.hpp"
 #include "util/lang.hpp"
 #include "util/util.hpp"
@@ -12,6 +10,8 @@
 #include <sstream>
 #include <switch.h>
 #include <thread>
+
+#include "util/error.hpp"
 
 namespace inst::ui {
 extern MainApplication *mainApp;
@@ -44,6 +44,7 @@ void showSpaceInfo() {
                      "usage.sd_space"_lang + toGB(sdFree) + "usage.gb"_lang + "usage.sd_used"_lang +
                      toPercent(sdUsed, sdTotal) + "usage.percent_symbol"_lang;
 
+  THROW_FORMAT("%s", Info.c_str());
   inst::ui::mainApp->CreateShowDialog("usage.space_info"_lang, Info, {"common.ok"_lang}, true,
                                       inst::util::LoadTexture("romfs:/images/icons/drive.png"));
 }

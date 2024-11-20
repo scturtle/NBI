@@ -1,5 +1,5 @@
-#include "ui/HDInstPage.hpp"
-#include "HDInstall.hpp"
+#include "ui/hdInstPage.hpp"
+#include "install/install_file.hpp"
 #include "ui/MainApplication.hpp"
 #include "ui/mainPage.hpp"
 #include "util/config.hpp"
@@ -94,7 +94,8 @@ void HDInstPage::select() {
         inst::util::LoadTexture(inst::icon::install));
     if (dialogResult == -1)
       return;
-    nspInstStuff_B::installNspFromFile({file}, dialogResult);
+    auto storageId = dialogResult == 0 ? NcmStorageId_SdCard : NcmStorageId_BuiltInUser;
+    inst::installNspFromFile(file, storageId);
   }
 }
 
