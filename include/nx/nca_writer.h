@@ -27,20 +27,7 @@ SOFTWARE.
 #include <switch.h>
 #include <vector>
 
-class NcaBodyWriter {
-public:
-  NcaBodyWriter(const NcmContentId &ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage> &contentStorage);
-  virtual ~NcaBodyWriter();
-  virtual u64 write(const u8 *ptr, u64 sz);
-
-  bool isOpen() const;
-
-protected:
-  std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
-  NcmContentId m_ncaId;
-
-  u64 m_offset;
-};
+class NcaBodyWriter;
 
 class NcaWriter {
 public:

@@ -94,28 +94,25 @@ void NSPInstall::InstallNCA(const NcmContentId &ncaId) {
   } catch (...) {
   }
 
-  LOG_DEBUG("Size: 0x%lx\n", ncaSize);
-
   if (inst::config::validateNCAs && !m_declinedValidation) {
-    tin::install::NcaHeader *header = new NcaHeader;
-    m_NSP->BufferData(header, m_NSP->GetDataOffset() + fileEntry->dataOffset, sizeof(tin::install::NcaHeader));
+    tin::install::NcaHeader header;
+    m_NSP->BufferData(&header, m_NSP->GetDataOffset() + fileEntry->dataOffset, sizeof(tin::install::NcaHeader));
 
     Crypto::AesXtr crypto(Crypto::Keys().headerKey, false);
-    crypto.decrypt(header, header, sizeof(tin::install::NcaHeader), 0, 0x200);
+    crypto.decrypt(&header, &header, sizeof(tin::install::NcaHeader), 0, 0x200);
     // https://gbatemp.net/threads/nszip-nsp-compressor-decompressor-to-reduce-storage.530313/
 
-    if (header->magic != MAGIC_NCA3)
+    if (header.magic != MAGIC_NCA3)
       THROW_FORMAT("Invalid NCA magic");
 
-    if (!Crypto::rsa2048PssVerify(&header->magic, 0x200, header->fixed_key_sig, Crypto::NCAHeaderSignature)) {
+    if (!Crypto::rsa2048PssVerify(&header.magic, 0x200, header.fixed_key_sig, Crypto::NCAHeaderSignature)) {
       int rc = inst::ui::mainApp->CreateShowDialog("inst.nca_verify.title"_lang, "inst.nca_verify.desc"_lang,
                                                    {"common.cancel"_lang, "inst.nca_verify.opt1"_lang}, false,
                                                    inst::util::LoadTexture(inst::icon::info));
       if (rc != 1)
-        THROW_FORMAT(("inst.nca_verify.error"_lang + tin::util::GetNcaIdString(ncaId)).c_str());
+        THROW_FORMAT("%s", ("inst.nca_verify.error"_lang + tin::util::GetNcaIdString(ncaId)).c_str());
       m_declinedValidation = true;
     }
-    delete header;
   }
 
   m_NSP->StreamToPlaceholder(contentStorage, ncaId);
