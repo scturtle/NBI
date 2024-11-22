@@ -29,8 +29,6 @@ extern "C" {
 #include <switch/services/ncm.h>
 }
 
-#include "nx/ipc/tin_ipc.h"
-
 namespace nx::ncm {
 class ContentStorage final {
 private:

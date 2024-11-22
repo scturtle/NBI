@@ -23,14 +23,11 @@ SOFTWARE.
 #include "install/install.hpp"
 
 #include "util/error.hpp"
-#include <cstring>
-#include <iostream>
-#include <memory>
-#include <sstream>
-#include <switch.h>
-
-#include "nx/ncm.hpp"
 #include "util/title_util.hpp"
+
+#include <cstring>
+#include <memory>
+#include <switch.h>
 
 // TODO: Check NCA files are present
 // TODO: Check tik/cert is present

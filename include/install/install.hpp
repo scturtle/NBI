@@ -26,15 +26,13 @@ extern "C" {
 #include <switch/services/fs.h>
 }
 
-#include <memory>
 #include <tuple>
 #include <vector>
 
-#include "data/byte_buffer.hpp"
-#include "install/simple_filesystem.hpp"
+#include "nx/ncm.hpp"
 
+#include "data/byte_buffer.hpp"
 #include "nx/content_meta.hpp"
-#include "nx/ipc/tin_ipc.h"
 
 namespace tin::install {
 class Install {
