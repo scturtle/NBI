@@ -184,7 +184,7 @@ plutonium:
 #---------------------------------------------------------------------------------
 libusb:
 	@echo making libusbhsfs
-	@$(MAKE) --no-print-directory -C $(CURDIR)/3rdparty/libusbhsfs -f Makefile BUILD_TYPE=GPL
+	@$(MAKE) --no-print-directory -C $(CURDIR)/3rdparty/libusbhsfs -f Makefile BUILD_TYPE=GPL release
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...

@@ -1,5 +1,4 @@
 #include "ui/mainPage.hpp"
-#include "data/buffered_placeholder_writer.hpp"
 #include "nx/usbhdd.h"
 #include "ui/MainApplication.hpp"
 #include "util/config.hpp"
@@ -52,7 +51,6 @@ void showSpaceInfo() {
 void mainMenuThread() {
   bool menuLoaded = mainApp->IsShown();
   if (!appletFinished && appletGetAppletType() == AppletType_LibraryApplet) {
-    tin::data::NUM_BUFFER_SEGMENTS = 2;
     if (menuLoaded) {
       inst::ui::appletFinished = true;
       mainApp->CreateShowDialog("main.applet.title"_lang, "main.applet.desc"_lang, {"common.ok"_lang}, true,
@@ -60,7 +58,6 @@ void mainMenuThread() {
     }
   } else if (!appletFinished) {
     inst::ui::appletFinished = true;
-    tin::data::NUM_BUFFER_SEGMENTS = 128;
   }
 }
 
