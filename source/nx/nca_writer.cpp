@@ -38,7 +38,7 @@ SOFTWARE.
 // extern MainApplication *mainApp;
 // }
 
-void append(std::vector<u8> &buffer, const u8 *ptr, u64 sz) {
+static void append(std::vector<u8> &buffer, const u8 *ptr, u64 sz) {
   u64 offset = buffer.size();
   buffer.resize(offset + sz);
   memcpy(buffer.data() + offset, ptr, sz);
@@ -115,16 +115,42 @@ struct BlockHeader {
 };
 
 struct BlockInfo {
-  void init(const BlockHeader &blockHeader) {
-    if (blockHeader.blockSizeExponent < 14 || blockHeader.blockSizeExponent > 32) {
-      throw std::runtime_error("bad block size exponent");
-    }
-    blockSize = size_t(1) << blockHeader.blockSizeExponent;
+  void init(const u8 *buffer) {
+    header = *(BlockHeader *)buffer;
+    assert(header.blockSizeExponent >= 14 && header.blockSizeExponent < 32);
+    blockSize = size_t(1) << header.blockSizeExponent;
+    for (u32 i = 0; i < header.numberOfBlocks; i++)
+      compressedBlockSizeList.push_back(*(u32 *)(buffer + sizeof(BlockHeader) + i * sizeof(u32)));
   }
 
-  u32 curBlockSize() { return compressedBlockSizeList[curBlockId]; }
-  void nextBlock() { curBlockId += 1; }
+  u32 getCurBlockSize() { return compressedBlockSizeList[curBlockId]; }
 
+  size_t decompressBlock(const std::vector<u8> &buffer, std::vector<u8> &dest) {
+    auto curBlockSize = getCurBlockSize();
+    assert(buffer.size() >= curBlockSize);
+    size_t outSize;
+    if (curBlockSize < blockSize) {
+      outSize = ZSTD_getFrameContentSize(buffer.data(), curBlockSize);
+      if (outSize == ZSTD_CONTENTSIZE_UNKNOWN || outSize == ZSTD_CONTENTSIZE_ERROR) {
+        THROW_FORMAT("ZSTD_getFrameContentSize error");
+        return 0;
+      }
+      dest.resize(outSize);
+      auto ret = ZSTD_decompress(dest.data(), outSize, buffer.data(), curBlockSize);
+      if (ZSTD_isError(ret)) {
+        THROW_FORMAT("ZSTD_decompress error");
+        return 0;
+      }
+    } else {
+      outSize = curBlockSize;
+      dest.resize(outSize);
+      memcpy(dest.data(), buffer.data(), curBlockSize);
+    }
+    curBlockId += 1;
+    return outSize;
+  }
+
+  BlockHeader header;
   size_t blockSize = 0;
   size_t curBlockId = 0;
   std::vector<u32> compressedBlockSizeList;
@@ -254,11 +280,7 @@ public:
           ptr += chunk;
           sz -= chunk;
           if (m_buffer.size() == sizeof(BlockHeader) + listSize) {
-            block = (BlockHeader *)m_buffer.data();
-            blockInfo.init(*block);
-            for (u32 i = 0; i < block->numberOfBlocks; i++)
-              blockInfo.compressedBlockSizeList.push_back(
-                  *(u32 *)(m_buffer.data() + sizeof(BlockHeader) + i * sizeof(u32)));
+            blockInfo.init(m_buffer.data());
             m_buffer.resize(0);
           }
         }
@@ -267,34 +289,16 @@ public:
 
     if (m_isBlockCompression) {
       while (sz) {
-        size_t curBlockSize = blockInfo.curBlockSize();
+        size_t curBlockSize = blockInfo.getCurBlockSize();
         auto chunk = m_buffer.size() < curBlockSize ? std::min((size_t)sz, curBlockSize - m_buffer.size()) : 0;
         append(m_buffer, ptr, chunk);
         sz -= chunk;
         ptr += chunk;
         if (m_buffer.size() >= curBlockSize) {
-          size_t outSize;
-          if (curBlockSize < blockInfo.blockSize) {
-            outSize = ZSTD_getFrameContentSize(m_buffer.data(), curBlockSize);
-            if (outSize == ZSTD_CONTENTSIZE_UNKNOWN || outSize == ZSTD_CONTENTSIZE_ERROR) {
-              THROW_FORMAT("ZSTD_getFrameContentSize error");
-              return 0;
-            }
-            m_deflateBuffer.resize(outSize);
-            auto ret = ZSTD_decompressDCtx(dctx, m_deflateBuffer.data(), outSize, m_buffer.data(), curBlockSize);
-            if (ZSTD_isError(ret)) {
-              THROW_FORMAT("ZSTD_decompressDCtx error");
-              return 0;
-            }
-          } else {
-            outSize = curBlockSize;
-            m_deflateBuffer.resize(curBlockSize);
-            memcpy(m_deflateBuffer.data(), m_buffer.data(), curBlockSize);
-          }
-          encrypt(m_deflateBuffer.data(), outSize, m_offset);
+          blockInfo.decompressBlock(m_buffer, m_deflateBuffer);
+          encrypt(m_deflateBuffer.data(), m_deflateBuffer.size(), m_offset);
           flush();
           m_buffer.erase(m_buffer.begin(), m_buffer.begin() + curBlockSize);
-          blockInfo.nextBlock();
         }
       }
     } else {
@@ -354,16 +358,10 @@ bool NcaWriter::isOpen() const { return (bool)m_contentStorage; }
 
 u64 NcaWriter::write(const u8 *ptr, u64 sz) {
   if (m_buffer.size() < NCA_HEADER_SIZE) {
-    if (m_buffer.size() + sz > NCA_HEADER_SIZE) {
-      u64 remainder = NCA_HEADER_SIZE - m_buffer.size();
-      append(m_buffer, ptr, remainder);
-      ptr += remainder;
-      sz -= remainder;
-    } else {
-      append(m_buffer, ptr, sz);
-      ptr += sz;
-      sz = 0;
-    }
+    u64 remainder = std::min((size_t)sz, NCA_HEADER_SIZE - m_buffer.size());
+    append(m_buffer, ptr, remainder);
+    ptr += remainder;
+    sz -= remainder;
     if (m_buffer.size() == NCA_HEADER_SIZE) {
       flushHeader();
     }
@@ -373,9 +371,9 @@ u64 NcaWriter::write(const u8 *ptr, u64 sz) {
     if (!m_writer) {
       if (sz >= sizeof(NczHeader::MAGIC)) {
         if (*(u64 *)ptr == NczHeader::MAGIC) {
-          m_writer = std::shared_ptr<NcaBodyWriter>(new NczBodyWriter(m_ncaId, m_buffer.size(), m_contentStorage));
+          m_writer = std::make_shared<NczBodyWriter>(m_ncaId, m_buffer.size(), m_contentStorage);
         } else {
-          m_writer = std::shared_ptr<NcaBodyWriter>(new NcaBodyWriter(m_ncaId, m_buffer.size(), m_contentStorage));
+          m_writer = std::make_shared<NcaBodyWriter>(m_ncaId, m_buffer.size(), m_contentStorage);
         }
       } else {
         THROW_FORMAT("not enough data to read ncz header");
