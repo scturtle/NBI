@@ -29,12 +29,12 @@ typedef struct {
 	u64 titleID;
 	u64 unk;
 	u64 size;
-} PACKED ApplicationRecord;
+} NX_PACKED ApplicationRecord;
 
 typedef struct {
 	NcmContentMetaKey metaRecord;
 	u64 storageId;
-} PACKED ContentStorageRecord;
+} NX_PACKED ContentStorageRecord;
 
 Result nsextInitialize(void);
 void nsextExit(void);
