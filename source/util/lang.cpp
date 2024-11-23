@@ -1,10 +1,10 @@
 #include "util/lang.hpp"
 #include "nlohmann/json.hpp"
 #include "util/config.hpp"
+#include "util/error.hpp"
 #include <cstring>
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 #include <sstream>
 #include <switch.h>
 
@@ -56,8 +56,8 @@ void Load() {
           case 12: languagePath = "romfs:/lang/en.json"; break;
           case 13: languagePath = "romfs:/lang/fr.json"; break;
           case 14: languagePath = "romfs:/lang/es.json"; break;
-          case 15: languagePath = "romfs:/lang/tw.json"; break;
-          case 16: languagePath = "romfs:/lang/cn.json"; break;
+          case 15: languagePath = "romfs:/lang/cn.json"; break;
+          case 16: languagePath = "romfs:/lang/tw.json"; break;
           case 17: languagePath = "romfs:/lang/en.json"; break;
           default: languagePath = "romfs:/lang/en.json"; break;
         }
@@ -72,7 +72,7 @@ void Load() {
   else
     ifs = std::ifstream("romfs:/lang/en.json");
   if (!ifs.good()) {
-    std::cout << "[FAILED TO LOAD LANGUAGE FILE]" << std::endl;
+    THROW_FORMAT("failed to open %s\n", languagePath.c_str());
     return;
   }
   lang = json::parse(ifs);

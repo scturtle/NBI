@@ -43,7 +43,6 @@ void showSpaceInfo() {
                      "usage.sd_space"_lang + toGB(sdFree) + "usage.gb"_lang + "usage.sd_used"_lang +
                      toPercent(sdUsed, sdTotal) + "usage.percent_symbol"_lang;
 
-  THROW_FORMAT("%s", Info.c_str());
   inst::ui::mainApp->CreateShowDialog("usage.space_info"_lang, Info, {"common.ok"_lang}, true,
                                       inst::util::LoadTexture("romfs:/images/icons/drive.png"));
 }
@@ -128,10 +127,7 @@ void MainPage::settingsMenuItem_Click() { mainApp->LoadLayout(mainApp->optionspa
 
 void MainPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_pos) {
 
-  if (((Down & HidNpadButton_Plus) || (Down & HidNpadButton_Minus) ||
-       ((Held & HidNpadButton_L) && (Down & HidNpadButton_R)) ||
-       ((Down & HidNpadButton_L) && (Held & HidNpadButton_R))) &&
-      mainApp->IsShown()) {
+  if ((Down & HidNpadButton_Plus) && mainApp->IsShown()) {
     mainApp->FadeOut();
     mainApp->Close();
   }

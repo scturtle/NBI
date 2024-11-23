@@ -46,7 +46,7 @@ APP_TITLE	:=	NBI
 APP_AUTHOR	:=	scturtle
 APP_VERSION	:=	1.0.0
 ROMFS		:=	romfs
-NO_ICON		:=	1
+APP_ICON	:=	icon.jpg
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -58,7 +58,7 @@ CFLAGS	:=	-g -Wall -O2 -ffunction-sections \
 
 CFLAGS	+=	$(INCLUDE) -D__SWITCH__
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++20 -Wall -Wno-deprecated # -fno-exceptions
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -std=gnu++20 -Wall -Wno-deprecated
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
