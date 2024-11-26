@@ -26,31 +26,33 @@ SOFTWARE.
 #include <memory>
 #include <vector>
 
+#include "install/nsp_or_xci.hpp"
 #include "install/pfs0.hpp"
+
 #include "nx/ncm.hpp"
 #include <switch/types.h>
 
 namespace tin::install::nsp {
-class NSP {
+class NSP : public NSPorXCI {
 protected:
   std::vector<u8> m_headerBytes;
 
   NSP();
 
 public:
-  virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &contentStorage,
-                                   NcmContentId placeholderId) = 0;
-  virtual void BufferData(void *buf, off_t offset, size_t size) = 0;
-
-  virtual void RetrieveHeader();
+  virtual void RetrieveHeader() override;
   virtual const PFS0BaseHeader *GetBaseHeader();
-  virtual u64 GetDataOffset();
+  virtual u64 GetDataOffset() override;
 
   virtual const PFS0FileEntry *GetFileEntry(unsigned int index);
   virtual const PFS0FileEntry *GetFileEntryByName(std::string name);
-  virtual const PFS0FileEntry *GetFileEntryByNcaId(const NcmContentId &ncaId);
-  virtual std::vector<const PFS0FileEntry *> GetFileEntriesByExtension(std::string extension);
+  virtual const void *GetFileEntryByNcaId(const NcmContentId &ncaId) override;
+  virtual std::vector<const void *> GetFileEntriesByExtension(std::string extension) override;
 
-  virtual const char *GetFileEntryName(const PFS0FileEntry *fileEntry);
+  virtual const char *GetFileEntryName(const void *fileEntry) override;
+  virtual const u64 GetFileEntrySize(const void *fileEntry) override { return ((PFS0FileEntry *)fileEntry)->fileSize; }
+  virtual const u64 GetFileEntryOffset(const void *fileEntry) override {
+    return ((PFS0FileEntry *)fileEntry)->dataOffset;
+  }
 };
 } // namespace tin::install::nsp

@@ -66,8 +66,8 @@ const PFS0FileEntry *NSP::GetFileEntry(unsigned int index) {
   return reinterpret_cast<PFS0FileEntry *>(m_headerBytes.data() + fileEntryOffset);
 }
 
-std::vector<const PFS0FileEntry *> NSP::GetFileEntriesByExtension(std::string extension) {
-  std::vector<const PFS0FileEntry *> entryList;
+std::vector<const void *> NSP::GetFileEntriesByExtension(std::string extension) {
+  std::vector<const void *> entryList;
 
   for (unsigned int i = 0; i < this->GetBaseHeader()->numFiles; i++) {
     const PFS0FileEntry *fileEntry = this->GetFileEntry(i);
@@ -116,7 +116,7 @@ const PFS0FileEntry *NSP::GetFileEntryByName(std::string name) {
   return nullptr;
 }
 
-const PFS0FileEntry *NSP::GetFileEntryByNcaId(const NcmContentId &ncaId) {
+const void *NSP::GetFileEntryByNcaId(const NcmContentId &ncaId) {
   const PFS0FileEntry *fileEntry = nullptr;
   std::string ncaIdStr = tin::util::GetNcaIdString(ncaId);
 
@@ -133,20 +133,10 @@ const PFS0FileEntry *NSP::GetFileEntryByNcaId(const NcmContentId &ncaId) {
   return fileEntry;
 }
 
-const char *NSP::GetFileEntryName(const PFS0FileEntry *fileEntry) {
+const char *NSP::GetFileEntryName(const void *fileEntry) {
   u64 stringTableStart = sizeof(PFS0BaseHeader) + this->GetBaseHeader()->numFiles * sizeof(PFS0FileEntry);
-
-  // check for messed up filenames in our table.... usually when instaling xcz/xci
-  /*
-  FILE * fp;
-  fp = fopen ("st.txt", "a+");
-  std::string x = reinterpret_cast<const char*>(m_headerBytes.data() + stringTableStart + fileEntry->stringTableOffset);
-  const char *info = x.c_str();
-  fprintf(fp, "%s\n", info);
-  fclose(fp);
-  */
-
-  return reinterpret_cast<const char *>(m_headerBytes.data() + stringTableStart + fileEntry->stringTableOffset);
+  return reinterpret_cast<const char *>(m_headerBytes.data() + stringTableStart +
+                                        ((PFS0FileEntry *)fileEntry)->stringTableOffset);
 }
 
 const PFS0BaseHeader *NSP::GetBaseHeader() {

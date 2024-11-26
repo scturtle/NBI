@@ -21,8 +21,7 @@ SOFTWARE.
 */
 
 #include "install/install_file.hpp"
-#include "install/install_nsp.hpp"
-#include "install/install_xci.hpp"
+#include "install/install.hpp"
 #include "install/sdmc_nsp.hpp"
 #include "install/sdmc_xci.hpp"
 #include "nx/fs.hpp"
@@ -64,14 +63,14 @@ void installNspFromFile(std::filesystem::path filePath, NcmStorageId storageId) 
   try {
     inst::ui::instPage::setTopInstInfoText("inst.info_page.top_info0"_lang + shortFilePath);
 
-    std::unique_ptr<tin::install::Install> installTask;
+    std::shared_ptr<tin::install::NSPorXCI> nsp_or_xci;
     if (filePath.extension() == ".xci" || filePath.extension() == ".xcz") {
-      installTask = std::make_unique<tin::install::xci::XCIInstallTask>(
-          storageId, inst::config::ignoreReqVers, std::make_shared<tin::install::xci::SDMCXCI>(filePath));
+      nsp_or_xci = std::make_shared<tin::install::xci::SDMCXCI>(filePath);
     } else {
-      installTask = std::make_unique<tin::install::nsp::NSPInstall>(
-          storageId, inst::config::ignoreReqVers, std::make_shared<tin::install::nsp::SDMCNSP>(filePath));
+      nsp_or_xci = std::make_shared<tin::install::nsp::SDMCNSP>(filePath);
     }
+    std::unique_ptr<tin::install::Install> installTask =
+        std::make_unique<tin::install::Install>(storageId, inst::config::ignoreReqVers, nsp_or_xci);
 
     inst::ui::instPage::setInstInfoText("inst.info_page.preparing"_lang);
     inst::ui::instPage::setInstBarPerc(0);

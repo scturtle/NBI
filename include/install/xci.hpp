@@ -26,12 +26,14 @@ SOFTWARE.
 #include <vector>
 
 #include "install/hfs0.hpp"
+#include "install/nsp_or_xci.hpp"
+
 #include "nx/ncm.hpp"
 #include <memory>
 #include <switch/types.h>
 
 namespace tin::install::xci {
-class XCI {
+class XCI : public NSPorXCI {
 protected:
   u64 m_secureHeaderOffset;
   std::vector<u8> m_secureHeaderBytes;
@@ -39,19 +41,19 @@ protected:
   XCI();
 
 public:
-  virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &contentStorage,
-                                   NcmContentId placeholderId) = 0;
-  virtual void BufferData(void *buf, off_t offset, size_t size) = 0;
-
-  virtual void RetrieveHeader();
+  virtual void RetrieveHeader() override;
   virtual const HFS0BaseHeader *GetSecureHeader();
-  virtual u64 GetDataOffset();
+  virtual u64 GetDataOffset() override;
 
   virtual const HFS0FileEntry *GetFileEntry(unsigned int index);
   virtual const HFS0FileEntry *GetFileEntryByName(std::string name);
-  virtual const HFS0FileEntry *GetFileEntryByNcaId(const NcmContentId &ncaId);
-  virtual std::vector<const HFS0FileEntry *> GetFileEntriesByExtension(std::string extension);
+  virtual const void *GetFileEntryByNcaId(const NcmContentId &ncaId) override;
+  virtual std::vector<const void *> GetFileEntriesByExtension(std::string extension) override;
 
-  virtual const char *GetFileEntryName(const HFS0FileEntry *fileEntry);
+  virtual const char *GetFileEntryName(const void *fileEntry) override;
+  virtual const u64 GetFileEntrySize(const void *fileEntry) override { return ((HFS0FileEntry *)fileEntry)->fileSize; }
+  virtual const u64 GetFileEntryOffset(const void *fileEntry) override {
+    return ((HFS0FileEntry *)fileEntry)->dataOffset;
+  }
 };
 } // namespace tin::install::xci

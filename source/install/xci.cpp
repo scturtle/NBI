@@ -41,7 +41,7 @@ void XCI::RetrieveHeader() {
   // Retrieve full header
   HFS0BaseHeader *header = reinterpret_cast<HFS0BaseHeader *>(m_headerBytes.data());
   if (header->magic != MAGIC_HFS0)
-    THROW_FORMAT("hfs0 magic doesn't match at 0x%lx\n", hfs0Offset);
+    THROW_FORMAT("hfs0 magic doesn't match\n");
 
   size_t remainingHeaderSize = header->numFiles * sizeof(HFS0FileEntry) + header->stringTableSize;
   m_headerBytes.resize(sizeof(HFS0BaseHeader) + remainingHeaderSize, 0);
@@ -62,7 +62,7 @@ void XCI::RetrieveHeader() {
     this->BufferData(m_secureHeaderBytes.data(), m_secureHeaderOffset, sizeof(HFS0BaseHeader));
 
     if (this->GetSecureHeader()->magic != MAGIC_HFS0)
-      THROW_FORMAT("hfs0 magic doesn't match at 0x%lx\n", m_secureHeaderOffset);
+      THROW_FORMAT("hfs0 magic doesn't match\n");
 
     // Retrieve full header
     remainingHeaderSize =
@@ -109,7 +109,7 @@ const HFS0FileEntry *XCI::GetFileEntryByName(std::string name) {
   return nullptr;
 }
 
-const HFS0FileEntry *XCI::GetFileEntryByNcaId(const NcmContentId &ncaId) {
+const void *XCI::GetFileEntryByNcaId(const NcmContentId &ncaId) {
   const HFS0FileEntry *fileEntry = nullptr;
   std::string ncaIdStr = tin::util::GetNcaIdString(ncaId);
 
@@ -126,8 +126,8 @@ const HFS0FileEntry *XCI::GetFileEntryByNcaId(const NcmContentId &ncaId) {
   return fileEntry;
 }
 
-std::vector<const HFS0FileEntry *> XCI::GetFileEntriesByExtension(std::string extension) {
-  std::vector<const HFS0FileEntry *> entryList;
+std::vector<const void *> XCI::GetFileEntriesByExtension(std::string extension) {
+  std::vector<const void *> entryList;
 
   for (unsigned int i = 0; i < this->GetSecureHeader()->numFiles; i++) {
     const HFS0FileEntry *fileEntry = this->GetFileEntry(i);
@@ -152,7 +152,7 @@ std::vector<const HFS0FileEntry *> XCI::GetFileEntriesByExtension(std::string ex
   return entryList;
 }
 
-const char *XCI::GetFileEntryName(const HFS0FileEntry *fileEntry) {
-  return hfs0GetFileName(this->GetSecureHeader(), fileEntry);
+const char *XCI::GetFileEntryName(const void *fileEntry) {
+  return hfs0GetFileName(this->GetSecureHeader(), (HFS0FileEntry *)fileEntry);
 }
 } // namespace tin::install::xci

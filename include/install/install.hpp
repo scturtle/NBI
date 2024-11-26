@@ -32,6 +32,7 @@ extern "C" {
 #include "nx/ncm.hpp"
 
 #include "data/byte_buffer.hpp"
+#include "install/nsp_or_xci.hpp"
 #include "nx/content_meta.hpp"
 
 namespace tin::install {
@@ -41,24 +42,25 @@ protected:
   bool m_ignoreReqFirmVersion = false;
   bool m_declinedValidation = false;
 
+  const std::shared_ptr<NSPorXCI> m_nsp_or_xci;
+
   std::vector<nx::ncm::ContentMeta> m_contentMeta;
 
-  Install(NcmStorageId destStorageId, bool ignoreReqFirmVersion);
+  std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadCNMT();
 
-  virtual std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadCNMT() = 0;
-
-  virtual void InstallContentMetaRecords(tin::data::ByteBuffer &installContentMetaBuf, int i);
-  virtual void InstallApplicationRecord(int i);
-  virtual void InstallNCA(const NcmContentId &ncaId) = 0;
+  void InstallContentMetaRecords(tin::data::ByteBuffer &installContentMetaBuf, int i);
+  void InstallApplicationRecord(int i);
+  void InstallNCA(const NcmContentId &ncaId);
 
 public:
-  virtual ~Install();
+  Install(NcmStorageId destStorageId, bool ignoreReqFirmVersion, std::shared_ptr<NSPorXCI> nsp_or_xci);
+  ~Install();
 
-  virtual void Prepare();
-  virtual void InstallTicketCert();
-  virtual void Begin();
+  void Prepare();
+  void InstallTicketCert();
+  void Begin();
 
-  virtual u64 GetTitleId(int i = 0);
-  virtual NcmContentMetaType GetContentMetaType(int i = 0);
+  u64 GetTitleId(int i = 0);
+  NcmContentMetaType GetContentMetaType(int i = 0);
 };
 } // namespace tin::install

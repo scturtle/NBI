@@ -15,17 +15,17 @@ SDMCNSP::SDMCNSP(std::string path) {
 SDMCNSP::~SDMCNSP() { fclose(m_nspFile); }
 
 void SDMCNSP::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &contentStorage, NcmContentId ncaId) {
-  const PFS0FileEntry *fileEntry = this->GetFileEntryByNcaId(ncaId);
+  const void *fileEntry = this->GetFileEntryByNcaId(ncaId);
   std::string ncaFileName = this->GetFileEntryName(fileEntry);
 
   LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
-  size_t ncaSize = fileEntry->fileSize;
+  size_t ncaSize = this->GetFileEntrySize(fileEntry);
 
   NcaWriter writer(ncaId, contentStorage);
 
   float progress;
 
-  u64 fileStart = GetDataOffset() + fileEntry->dataOffset;
+  u64 fileStart = GetDataOffset() + this->GetFileEntryOffset(fileEntry);
   u64 fileOff = 0;
   size_t readSize = 0x400000; // 4MB buff
   auto readBuffer = std::make_unique<u8[]>(readSize);
