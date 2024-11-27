@@ -10,15 +10,17 @@
 namespace tin::install {
 class NSPorXCI {
 public:
-  virtual void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &contentStorage,
-                                   NcmContentId placeholderId) = 0;
+  void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &contentStorage, NcmContentId placeholderId);
   virtual void BufferData(void *buf, off_t offset, size_t size) = 0;
 
   virtual void RetrieveHeader() = 0;
   virtual u64 GetDataOffset() = 0;
 
-  virtual const void *GetFileEntryByNcaId(const NcmContentId &ncaId) = 0;
-  virtual std::vector<const void *> GetFileEntriesByExtension(std::string extension) = 0;
+  virtual const u32 GetFileEntryNum() = 0;
+  virtual const void *GetFileEntry(unsigned int index) = 0;
+  const void *GetFileEntryByName(std::string name);
+  const void *GetFileEntryByNcaId(const NcmContentId &ncaId);
+  std::vector<const void *> GetFileEntriesByExtension(std::string extension);
 
   virtual const char *GetFileEntryName(const void *fileEntry) = 0;
   virtual const u64 GetFileEntrySize(const void *fileEntry) = 0;

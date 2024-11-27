@@ -22,8 +22,8 @@ SOFTWARE.
 
 #include "install/install_file.hpp"
 #include "install/install.hpp"
-#include "install/sdmc_nsp.hpp"
-#include "install/sdmc_xci.hpp"
+#include "install/nsp.hpp"
+#include "install/xci.hpp"
 #include "nx/fs.hpp"
 #include "ui/MainApplication.hpp"
 #include "util/config.hpp"
@@ -65,9 +65,9 @@ void installNspFromFile(std::filesystem::path filePath, NcmStorageId storageId) 
 
     std::shared_ptr<tin::install::NSPorXCI> nsp_or_xci;
     if (filePath.extension() == ".xci" || filePath.extension() == ".xcz") {
-      nsp_or_xci = std::make_shared<tin::install::xci::SDMCXCI>(filePath);
+      nsp_or_xci = std::make_shared<tin::install::xci::XCI>(filePath);
     } else {
-      nsp_or_xci = std::make_shared<tin::install::nsp::SDMCNSP>(filePath);
+      nsp_or_xci = std::make_shared<tin::install::nsp::NSP>(filePath);
     }
     std::unique_ptr<tin::install::Install> installTask =
         std::make_unique<tin::install::Install>(storageId, inst::config::ignoreReqVers, nsp_or_xci);

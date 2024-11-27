@@ -25,7 +25,15 @@ SOFTWARE.
 #include "util/title_util.hpp"
 
 namespace tin::install::xci {
-XCI::XCI() {}
+
+XCI::XCI(std::string path) { m_file = fopen((path).c_str(), "rb"); }
+
+XCI::~XCI() { fclose(m_file); }
+
+void XCI::BufferData(void *buf, off_t offset, size_t size) {
+  fseeko(m_file, offset, SEEK_SET);
+  fread(buf, 1, size, m_file);
+}
 
 void XCI::RetrieveHeader() {
   LOG_DEBUG("Retrieving HFS0 header...\n");
@@ -79,77 +87,21 @@ void XCI::RetrieveHeader() {
 const HFS0BaseHeader *XCI::GetSecureHeader() {
   if (m_secureHeaderBytes.empty())
     THROW_FORMAT("Cannot retrieve header as header bytes are empty. Have you retrieved it yet?\n");
-
   return reinterpret_cast<HFS0BaseHeader *>(m_secureHeaderBytes.data());
 }
 
 u64 XCI::GetDataOffset() {
   if (m_secureHeaderBytes.empty())
     THROW_FORMAT("Cannot get data offset as header is empty. Have you retrieved it yet?\n");
-
   return m_secureHeaderOffset + m_secureHeaderBytes.size();
 }
 
-const HFS0FileEntry *XCI::GetFileEntry(unsigned int index) {
-  if (index >= this->GetSecureHeader()->numFiles)
+const u32 XCI::GetFileEntryNum() { return this->GetSecureHeader()->numFiles; }
+
+const void *XCI::GetFileEntry(unsigned int index) {
+  if (index >= this->GetFileEntryNum())
     THROW_FORMAT("File entry index is out of bounds\n")
-
   return hfs0GetFileEntry(this->GetSecureHeader(), index);
-}
-
-const HFS0FileEntry *XCI::GetFileEntryByName(std::string name) {
-  for (unsigned int i = 0; i < this->GetSecureHeader()->numFiles; i++) {
-    const HFS0FileEntry *fileEntry = this->GetFileEntry(i);
-    std::string foundName(this->GetFileEntryName(fileEntry));
-
-    if (foundName == name)
-      return fileEntry;
-  }
-
-  return nullptr;
-}
-
-const void *XCI::GetFileEntryByNcaId(const NcmContentId &ncaId) {
-  const HFS0FileEntry *fileEntry = nullptr;
-  std::string ncaIdStr = tin::util::GetNcaIdString(ncaId);
-
-  if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".nca")) == nullptr) {
-    if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".cnmt.nca")) == nullptr) {
-      if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".ncz")) == nullptr) {
-        if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".cnmt.ncz")) == nullptr) {
-          return nullptr;
-        }
-      }
-    }
-  }
-
-  return fileEntry;
-}
-
-std::vector<const void *> XCI::GetFileEntriesByExtension(std::string extension) {
-  std::vector<const void *> entryList;
-
-  for (unsigned int i = 0; i < this->GetSecureHeader()->numFiles; i++) {
-    const HFS0FileEntry *fileEntry = this->GetFileEntry(i);
-    std::string name(this->GetFileEntryName(fileEntry));
-    auto foundExtension = name.substr(name.find(".") + 1);
-
-    // fix cert filename extension becoming corrupted when xcz/nsz is installing certs.
-    std::string cert("cert");
-    std::size_t found = name.find(cert);
-    if (found != std::string::npos) {
-      int pos = 0;
-      std::string mystr = name;
-      pos = mystr.find_last_of('.');
-      mystr = mystr.substr(5, pos);
-      foundExtension = mystr.substr(mystr.find(".") + 1);
-    }
-
-    if (foundExtension == extension)
-      entryList.push_back(fileEntry);
-  }
-
-  return entryList;
 }
 
 const char *XCI::GetFileEntryName(const void *fileEntry) {

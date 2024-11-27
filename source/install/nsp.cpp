@@ -37,7 +37,15 @@ extern MainApplication *mainApp;
 //
 
 namespace tin::install::nsp {
-NSP::NSP() {}
+
+NSP::NSP(std::string path) { m_file = fopen((path).c_str(), "rb"); }
+
+NSP::~NSP() { fclose(m_file); }
+
+void NSP::BufferData(void *buf, off_t offset, size_t size) {
+  fseeko(m_file, offset, SEEK_SET);
+  fread(buf, 1, size, m_file);
+}
 
 // TODO: Do verification: PFS0 magic, sizes not zero
 void NSP::RetrieveHeader() {
@@ -54,87 +62,19 @@ void NSP::RetrieveHeader() {
   this->BufferData(m_headerBytes.data() + sizeof(PFS0BaseHeader), sizeof(PFS0BaseHeader), remainingHeaderSize);
 }
 
-const PFS0FileEntry *NSP::GetFileEntry(unsigned int index) {
-  if (index >= this->GetBaseHeader()->numFiles)
+const u32 NSP::GetFileEntryNum() { return this->GetBaseHeader()->numFiles; }
+
+const void *NSP::GetFileEntry(unsigned int index) {
+  if (index >= this->GetFileEntryNum())
     THROW_FORMAT("File entry index is out of bounds\n")
-
   size_t fileEntryOffset = sizeof(PFS0BaseHeader) + index * sizeof(PFS0FileEntry);
-
   if (m_headerBytes.size() < fileEntryOffset + sizeof(PFS0FileEntry))
     THROW_FORMAT("Header bytes is too small to get file entry!");
-
   return reinterpret_cast<PFS0FileEntry *>(m_headerBytes.data() + fileEntryOffset);
 }
 
-std::vector<const void *> NSP::GetFileEntriesByExtension(std::string extension) {
-  std::vector<const void *> entryList;
-
-  for (unsigned int i = 0; i < this->GetBaseHeader()->numFiles; i++) {
-    const PFS0FileEntry *fileEntry = this->GetFileEntry(i);
-    std::string name(this->GetFileEntryName(fileEntry));
-    auto foundExtension = name.substr(name.find(".") + 1);
-
-    // fix cert filename extension becoming corrupted when xcz/nsz is installing certs.
-    std::string cert("cert");
-    std::size_t found = name.find(cert);
-    if (found != std::string::npos) {
-      int pos = 0;
-      std::string mystr = name;
-      pos = mystr.find_last_of('.');
-      mystr = mystr.substr(5, pos);
-      foundExtension = mystr.substr(mystr.find(".") + 1);
-    }
-
-    if (foundExtension == extension)
-      entryList.push_back(fileEntry);
-  }
-
-  return entryList;
-}
-
-const PFS0FileEntry *NSP::GetFileEntryByName(std::string name) {
-  // returns only the .nca and .cnmt.nca filenames
-  for (unsigned int i = 0; i < this->GetBaseHeader()->numFiles; i++) {
-    const PFS0FileEntry *fileEntry = this->GetFileEntry(i);
-    std::string foundName(this->GetFileEntryName(fileEntry));
-
-    if (foundName == name) {
-      /*
-      //Debug code
-      FILE * fp;
-      fp = fopen ("name.txt", "a+");
-      std::string x = foundName;
-      const char *info = x.c_str();
-      fprintf(fp, "%s\n", info);
-      fclose(fp);
-      */
-
-      return fileEntry;
-    }
-  }
-
-  return nullptr;
-}
-
-const void *NSP::GetFileEntryByNcaId(const NcmContentId &ncaId) {
-  const PFS0FileEntry *fileEntry = nullptr;
-  std::string ncaIdStr = tin::util::GetNcaIdString(ncaId);
-
-  if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".nca")) == nullptr) {
-    if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".cnmt.nca")) == nullptr) {
-      if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".ncz")) == nullptr) {
-        if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".cnmt.ncz")) == nullptr) {
-          return nullptr;
-        }
-      }
-    }
-  }
-
-  return fileEntry;
-}
-
 const char *NSP::GetFileEntryName(const void *fileEntry) {
-  u64 stringTableStart = sizeof(PFS0BaseHeader) + this->GetBaseHeader()->numFiles * sizeof(PFS0FileEntry);
+  u64 stringTableStart = sizeof(PFS0BaseHeader) + this->GetFileEntryNum() * sizeof(PFS0FileEntry);
   return reinterpret_cast<const char *>(m_headerBytes.data() + stringTableStart +
                                         ((PFS0FileEntry *)fileEntry)->stringTableOffset);
 }
@@ -142,7 +82,6 @@ const char *NSP::GetFileEntryName(const void *fileEntry) {
 const PFS0BaseHeader *NSP::GetBaseHeader() {
   if (m_headerBytes.empty())
     THROW_FORMAT("Cannot retrieve header as header bytes are empty. Have you retrieved it yet?\n");
-
   return reinterpret_cast<PFS0BaseHeader *>(m_headerBytes.data());
 }
 

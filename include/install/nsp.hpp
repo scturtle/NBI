@@ -36,23 +36,22 @@ namespace tin::install::nsp {
 class NSP : public NSPorXCI {
 protected:
   std::vector<u8> m_headerBytes;
-
-  NSP();
+  FILE *m_file;
 
 public:
-  virtual void RetrieveHeader() override;
-  virtual const PFS0BaseHeader *GetBaseHeader();
-  virtual u64 GetDataOffset() override;
+  NSP(std::string path);
+  ~NSP();
 
-  virtual const PFS0FileEntry *GetFileEntry(unsigned int index);
-  virtual const PFS0FileEntry *GetFileEntryByName(std::string name);
-  virtual const void *GetFileEntryByNcaId(const NcmContentId &ncaId) override;
-  virtual std::vector<const void *> GetFileEntriesByExtension(std::string extension) override;
+  void RetrieveHeader() override;
+  const PFS0BaseHeader *GetBaseHeader();
+  u64 GetDataOffset() override;
 
-  virtual const char *GetFileEntryName(const void *fileEntry) override;
-  virtual const u64 GetFileEntrySize(const void *fileEntry) override { return ((PFS0FileEntry *)fileEntry)->fileSize; }
-  virtual const u64 GetFileEntryOffset(const void *fileEntry) override {
-    return ((PFS0FileEntry *)fileEntry)->dataOffset;
-  }
+  void BufferData(void *buf, off_t offset, size_t size) override;
+
+  const u32 GetFileEntryNum() override;
+  const void *GetFileEntry(unsigned int index) override;
+  const char *GetFileEntryName(const void *fileEntry) override;
+  const u64 GetFileEntrySize(const void *fileEntry) override { return ((PFS0FileEntry *)fileEntry)->fileSize; }
+  const u64 GetFileEntryOffset(const void *fileEntry) override { return ((PFS0FileEntry *)fileEntry)->dataOffset; }
 };
 } // namespace tin::install::nsp
