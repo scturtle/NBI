@@ -15,4 +15,5 @@ $ podman run -it --rm --detach-keys=ctrl-\\ \
 ```
 
 ## Thanks to
+- Adubbz's Tinfoil
 - MrDude's TinWoo
