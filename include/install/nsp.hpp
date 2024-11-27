@@ -44,14 +44,14 @@ public:
 
   void RetrieveHeader() override;
   const PFS0BaseHeader *GetBaseHeader();
-  u64 GetDataOffset() override;
+  u64 GetDataOffset();
 
   void BufferData(void *buf, off_t offset, size_t size) override;
 
   const u32 GetFileEntryNum() override;
   const void *GetFileEntry(unsigned int index) override;
   const char *GetFileEntryName(const void *fileEntry) override;
-  const u64 GetFileEntrySize(const void *fileEntry) override { return ((PFS0FileEntry *)fileEntry)->fileSize; }
-  const u64 GetFileEntryOffset(const void *fileEntry) override { return ((PFS0FileEntry *)fileEntry)->dataOffset; }
+  const u64 GetFileEntrySize(const void *fileEntry) override;
+  const u64 GetFileEntryOffset(const void *fileEntry) override;
 };
 } // namespace tin::install::nsp

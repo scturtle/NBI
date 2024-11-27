@@ -23,18 +23,8 @@ SOFTWARE.
 // https://switchbrew.org/wiki/NCA
 
 #include "install/nsp.hpp"
-
 #include "util/error.hpp"
 #include "util/title_util.hpp"
-#include <threads.h>
-
-//
-#include "ui/MainApplication.hpp"
-#include "util/lang.hpp"
-namespace inst::ui {
-extern MainApplication *mainApp;
-}
-//
 
 namespace tin::install::nsp {
 
@@ -65,12 +55,14 @@ void NSP::RetrieveHeader() {
 const u32 NSP::GetFileEntryNum() { return this->GetBaseHeader()->numFiles; }
 
 const void *NSP::GetFileEntry(unsigned int index) {
-  if (index >= this->GetFileEntryNum())
-    THROW_FORMAT("File entry index is out of bounds\n")
   size_t fileEntryOffset = sizeof(PFS0BaseHeader) + index * sizeof(PFS0FileEntry);
-  if (m_headerBytes.size() < fileEntryOffset + sizeof(PFS0FileEntry))
-    THROW_FORMAT("Header bytes is too small to get file entry!");
   return reinterpret_cast<PFS0FileEntry *>(m_headerBytes.data() + fileEntryOffset);
+}
+
+const u64 NSP::GetFileEntrySize(const void *fileEntry) { return ((PFS0FileEntry *)fileEntry)->fileSize; }
+
+const u64 NSP::GetFileEntryOffset(const void *fileEntry) {
+  return GetDataOffset() + ((PFS0FileEntry *)fileEntry)->dataOffset;
 }
 
 const char *NSP::GetFileEntryName(const void *fileEntry) {
@@ -79,15 +71,7 @@ const char *NSP::GetFileEntryName(const void *fileEntry) {
                                         ((PFS0FileEntry *)fileEntry)->stringTableOffset);
 }
 
-const PFS0BaseHeader *NSP::GetBaseHeader() {
-  if (m_headerBytes.empty())
-    THROW_FORMAT("Cannot retrieve header as header bytes are empty. Have you retrieved it yet?\n");
-  return reinterpret_cast<PFS0BaseHeader *>(m_headerBytes.data());
-}
+const PFS0BaseHeader *NSP::GetBaseHeader() { return reinterpret_cast<PFS0BaseHeader *>(m_headerBytes.data()); }
 
-u64 NSP::GetDataOffset() {
-  if (m_headerBytes.empty())
-    THROW_FORMAT("Cannot get data offset as header is empty. Have you retrieved it yet?\n");
-  return m_headerBytes.size();
-}
+u64 NSP::GetDataOffset() { return m_headerBytes.size(); }
 } // namespace tin::install::nsp

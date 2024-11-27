@@ -49,15 +49,11 @@ const void *NSPorXCI::GetFileEntryByNcaId(const NcmContentId &ncaId) {
   const void *fileEntry = nullptr;
   std::string ncaIdStr = tin::util::GetNcaIdString(ncaId);
 
-  if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".nca")) == nullptr) {
-    if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".cnmt.nca")) == nullptr) {
-      if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".ncz")) == nullptr) {
-        if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".cnmt.ncz")) == nullptr) {
+  if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".nca")) == nullptr)
+    if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".cnmt.nca")) == nullptr)
+      if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".ncz")) == nullptr)
+        if ((fileEntry = this->GetFileEntryByName(ncaIdStr + ".cnmt.ncz")) == nullptr)
           return nullptr;
-        }
-      }
-    }
-  }
 
   return fileEntry;
 }
@@ -73,7 +69,7 @@ void NSPorXCI::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &con
 
   float progress;
 
-  u64 fileStart = GetDataOffset() + this->GetFileEntryOffset(fileEntry);
+  u64 fileStart = this->GetFileEntryOffset(fileEntry);
   u64 fileOff = 0;
   size_t readSize = 0x400000; // 4MB buff
   auto readBuffer = std::make_unique<u8[]>(readSize);

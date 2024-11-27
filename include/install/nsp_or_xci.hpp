@@ -14,7 +14,6 @@ public:
   virtual void BufferData(void *buf, off_t offset, size_t size) = 0;
 
   virtual void RetrieveHeader() = 0;
-  virtual u64 GetDataOffset() = 0;
 
   virtual const u32 GetFileEntryNum() = 0;
   virtual const void *GetFileEntry(unsigned int index) = 0;

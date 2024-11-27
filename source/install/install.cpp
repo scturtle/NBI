@@ -100,8 +100,7 @@ void Install::InstallNCA(const NcmContentId &ncaId) {
 
   if (inst::config::validateNCAs && !m_declinedValidation) {
     tin::install::NcaHeader header;
-    m_nsp_or_xci->BufferData(&header, m_nsp_or_xci->GetDataOffset() + m_nsp_or_xci->GetFileEntryOffset(fileEntry),
-                             sizeof(tin::install::NcaHeader));
+    m_nsp_or_xci->BufferData(&header, m_nsp_or_xci->GetFileEntryOffset(fileEntry), sizeof(tin::install::NcaHeader));
 
     Crypto::AesXtr crypto(Crypto::Keys().headerKey, false);
     crypto.decrypt(&header, &header, sizeof(tin::install::NcaHeader), 0, 0x200);
@@ -144,13 +143,11 @@ void Install::InstallTicketCert() {
   for (size_t i = 0; i < tikFileEntries.size(); i++) {
     u64 tikSize = m_nsp_or_xci->GetFileEntrySize(tikFileEntries[i]);
     auto tikBuf = std::make_unique<u8[]>(tikSize);
-    m_nsp_or_xci->BufferData(
-        tikBuf.get(), m_nsp_or_xci->GetDataOffset() + m_nsp_or_xci->GetFileEntryOffset(tikFileEntries[i]), tikSize);
+    m_nsp_or_xci->BufferData(tikBuf.get(), m_nsp_or_xci->GetFileEntryOffset(tikFileEntries[i]), tikSize);
 
     u64 certSize = m_nsp_or_xci->GetFileEntrySize(certFileEntries[i]);
     auto certBuf = std::make_unique<u8[]>(certSize);
-    m_nsp_or_xci->BufferData(
-        certBuf.get(), m_nsp_or_xci->GetDataOffset() + m_nsp_or_xci->GetFileEntryOffset(certFileEntries[i]), certSize);
+    m_nsp_or_xci->BufferData(certBuf.get(), m_nsp_or_xci->GetFileEntryOffset(certFileEntries[i]), certSize);
 
     // try to fix a temp ticket and change it t a permanent one
     // https://switchbrew.org/wiki/Ticket#Certificate_chain

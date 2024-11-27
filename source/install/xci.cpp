@@ -98,6 +98,12 @@ u64 XCI::GetDataOffset() {
 
 const u32 XCI::GetFileEntryNum() { return this->GetSecureHeader()->numFiles; }
 
+const u64 XCI::GetFileEntrySize(const void *fileEntry) { return ((HFS0FileEntry *)fileEntry)->fileSize; }
+
+const u64 XCI::GetFileEntryOffset(const void *fileEntry) {
+  return GetDataOffset() + ((HFS0FileEntry *)fileEntry)->dataOffset;
+}
+
 const void *XCI::GetFileEntry(unsigned int index) {
   if (index >= this->GetFileEntryNum())
     THROW_FORMAT("File entry index is out of bounds\n")
