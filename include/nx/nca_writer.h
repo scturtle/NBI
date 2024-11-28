@@ -9,7 +9,7 @@ class NcaBodyWriter;
 
 class NcaWriter {
 public:
-  NcaWriter(const NcmContentId &ncaId, std::shared_ptr<nx::ncm::ContentStorage> &contentStorage);
+  NcaWriter(const NcmContentId &ncaId, nx::ncm::ContentStorage *contentStorage);
   virtual ~NcaWriter();
 
   bool isOpen() const;
@@ -19,7 +19,7 @@ public:
 
 protected:
   NcmContentId m_ncaId;
-  std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
+  nx::ncm::ContentStorage *m_contentStorage;
   std::vector<u8> m_buffer;
   std::shared_ptr<NcaBodyWriter> m_writer;
 };

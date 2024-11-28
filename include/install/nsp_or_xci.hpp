@@ -1,6 +1,5 @@
 #pragma once
 
-#include <functional>
 #include <memory>
 #include <vector>
 
@@ -10,10 +9,8 @@
 namespace tin::install {
 class NSPorXCI {
 public:
-  void StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &contentStorage, NcmContentId placeholderId);
+  void StreamToPlaceholder(nx::ncm::ContentStorage &contentStorage, NcmContentId placeholderId);
   virtual void BufferData(void *buf, off_t offset, size_t size) = 0;
-
-  virtual void RetrieveHeader() = 0;
 
   virtual const u32 GetFileEntryNum() = 0;
   virtual const void *GetFileEntry(unsigned int index) = 0;

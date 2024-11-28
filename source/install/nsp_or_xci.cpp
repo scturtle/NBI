@@ -58,14 +58,14 @@ const void *NSPorXCI::GetFileEntryByNcaId(const NcmContentId &ncaId) {
   return fileEntry;
 }
 
-void NSPorXCI::StreamToPlaceholder(std::shared_ptr<nx::ncm::ContentStorage> &contentStorage, NcmContentId ncaId) {
+void NSPorXCI::StreamToPlaceholder(nx::ncm::ContentStorage &contentStorage, NcmContentId ncaId) {
   const void *fileEntry = this->GetFileEntryByNcaId(ncaId);
   std::string ncaFileName = this->GetFileEntryName(fileEntry);
 
   LOG_DEBUG("Retrieving %s\n", ncaFileName.c_str());
   size_t ncaSize = this->GetFileEntrySize(fileEntry);
 
-  NcaWriter writer(ncaId, contentStorage);
+  NcaWriter writer(ncaId, &contentStorage);
 
   float progress;
 

@@ -24,7 +24,7 @@ static void append(std::vector<u8> &buffer, const u8 *ptr, u64 sz) {
 
 class NcaBodyWriter {
 public:
-  NcaBodyWriter(const NcmContentId &ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage> &contentStorage)
+  NcaBodyWriter(const NcmContentId &ncaId, u64 offset, nx::ncm::ContentStorage *contentStorage)
       : m_contentStorage(contentStorage), m_ncaId(ncaId), m_offset(offset) {}
 
   virtual u64 write(const u8 *ptr, u64 sz) {
@@ -34,7 +34,7 @@ public:
   }
 
 protected:
-  std::shared_ptr<nx::ncm::ContentStorage> m_contentStorage;
+  nx::ncm::ContentStorage *m_contentStorage;
   NcmContentId m_ncaId;
   u64 m_offset;
 };
@@ -136,7 +136,7 @@ struct BlockInfo {
 
 class NczBodyWriter : public NcaBodyWriter {
 public:
-  NczBodyWriter(const NcmContentId &ncaId, u64 offset, std::shared_ptr<nx::ncm::ContentStorage> &contentStorage)
+  NczBodyWriter(const NcmContentId &ncaId, u64 offset, nx::ncm::ContentStorage *contentStorage)
       : NcaBodyWriter(ncaId, offset, contentStorage) {
     buffOut = malloc(buffOutSize);
     dctx = ZSTD_createDCtx();
@@ -315,7 +315,7 @@ public:
   BlockInfo blockInfo;
 };
 
-NcaWriter::NcaWriter(const NcmContentId &ncaId, std::shared_ptr<nx::ncm::ContentStorage> &contentStorage)
+NcaWriter::NcaWriter(const NcmContentId &ncaId, nx::ncm::ContentStorage *contentStorage)
     : m_ncaId(ncaId), m_contentStorage(contentStorage), m_writer(NULL) {}
 
 NcaWriter::~NcaWriter() { close(); }

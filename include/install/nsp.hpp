@@ -20,7 +20,7 @@ public:
   NSP(std::string path);
   ~NSP();
 
-  void RetrieveHeader() override;
+  void RetrieveHeader();
   const PFS0BaseHeader *GetBaseHeader();
   u64 GetDataOffset();
 

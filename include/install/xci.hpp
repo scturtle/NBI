@@ -21,7 +21,7 @@ public:
   XCI(std::string path);
   ~XCI();
 
-  void RetrieveHeader() override;
+  void RetrieveHeader();
   const HFS0BaseHeader *GetSecureHeader();
   u64 GetDataOffset();
 

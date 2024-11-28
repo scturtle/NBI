@@ -4,7 +4,10 @@
 
 namespace tin::install::nsp {
 
-NSP::NSP(std::string path) { m_file = fopen((path).c_str(), "rb"); }
+NSP::NSP(std::string path) {
+  m_file = fopen((path).c_str(), "rb");
+  RetrieveHeader();
+}
 
 NSP::~NSP() { fclose(m_file); }
 

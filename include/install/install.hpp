@@ -17,28 +17,20 @@ namespace tin::install {
 class Install {
 protected:
   const NcmStorageId m_destStorageId;
-  bool m_ignoreReqFirmVersion = false;
   bool m_declinedValidation = false;
 
   const std::shared_ptr<NSPorXCI> m_nsp_or_xci;
 
   std::vector<nx::ncm::ContentMeta> m_contentMeta;
 
-  std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> ReadCNMT();
-
   void InstallContentMetaRecords(tin::data::ByteBuffer &installContentMetaBuf, int i);
   void InstallApplicationRecord(int i);
   void InstallNCA(const NcmContentId &ncaId);
 
 public:
-  Install(NcmStorageId destStorageId, bool ignoreReqFirmVersion, std::shared_ptr<NSPorXCI> nsp_or_xci);
+  Install(NcmStorageId destStorageId, std::shared_ptr<NSPorXCI> nsp_or_xci);
   ~Install();
 
-  void Prepare();
-  void InstallTicketCert();
-  void Begin();
-
-  u64 GetTitleId(int i = 0);
-  NcmContentMetaType GetContentMetaType(int i = 0);
+  void install();
 };
 } // namespace tin::install

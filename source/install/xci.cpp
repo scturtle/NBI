@@ -4,7 +4,10 @@
 
 namespace tin::install::xci {
 
-XCI::XCI(std::string path) { m_file = fopen((path).c_str(), "rb"); }
+XCI::XCI(std::string path) {
+  m_file = fopen((path).c_str(), "rb");
+  RetrieveHeader();
+}
 
 XCI::~XCI() { fclose(m_file); }
 

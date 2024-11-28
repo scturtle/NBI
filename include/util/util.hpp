@@ -32,4 +32,7 @@ std::vector<uint32_t> setClockSpeed(int deviceToClock, uint32_t clockSpeed);
 inline pu::sdl2::TextureHandle::Ref LoadTexture(const std::string &path) {
   return pu::sdl2::TextureHandle::New(pu::ui::render::LoadImage(path));
 }
+
+void msg(std::string title, std::string message);
+
 } // namespace inst::util

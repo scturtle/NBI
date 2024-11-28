@@ -17,6 +17,10 @@
 #include <unistd.h>
 #include <vector>
 
+namespace inst::ui {
+extern MainApplication *mainApp;
+}
+
 int statvfs(const char *path, struct statvfs *buf);
 
 namespace inst::util {
@@ -176,5 +180,7 @@ std::vector<uint32_t> setClockSpeed(int deviceToClock, uint32_t clockSpeed) {
     return {previousHz, hz};
   }
 }
+
+void msg(std::string title, std::string message) { inst::ui::mainApp->CreateShowDialog(title, message, {"OK"}, true); }
 
 } // namespace inst::util

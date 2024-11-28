@@ -47,15 +47,13 @@ void installNspFromFile(std::filesystem::path filePath, NcmStorageId storageId) 
     } else {
       nsp_or_xci = std::make_shared<tin::install::nsp::NSP>(filePath);
     }
-    std::unique_ptr<tin::install::Install> installTask =
-        std::make_unique<tin::install::Install>(storageId, inst::config::ignoreReqVers, nsp_or_xci);
+
+    auto installer = std::make_unique<tin::install::Install>(storageId, nsp_or_xci);
 
     inst::ui::instPage::setInstInfoText("inst.info_page.preparing"_lang);
     inst::ui::instPage::setInstBarPerc(0);
 
-    installTask->Prepare();
-    installTask->InstallTicketCert();
-    installTask->Begin();
+    installer->install();
 
   } catch (std::exception &e) {
     inst::ui::instPage::setInstInfoText("inst.info_page.failed"_lang + shortFilePath);
@@ -77,8 +75,8 @@ void installNspFromFile(std::filesystem::path filePath, NcmStorageId storageId) 
     inst::ui::instPage::setInstInfoText("inst.info_page.complete"_lang);
     inst::ui::instPage::setInstBarPerc(100);
 
-    inst::ui::mainApp->CreateShowDialog(shortFilePath + "inst.info_page.desc1"_lang, Language::GetRandomMsg(),
-                                        {"common.ok"_lang}, true, inst::util::LoadTexture(inst::icon::info));
+    inst::ui::mainApp->CreateShowDialog(shortFilePath + "inst.info_page.desc1"_lang, "", {"common.ok"_lang}, true,
+                                        inst::util::LoadTexture(inst::icon::info));
   }
 
   inst::ui::mainApp->LoadMainPage();

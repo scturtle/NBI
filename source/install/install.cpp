@@ -20,59 +20,75 @@ namespace inst::ui {
 extern MainApplication *mainApp;
 }
 
-// TODO: Check NCA files are present
-// TODO: Check tik/cert is present
+// try to fix a temp ticket and change it t a permanent one
+// https://switchbrew.org/wiki/Ticket#Certificate_chain
+static void fixTicket(u8 *tikBuf) {
+  u16 ECDSA = 0;
+  u16 RSA_2048 = 0;
+  u16 RSA_4096 = 0;
+
+  ECDSA = (0x4 + 0x3C + 0x40 + 0x146);
+  RSA_2048 = (0x4 + 0x100 + 0x3C + 0x146);
+  RSA_4096 = (0x4 + 0x200 + 0x3C + 0x146);
+
+  if (tikBuf[0x0] == 0x5 && (tikBuf[ECDSA] == 0x10 || tikBuf[ECDSA] == 0x30)) {
+    tikBuf[ECDSA] = 0x0;
+    tikBuf[ECDSA - 1] = 0x10; // fix broken 	Master key revision
+  }
+
+  // RSA_2048 SHA256
+  else if (tikBuf[0x0] == 0x4 && (tikBuf[RSA_2048] == 0x10 || tikBuf[RSA_2048] == 0x30)) {
+    tikBuf[RSA_2048] = 0x0;
+    tikBuf[RSA_2048 - 1] = 0x10;
+  }
+
+  // RSA_4096 SHA256
+  else if (tikBuf[0x0] == 0x3 && (tikBuf[RSA_4096] == 0x10 || tikBuf[RSA_4096] == 0x30)) {
+    tikBuf[RSA_4096] = 0x0;
+    tikBuf[RSA_4096 - 1] = 0x10;
+  }
+
+  // ECDSA SHA1
+  else if (tikBuf[0x0] == 0x2 && (tikBuf[ECDSA] == 0x10 || tikBuf[ECDSA] == 0x30)) {
+    tikBuf[ECDSA] = 0x0;
+    tikBuf[ECDSA - 1] = 0x10;
+  }
+
+  // RSA_2048 SHA1
+  else if (tikBuf[0x0] == 0x1 && (tikBuf[RSA_2048] == 0x10 || tikBuf[RSA_2048] == 0x30)) {
+    tikBuf[RSA_2048] = 0x0;
+    tikBuf[RSA_2048 - 1] = 0x10;
+  }
+
+  // RSA_4096 SHA1
+  else if (tikBuf[0x0] == 0x0 && (tikBuf[RSA_4096] == 0x10 || tikBuf[RSA_4096] == 0x30)) {
+    tikBuf[RSA_4096] = 0x0;
+    tikBuf[RSA_4096 - 1] = 0x10;
+  }
+}
+
 namespace tin::install {
-Install::Install(NcmStorageId destStorageId, bool ignoreReqFirmVersion, std::shared_ptr<NSPorXCI> nsp_or_xci)
-    : m_destStorageId(destStorageId), m_ignoreReqFirmVersion(ignoreReqFirmVersion), m_nsp_or_xci(nsp_or_xci),
-      m_contentMeta() {
+Install::Install(NcmStorageId destStorageId, std::shared_ptr<NSPorXCI> nsp_or_xci)
+    : m_destStorageId(destStorageId), m_nsp_or_xci(nsp_or_xci) {
   appletSetMediaPlaybackState(true);
-  m_nsp_or_xci->RetrieveHeader();
 }
 
 Install::~Install() { appletSetMediaPlaybackState(false); }
-
-std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> Install::ReadCNMT() {
-  std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> CNMTList;
-
-  for (const void *fileEntry : m_nsp_or_xci->GetFileEntriesByExtension("cnmt.nca")) {
-    std::string cnmtNcaName(m_nsp_or_xci->GetFileEntryName(fileEntry));
-    NcmContentId cnmtContentId = tin::util::GetNcaIdFromString(cnmtNcaName);
-    size_t cnmtNcaSize = m_nsp_or_xci->GetFileEntrySize(fileEntry);
-
-    nx::ncm::ContentStorage contentStorage(m_destStorageId);
-
-    LOG_DEBUG("CNMT Name: %s\n", cnmtNcaName.c_str());
-
-    // We install the cnmt nca early to read from it later
-    this->InstallNCA(cnmtContentId);
-    std::string cnmtNCAFullPath = contentStorage.GetPath(cnmtContentId);
-
-    NcmContentInfo cnmtContentInfo;
-    cnmtContentInfo.content_id = cnmtContentId;
-    //*(u64*)&cnmtContentInfo.size = cnmtNcaSize & 0xFFFFFFFFFFFF;
-    ncmU64ToContentInfoSize(cnmtNcaSize & 0xFFFFFFFFFFFF, &cnmtContentInfo);
-    cnmtContentInfo.content_type = NcmContentType_Meta;
-
-    CNMTList.push_back({tin::util::GetContentMetaFromNCA(cnmtNCAFullPath), cnmtContentInfo});
-  }
-  return CNMTList;
-}
 
 void Install::InstallNCA(const NcmContentId &ncaId) {
   const void *fileEntry = m_nsp_or_xci->GetFileEntryByNcaId(ncaId);
   std::string ncaFileName = m_nsp_or_xci->GetFileEntryName(fileEntry);
 
-  std::shared_ptr<nx::ncm::ContentStorage> contentStorage(new nx::ncm::ContentStorage(m_destStorageId));
+  nx::ncm::ContentStorage contentStorage(m_destStorageId);
 
   // Attempt to delete any leftover placeholders
   try {
-    contentStorage->DeletePlaceholder(*(NcmPlaceHolderId *)&ncaId);
+    contentStorage.DeletePlaceholder(*(NcmPlaceHolderId *)&ncaId);
   } catch (...) {
   }
   // Attempt to delete leftover ncas
   try {
-    contentStorage->Delete(ncaId);
+    contentStorage.Delete(ncaId);
   } catch (...) {
   }
 
@@ -99,87 +115,19 @@ void Install::InstallNCA(const NcmContentId &ncaId) {
 
   m_nsp_or_xci->StreamToPlaceholder(contentStorage, ncaId);
 
-  LOG_DEBUG("Registering placeholder...\n");
-
+  // registering placeholder
   try {
-    contentStorage->Register(*(NcmPlaceHolderId *)&ncaId, ncaId);
+    contentStorage.Register(*(NcmPlaceHolderId *)&ncaId, ncaId);
   } catch (...) {
-    LOG_DEBUG(("Failed to register " + ncaFileName + ". It may already exist.\n").c_str());
+    // already exist
   }
 
   try {
-    contentStorage->DeletePlaceholder(*(NcmPlaceHolderId *)&ncaId);
+    contentStorage.DeletePlaceholder(*(NcmPlaceHolderId *)&ncaId);
   } catch (...) {
   }
 }
 
-void Install::InstallTicketCert() {
-  // int cal = 0;
-  std::vector<const void *> tikFileEntries = m_nsp_or_xci->GetFileEntriesByExtension("tik");
-  std::vector<const void *> certFileEntries = m_nsp_or_xci->GetFileEntriesByExtension("cert");
-
-  for (size_t i = 0; i < tikFileEntries.size(); i++) {
-    u64 tikSize = m_nsp_or_xci->GetFileEntrySize(tikFileEntries[i]);
-    auto tikBuf = std::make_unique<u8[]>(tikSize);
-    m_nsp_or_xci->BufferData(tikBuf.get(), m_nsp_or_xci->GetFileEntryOffset(tikFileEntries[i]), tikSize);
-
-    u64 certSize = m_nsp_or_xci->GetFileEntrySize(certFileEntries[i]);
-    auto certBuf = std::make_unique<u8[]>(certSize);
-    m_nsp_or_xci->BufferData(certBuf.get(), m_nsp_or_xci->GetFileEntryOffset(certFileEntries[i]), certSize);
-
-    // try to fix a temp ticket and change it t a permanent one
-    // https://switchbrew.org/wiki/Ticket#Certificate_chain
-    if (inst::config::fixticket) {
-      u16 ECDSA = 0;
-      u16 RSA_2048 = 0;
-      u16 RSA_4096 = 0;
-
-      ECDSA = (0x4 + 0x3C + 0x40 + 0x146);
-      RSA_2048 = (0x4 + 0x100 + 0x3C + 0x146);
-      RSA_4096 = (0x4 + 0x200 + 0x3C + 0x146);
-
-      if (tikBuf.get()[0x0] == 0x5 && (tikBuf.get()[ECDSA] == 0x10 || tikBuf.get()[ECDSA] == 0x30)) {
-        tikBuf.get()[ECDSA] = 0x0;
-        tikBuf.get()[ECDSA - 1] = 0x10; // fix broken 	Master key revision
-      }
-
-      // RSA_2048 SHA256
-      else if (tikBuf.get()[0x0] == 0x4 && (tikBuf.get()[RSA_2048] == 0x10 || tikBuf.get()[RSA_2048] == 0x30)) {
-        tikBuf.get()[RSA_2048] = 0x0;
-        tikBuf.get()[RSA_2048 - 1] = 0x10;
-      }
-
-      // RSA_4096 SHA256
-      else if (tikBuf.get()[0x0] == 0x3 && (tikBuf.get()[RSA_4096] == 0x10 || tikBuf.get()[RSA_4096] == 0x30)) {
-        tikBuf.get()[RSA_4096] = 0x0;
-        tikBuf.get()[RSA_4096 - 1] = 0x10;
-      }
-
-      // ECDSA SHA1
-      else if (tikBuf.get()[0x0] == 0x2 && (tikBuf.get()[ECDSA] == 0x10 || tikBuf.get()[ECDSA] == 0x30)) {
-        tikBuf.get()[ECDSA] = 0x0;
-        tikBuf.get()[ECDSA - 1] = 0x10;
-      }
-
-      // RSA_2048 SHA1
-      else if (tikBuf.get()[0x0] == 0x1 && (tikBuf.get()[RSA_2048] == 0x10 || tikBuf.get()[RSA_2048] == 0x30)) {
-        tikBuf.get()[RSA_2048] = 0x0;
-        tikBuf.get()[RSA_2048 - 1] = 0x10;
-      }
-
-      // RSA_4096 SHA1
-      else if (tikBuf.get()[0x0] == 0x0 && (tikBuf.get()[RSA_4096] == 0x10 || tikBuf.get()[RSA_4096] == 0x30)) {
-        tikBuf.get()[RSA_4096] = 0x0;
-        tikBuf.get()[RSA_4096 - 1] = 0x10;
-      }
-    }
-
-    // Finally, let's actually import the ticket
-    ASSERT_OK(esImportTicket(tikBuf.get(), tikSize, certBuf.get(), certSize), "Failed to import ticket");
-  }
-}
-
-// TODO: Implement RAII on NcmContentMetaDatabase
 void Install::InstallContentMetaRecords(tin::data::ByteBuffer &installContentMetaBuf, int i) {
   NcmContentMetaDatabase contentMetaDatabase;
   NcmContentMetaKey contentMetaKey = m_contentMeta[i].GetContentMetaKey();
@@ -203,10 +151,10 @@ void Install::InstallContentMetaRecords(tin::data::ByteBuffer &installContentMet
 void Install::InstallApplicationRecord(int i) {
   Result rc = 0;
   std::vector<ContentStorageRecord> storageRecords;
-  u64 baseTitleId = tin::util::GetBaseTitleId(this->GetTitleId(i), this->GetContentMetaType(i));
+  auto titleId = m_contentMeta[i].GetContentMetaKey().id;
+  auto contentMetaType = static_cast<NcmContentMetaType>(m_contentMeta[i].GetContentMetaKey().type);
+  u64 baseTitleId = tin::util::GetBaseTitleId(titleId, contentMetaType);
   s32 contentMetaCount = 0;
-
-  LOG_DEBUG("Base title Id: 0x%lx", baseTitleId);
 
   // TODO: Make custom error with result code field
   // 0x410: The record doesn't already exist
@@ -214,8 +162,6 @@ void Install::InstallApplicationRecord(int i) {
     THROW_FORMAT("Failed to count application content meta");
   }
   rc = 0;
-
-  LOG_DEBUG("Content meta count: %u\n", contentMetaCount);
 
   // Obtain any existing app record content meta and append it to our vector
   if (contentMetaCount > 0) {
@@ -253,52 +199,63 @@ void Install::InstallApplicationRecord(int i) {
             "Failed to push application record");
 }
 
-// Validate and obtain all data needed for install
-void Install::Prepare() {
-  tin::data::ByteBuffer cnmtBuf;
+void Install::install() {
+  auto cnmtncas = m_nsp_or_xci->GetFileEntriesByExtension("cnmt.nca");
 
-  std::vector<std::tuple<nx::ncm::ContentMeta, NcmContentInfo>> tupelList = this->ReadCNMT();
+  for (size_t i = 0; i < cnmtncas.size(); i++) {
+    auto fileEntry = cnmtncas[i];
+    std::string cnmtNcaName(m_nsp_or_xci->GetFileEntryName(fileEntry));
+    size_t cnmtNcaSize = m_nsp_or_xci->GetFileEntrySize(fileEntry);
 
-  for (size_t i = 0; i < tupelList.size(); i++) {
-    std::tuple<nx::ncm::ContentMeta, NcmContentInfo> cnmtTuple = tupelList[i];
-
-    m_contentMeta.push_back(std::get<0>(cnmtTuple));
-    NcmContentInfo cnmtContentRecord = std::get<1>(cnmtTuple);
+    // We install the cnmt nca early to read from it later
+    NcmContentId cnmtContentId = tin::util::GetNcaIdFromString(cnmtNcaName);
+    this->InstallNCA(cnmtContentId);
 
     nx::ncm::ContentStorage contentStorage(m_destStorageId);
+    std::string cnmtNCAFullPath = contentStorage.GetPath(cnmtContentId);
 
-    if (!contentStorage.Has(cnmtContentRecord.content_id)) {
-      LOG_DEBUG("Installing CNMT NCA...\n");
-      this->InstallNCA(cnmtContentRecord.content_id);
-    } else {
-      LOG_DEBUG("CNMT NCA already installed. Proceeding...\n");
-    }
+    nx::ncm::ContentMeta contentMeta = tin::util::GetContentMetaFromNCA(cnmtNCAFullPath);
+    m_contentMeta.push_back(contentMeta);
+
+    NcmContentInfo cnmtContentInfo;
+    cnmtContentInfo.content_id = cnmtContentId;
+    ncmU64ToContentInfoSize(cnmtNcaSize & 0xFFFFFFFFFFFF, &cnmtContentInfo);
+    cnmtContentInfo.content_type = NcmContentType_Meta;
 
     // Parse data and create install content meta
-    if (m_ignoreReqFirmVersion)
-      LOG_DEBUG("WARNING: Required system firmware version is being IGNORED!\n");
-
     tin::data::ByteBuffer installContentMetaBuf;
-    m_contentMeta[i].GetInstallContentMeta(installContentMetaBuf, cnmtContentRecord, m_ignoreReqFirmVersion);
+    m_contentMeta[i].GetInstallContentMeta(installContentMetaBuf, cnmtContentInfo, inst::config::ignoreReqVers);
 
     this->InstallContentMetaRecords(installContentMetaBuf, i);
     this->InstallApplicationRecord(i);
   }
-}
 
-void Install::Begin() {
+  // install tickets and certs
+  auto tikFileEntries = m_nsp_or_xci->GetFileEntriesByExtension("tik");
+  auto certFileEntries = m_nsp_or_xci->GetFileEntriesByExtension("cert");
+
+  for (size_t i = 0; i < tikFileEntries.size(); i++) {
+    u64 tikSize = m_nsp_or_xci->GetFileEntrySize(tikFileEntries[i]);
+    auto tikBuf = std::make_unique<u8[]>(tikSize);
+    m_nsp_or_xci->BufferData(tikBuf.get(), m_nsp_or_xci->GetFileEntryOffset(tikFileEntries[i]), tikSize);
+
+    u64 certSize = m_nsp_or_xci->GetFileEntrySize(certFileEntries[i]);
+    auto certBuf = std::make_unique<u8[]>(certSize);
+    m_nsp_or_xci->BufferData(certBuf.get(), m_nsp_or_xci->GetFileEntryOffset(certFileEntries[i]), certSize);
+
+    if (inst::config::fixticket)
+      fixTicket(tikBuf.get());
+
+    // Finally, let's actually import the ticket
+    ASSERT_OK(esImportTicket(tikBuf.get(), tikSize, certBuf.get(), certSize), "Failed to import ticket");
+  }
+
+  // install NCAs
   for (nx::ncm::ContentMeta contentMeta : m_contentMeta) {
-    LOG_DEBUG("Installing NCAs...\n");
     for (auto &record : contentMeta.GetContentInfos()) {
-      LOG_DEBUG("Installing from %s\n", tin::util::GetNcaIdString(record.content_id).c_str());
       this->InstallNCA(record.content_id);
     }
   }
 }
 
-u64 Install::GetTitleId(int i) { return m_contentMeta[i].GetContentMetaKey().id; }
-
-NcmContentMetaType Install::GetContentMetaType(int i) {
-  return static_cast<NcmContentMetaType>(m_contentMeta[i].GetContentMetaKey().type);
-}
 } // namespace tin::install
