@@ -3,6 +3,7 @@
 #include "nx/content_meta.hpp"
 #include "nx/ipc/tin_ipc.h"
 #include <string>
+
 #include <switch/types.h>
 
 namespace tin::util {

@@ -1,7 +1,10 @@
 #pragma once
 
+extern "C" {
 #include <switch/services/ncm.h>
+}
 #include <switch/types.h>
+
 #include <vector>
 
 #include "data/byte_buffer.hpp"

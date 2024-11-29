@@ -1,9 +1,5 @@
 #pragma once
 
-extern "C" {
-#include <switch/services/fs.h>
-}
-
 #include <tuple>
 #include <vector>
 

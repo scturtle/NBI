@@ -1,18 +1,33 @@
 #include "util/file_util.hpp"
+#include "data/byte_buffer.hpp"
+#include "util/error.hpp"
 
 #include <memory>
 
-#include "data/byte_buffer.hpp"
-#include "nx/fs.hpp"
-#include "util/title_util.hpp"
+extern "C" {
+#include <switch/services/fs.h>
+#include <switch/types.h>
+}
 
-namespace {
-std::string FindCNMTFile(nx::fs::IFileSystem &fileSystem, std::string path) {
-  nx::fs::IDirectory dir = fileSystem.OpenDirectory(path, FsDirOpenMode_ReadFiles | FsDirOpenMode_ReadDirs);
+static std::string FindCNMTFile(FsFileSystem &fileSystem, std::string path) {
+  if (path.length() >= FS_MAX_PATH)
+    THROW_FORMAT("Directory path is too long!");
 
-  u64 entryCount = dir.GetEntryCount();
+  FsDir dir;
+  Result rc = 0;
+  rc = fsFsOpenDirectory(&fileSystem, path.c_str(), FsDirOpenMode_ReadFiles | FsDirOpenMode_ReadDirs, &dir);
+  ASSERT_OK(rc, ("Failed to open directory " + path).c_str());
+
+  s64 entryCount = 0;
+  rc = fsDirGetEntryCount(&dir, &entryCount);
+  ASSERT_OK(rc, "Failed to get entry count");
+
   auto dirEntries = std::make_unique<FsDirectoryEntry[]>(entryCount);
-  dir.Read(0, dirEntries.get(), entryCount);
+
+  s64 readEntries;
+  rc = fsDirRead(&dir, &readEntries, entryCount, dirEntries.get());
+  ASSERT_OK(rc, "Failed to read directory");
+  assert(readEntries == entryCount);
 
   for (unsigned int i = 0; i < entryCount; i++) {
     FsDirectoryEntry dirEntry = dirEntries[i];
@@ -30,24 +45,47 @@ std::string FindCNMTFile(nx::fs::IFileSystem &fileSystem, std::string path) {
   }
   return "";
 }
-} // namespace
 
 namespace tin::util {
-// TODO: do this manually so we don't have to "install" the cnmt's
-nx::ncm::ContentMeta GetContentMetaFromNCA(const std::string &ncaPath) {
-  // Create the cnmt filesystem
-  nx::fs::IFileSystem cnmtNCAFileSystem;
-  cnmtNCAFileSystem.OpenFileSystemWithId(ncaPath, FsFileSystemType_ContentMeta, 0);
+nx::ncm::ContentMeta GetContentMetaFromNCA(std::string ncaPath) {
+
+  Result rc = 0;
+  if (ncaPath.length() >= FS_MAX_PATH)
+    THROW_FORMAT("Directory path is too long!");
+
+  // libnx expects a FS_MAX_PATH-sized buffer
+  ncaPath.reserve(FS_MAX_PATH);
+
+  FsFileSystem fileSystem;
+  rc = fsOpenFileSystemWithId(&fileSystem, /*titleId=*/0, FsFileSystemType_ContentMeta, ncaPath.c_str(),
+                              FsContentAttributes_All);
+
+  ASSERT_OK(rc, ("Failed to open file system with id: " + ncaPath).c_str());
 
   // Find and read the cnmt file
-  std::string cnmtFilePath = FindCNMTFile(cnmtNCAFileSystem, "/");
-  nx::fs::IFile cnmtFile = cnmtNCAFileSystem.OpenFile(cnmtFilePath);
-  u64 cnmtSize = cnmtFile.GetSize();
+  std::string cnmtFilePath = FindCNMTFile(fileSystem, "/");
 
-  tin::data::ByteBuffer cnmtBuf;
-  cnmtBuf.Resize(cnmtSize);
-  cnmtFile.Read(0x0, cnmtBuf.GetData(), cnmtSize);
+  if (cnmtFilePath.length() >= FS_MAX_PATH)
+    THROW_FORMAT("Directory path is too long!");
 
-  return nx::ncm::ContentMeta(cnmtBuf.GetData(), cnmtBuf.GetSize());
+  // libnx expects a FS_MAX_PATH-sized buffer
+  cnmtFilePath.reserve(FS_MAX_PATH);
+
+  FsFile file;
+  rc = fsFsOpenFile(&fileSystem, cnmtFilePath.c_str(), FsOpenMode_Read, &file);
+  ASSERT_OK(rc, ("Failed to open file " + cnmtFilePath).c_str());
+
+  s64 cnmtSize;
+  rc = fsFileGetSize(&file, &cnmtSize);
+  ASSERT_OK(rc, "Failed to get file size");
+
+  auto cnmtBuf = std::make_unique<u8[]>(cnmtSize);
+
+  u64 sizeRead;
+  rc = fsFileRead(&file, 0, cnmtBuf.get(), cnmtSize, FsReadOption_None, &sizeRead);
+  ASSERT_OK(rc, "Failed to read file");
+  assert(sizeRead == (u64)cnmtSize);
+
+  return nx::ncm::ContentMeta(cnmtBuf.get(), cnmtSize);
 }
 } // namespace tin::util

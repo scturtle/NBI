@@ -1,7 +1,6 @@
 #include "install/install.hpp"
 
 #include "install/nca.hpp"
-#include "nx/fs.hpp"
 #include "nx/ncm.hpp"
 #include "ui/MainApplication.hpp"
 #include "util/config.hpp"

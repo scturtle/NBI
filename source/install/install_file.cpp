@@ -2,7 +2,6 @@
 #include "install/install.hpp"
 #include "install/nsp.hpp"
 #include "install/xci.hpp"
-#include "nx/fs.hpp"
 #include "ui/MainApplication.hpp"
 #include "util/config.hpp"
 #include "util/file_util.hpp"

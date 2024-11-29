@@ -1,8 +1,9 @@
 #pragma once
 
 #include <cstring>
-#include <switch/types.h>
 #include <vector>
+
+#include <switch/types.h>
 
 namespace tin::data {
 class ByteBuffer {
