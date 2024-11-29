@@ -5,9 +5,9 @@
 
 #include "nx/ncm.hpp"
 
-#include "data/byte_buffer.hpp"
 #include "install/nsp_or_xci.hpp"
 #include "nx/content_meta.hpp"
+#include "util/byte_buffer.hpp"
 
 namespace tin::install {
 class Install {

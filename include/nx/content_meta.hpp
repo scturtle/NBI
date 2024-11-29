@@ -7,7 +7,7 @@ extern "C" {
 
 #include <vector>
 
-#include "data/byte_buffer.hpp"
+#include "util/byte_buffer.hpp"
 
 namespace nx::ncm {
 struct PackagedContentInfo {

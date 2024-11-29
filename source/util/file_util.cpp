@@ -1,5 +1,5 @@
 #include "util/file_util.hpp"
-#include "data/byte_buffer.hpp"
+#include "util/byte_buffer.hpp"
 #include "util/error.hpp"
 
 #include <memory>
