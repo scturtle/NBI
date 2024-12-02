@@ -4,6 +4,7 @@
 #include "util/error.hpp"
 #include "util/lang.hpp"
 #include "util/title_util.hpp"
+#include "util/util.hpp"
 #include <memory>
 #include <sstream>
 
@@ -75,20 +76,16 @@ void NSPorXCI::StreamToPlaceholder(nx::ncm::ContentStorage &contentStorage, NcmC
   auto readBuffer = std::make_unique<u8[]>(readSize);
 
   try {
-    // inst::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + "...");
     inst::ui::instPage::setInstBarPerc(0);
     while (fileOff < ncaSize) {
       progress = (float)fileOff / (float)ncaSize;
+      inst::ui::instPage::setInstBarPerc((double)(progress * 100.0));
 
-      if (fileOff % (0x400000 * 3) == 0) {
-        LOG_DEBUG("> Progress: %lu/%lu MB (%d%s)\r", (fileOff / 1000000), (ncaSize / 1000000), (int)(progress * 100.0),
-                  "%");
-        inst::ui::instPage::setInstBarPerc((double)(progress * 100.0));
-        //
-        std::stringstream x;
-        x << (int)(progress * 100.0);
-        inst::ui::instPage::setInstInfoText("inst.info_page.top_info0"_lang + ncaFileName + " " + x.str() + "%");
-      }
+      std::stringstream x;
+      x << "inst.info_page.top_info0"_lang << ncaFileName << " " <<      //
+          (fileOff / 1000000) << "/" << (ncaSize / 1000000) << " MB " << //
+          (int)(progress * 100.0) << "%";
+      inst::ui::instPage::setInstInfoText(x.str());
 
       if (fileOff + readSize >= ncaSize)
         readSize = ncaSize - fileOff;
@@ -100,7 +97,7 @@ void NSPorXCI::StreamToPlaceholder(nx::ncm::ContentStorage &contentStorage, NcmC
     }
     inst::ui::instPage::setInstBarPerc(100);
   } catch (std::exception &e) {
-    LOG_DEBUG("something went wrong: %s\n", e.what());
+    inst::util::msg("something went wrong", e.what());
   }
 
   writer.close();
