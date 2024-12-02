@@ -1,5 +1,6 @@
 #pragma once
 #include <filesystem>
+#include <map>
 #include <pu/Plutonium>
 
 using namespace pu::ui::elm;
@@ -19,6 +20,7 @@ private:
   std::filesystem::path currentDir;
   TextBlock::Ref topText;
   TextBlock::Ref butText;
+  std::map<std::string, size_t> lastIdx;
   void select();
 };
 } // namespace inst::ui

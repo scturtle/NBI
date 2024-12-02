@@ -30,15 +30,11 @@ HDInstPage::HDInstPage() : Layout::Layout() {
   this->Add(this->menu);
 }
 
-void HDInstPage::drawMenuItems(std::filesystem::path ourPath) {
-  int myindex = this->menu->GetSelectedIndex(); // store index so when page redraws we can get the last item we checked.
-
-  this->currentDir = ourPath;
+void HDInstPage::drawMenuItems(std::filesystem::path path) {
+  this->currentDir = path;
   auto pathStr = this->currentDir.string();
-  if (pathStr.length()) {
-    if (pathStr[pathStr.length() - 1] == ':') {
-      this->currentDir = this->currentDir / "";
-    }
+  if (pathStr.ends_with(':')) {
+    this->currentDir = this->currentDir / "";
   }
 
   try {
@@ -71,18 +67,17 @@ void HDInstPage::drawMenuItems(std::filesystem::path ourPath) {
     this->menu->AddItem(ourEntry);
   }
 
-  this->menu->SetSelectedIndex(myindex);
+  this->menu->SetSelectedIndex(this->lastIdx[this->currentDir]);
 }
 
 void HDInstPage::select() {
   int selectedIndex = this->menu->GetSelectedIndex();
+  this->lastIdx[this->currentDir] = selectedIndex;
   int dirListSize = this->ourDirectories.size();
   if (this->menu->GetItems()[selectedIndex]->GetName() == "..") {
     this->drawMenuItems(this->currentDir.parent_path());
-    this->menu->SetSelectedIndex(0);
   } else if (selectedIndex - 1 < dirListSize) {
     this->drawMenuItems(this->ourDirectories[selectedIndex - 1]);
-    this->menu->SetSelectedIndex(0);
   } else {
     auto file = this->ourFiles[selectedIndex - 1 - dirListSize];
     int dialogResult = -1;
@@ -101,7 +96,12 @@ void HDInstPage::select() {
 
 void HDInstPage::onInput(u64 Down, u64 Up, u64 Held, pu::ui::TouchPoint touch_pos) {
   if (Down & HidNpadButton_B) {
-    mainApp->LoadLayout(mainApp->mainPage);
+    if (this->currentDir.string().ends_with(":/")) {
+      mainApp->LoadLayout(mainApp->mainPage);
+    } else {
+      this->lastIdx[this->currentDir] = this->menu->GetSelectedIndex();
+      this->drawMenuItems(this->currentDir.parent_path());
+    }
   }
 
   HidTouchScreenState state = {0};
