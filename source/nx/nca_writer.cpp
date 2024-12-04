@@ -1,20 +1,11 @@
 #include "nx/nca_writer.h"
 #include "install/nca.hpp"
-#include "util/config.hpp"
 #include "util/crypto.hpp"
 #include "util/error.hpp"
-#include "util/title_util.hpp"
-#include <filesystem>
-#include <sstream>
+#include "util/util.hpp"
 #include <string.h>
 #include <switch.h>
 #include <zstd.h>
-
-// for debugging
-// #include "ui/MainApplication.hpp"
-// namespace inst::ui {
-// extern MainApplication *mainApp;
-// }
 
 static void append(std::vector<u8> &buffer, const u8 *ptr, u64 sz) {
   u64 offset = buffer.size();
@@ -25,18 +16,32 @@ static void append(std::vector<u8> &buffer, const u8 *ptr, u64 sz) {
 class NcaBodyWriter {
 public:
   NcaBodyWriter(const NcmContentId &ncaId, u64 offset, nx::ncm::ContentStorage *contentStorage)
-      : m_contentStorage(contentStorage), m_ncaId(ncaId), m_offset(offset) {}
+      : m_contentStorage(contentStorage), m_ncaId(ncaId), m_offset(offset) {
+    sha256ContextCreate(&m_ctx);
+  }
 
   virtual u64 write(const u8 *ptr, u64 sz) {
     m_contentStorage->WritePlaceholder(*(NcmPlaceHolderId *)&m_ncaId, m_offset, (void *)ptr, sz);
+    this->update_hash(ptr, sz);
     m_offset += sz;
     return sz;
+  }
+
+  virtual void close() {}
+
+  void update_hash(const void *src, size_t size) { sha256ContextUpdate(&m_ctx, src, size); }
+
+  bool verify_hash(const NcmContentId &ncaId) {
+    u8 nca_hash[SHA256_HASH_SIZE] = {0};
+    sha256ContextGetHash(&m_ctx, nca_hash);
+    return memcmp(nca_hash, &ncaId.c, sizeof(ncaId.c)) == 0;
   }
 
 protected:
   nx::ncm::ContentStorage *m_contentStorage;
   NcmContentId m_ncaId;
   u64 m_offset;
+  Sha256Context m_ctx;
 };
 
 class NczHeader {
@@ -148,10 +153,12 @@ public:
     ZSTD_freeDCtx(dctx);
   }
 
-  void close() {
+  void close() override {
     if (!m_isBlockCompression) {
-      if (m_buffer.size())
+      if (m_buffer.size()) {
         processChunk(m_buffer.data(), m_buffer.size());
+        m_buffer.resize(0);
+      }
       encrypt(m_deflateBuffer.data(), m_deflateBuffer.size(), m_offset);
       flush();
     } else {
@@ -164,6 +171,7 @@ public:
     if (m_deflateBuffer.size()) {
       m_contentStorage->WritePlaceholder(*(NcmPlaceHolderId *)&m_ncaId, m_offset, m_deflateBuffer.data(),
                                          m_deflateBuffer.size());
+      this->update_hash(m_deflateBuffer.data(), m_deflateBuffer.size());
       m_offset += m_deflateBuffer.size();
       m_deflateBuffer.resize(0);
     }
@@ -322,6 +330,9 @@ NcaWriter::~NcaWriter() { close(); }
 
 bool NcaWriter::close() {
   if (m_writer) {
+    m_writer->close();
+    if (not m_writer->verify_hash(m_ncaId))
+      inst::util::msg("error", "nca verification failed");
     m_writer = NULL;
   } else if (m_buffer.size()) {
     if (isOpen())
@@ -353,6 +364,7 @@ u64 NcaWriter::write(const u8 *ptr, u64 sz) {
         } else {
           m_writer = std::make_shared<NcaBodyWriter>(m_ncaId, m_buffer.size(), m_contentStorage);
         }
+        m_writer->update_hash(m_buffer.data(), m_buffer.size());
       } else {
         THROW_FORMAT("not enough data to read ncz header");
       }
