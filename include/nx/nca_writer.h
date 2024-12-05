@@ -12,14 +12,14 @@ public:
   NcaWriter(const NcmContentId &ncaId, nx::ncm::ContentStorage *contentStorage);
   virtual ~NcaWriter();
 
-  bool isOpen() const;
   bool close();
   u64 write(const u8 *ptr, u64 sz);
-  void flushHeader();
 
 protected:
+  void flushHeader();
+
   NcmContentId m_ncaId;
   nx::ncm::ContentStorage *m_contentStorage;
   std::vector<u8> m_buffer;
-  std::shared_ptr<NcaBodyWriter> m_writer;
+  std::unique_ptr<NcaBodyWriter> m_writer;
 };

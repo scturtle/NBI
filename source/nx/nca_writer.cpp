@@ -15,8 +15,8 @@ static void append(std::vector<u8> &buffer, const u8 *ptr, u64 sz) {
 
 class NcaBodyWriter {
 public:
-  NcaBodyWriter(const NcmContentId &ncaId, u64 offset, nx::ncm::ContentStorage *contentStorage)
-      : m_contentStorage(contentStorage), m_ncaId(ncaId), m_offset(offset) {
+  NcaBodyWriter(const NcmContentId &ncaId, nx::ncm::ContentStorage *contentStorage)
+      : m_contentStorage(contentStorage), m_ncaId(ncaId) {
     sha256ContextCreate(&m_ctx);
   }
 
@@ -40,7 +40,7 @@ public:
 protected:
   nx::ncm::ContentStorage *m_contentStorage;
   NcmContentId m_ncaId;
-  u64 m_offset;
+  u64 m_offset = NCA_HEADER_SIZE;
   Sha256Context m_ctx;
 };
 
@@ -141,8 +141,8 @@ struct BlockInfo {
 
 class NczBodyWriter : public NcaBodyWriter {
 public:
-  NczBodyWriter(const NcmContentId &ncaId, u64 offset, nx::ncm::ContentStorage *contentStorage)
-      : NcaBodyWriter(ncaId, offset, contentStorage) {
+  NczBodyWriter(const NcmContentId &ncaId, nx::ncm::ContentStorage *contentStorage)
+      : NcaBodyWriter(ncaId, contentStorage) {
     buffOut = malloc(buffOutSize);
     dctx = ZSTD_createDCtx();
   }
@@ -288,19 +288,9 @@ public:
         }
       }
     } else {
-      while (sz) {
-        if (m_buffer.size() + sz >= 0x1000000) {
-          u64 chunk = 0x1000000 - m_buffer.size();
-          append(m_buffer, ptr, chunk);
-          processChunk(m_buffer.data(), m_buffer.size());
-          m_buffer.resize(0);
-          sz -= chunk;
-          ptr += chunk;
-        } else {
-          append(m_buffer, ptr, sz);
-          sz = 0;
-        }
-      }
+      append(m_buffer, ptr, sz);
+      processChunk(m_buffer.data(), m_buffer.size());
+      m_buffer.resize(0);
     }
 
     return sz;
@@ -324,7 +314,7 @@ public:
 };
 
 NcaWriter::NcaWriter(const NcmContentId &ncaId, nx::ncm::ContentStorage *contentStorage)
-    : m_ncaId(ncaId), m_contentStorage(contentStorage), m_writer(NULL) {}
+    : m_ncaId(ncaId), m_contentStorage(contentStorage) {}
 
 NcaWriter::~NcaWriter() { close(); }
 
@@ -333,17 +323,13 @@ bool NcaWriter::close() {
     m_writer->close();
     if (not m_writer->verify_hash(m_ncaId))
       inst::util::msg("error", "nca verification failed");
-    m_writer = NULL;
   } else if (m_buffer.size()) {
-    if (isOpen())
-      flushHeader();
-    m_buffer.resize(0);
+    flushHeader(); // cnmt.nca
   }
-  m_contentStorage = NULL;
+  m_writer = nullptr;
+  m_buffer.resize(0);
   return true;
 }
-
-bool NcaWriter::isOpen() const { return (bool)m_contentStorage; }
 
 u64 NcaWriter::write(const u8 *ptr, u64 sz) {
   if (m_buffer.size() < NCA_HEADER_SIZE) {
@@ -351,30 +337,20 @@ u64 NcaWriter::write(const u8 *ptr, u64 sz) {
     append(m_buffer, ptr, remainder);
     ptr += remainder;
     sz -= remainder;
-    if (m_buffer.size() == NCA_HEADER_SIZE) {
-      flushHeader();
-    }
   }
 
   if (sz) {
     if (!m_writer) {
-      if (sz >= sizeof(NczHeader::MAGIC)) {
-        if (*(u64 *)ptr == NczHeader::MAGIC) {
-          m_writer = std::make_shared<NczBodyWriter>(m_ncaId, m_buffer.size(), m_contentStorage);
-        } else {
-          m_writer = std::make_shared<NcaBodyWriter>(m_ncaId, m_buffer.size(), m_contentStorage);
-        }
-        m_writer->update_hash(m_buffer.data(), m_buffer.size());
-      } else {
+      if (sz < sizeof(NczHeader::MAGIC))
         THROW_FORMAT("not enough data to read ncz header");
-      }
+      if (*(u64 *)ptr == NczHeader::MAGIC)
+        m_writer = std::make_unique<NczBodyWriter>(m_ncaId, m_contentStorage);
+      else
+        m_writer = std::make_unique<NcaBodyWriter>(m_ncaId, m_contentStorage);
+      m_writer->update_hash(m_buffer.data(), m_buffer.size());
+      flushHeader();
     }
-
-    if (m_writer) {
-      m_writer->write(ptr, sz);
-    } else {
-      THROW_FORMAT("null writer");
-    }
+    m_writer->write(ptr, sz);
   }
 
   return sz;
@@ -388,9 +364,7 @@ void NcaWriter::flushHeader() {
   decryptor.decrypt(&header, &header, sizeof(header), 0, 0x200);
 
   if (header.magic == MAGIC_NCA3) {
-    if (isOpen()) {
-      m_contentStorage->CreatePlaceholder(m_ncaId, *(NcmPlaceHolderId *)&m_ncaId, header.nca_size);
-    }
+    m_contentStorage->CreatePlaceholder(m_ncaId, *(NcmPlaceHolderId *)&m_ncaId, header.nca_size);
   } else {
     THROW_FORMAT("Invalid NCA magic");
   }
@@ -400,7 +374,5 @@ void NcaWriter::flushHeader() {
   }
   encryptor.encrypt(m_buffer.data(), &header, sizeof(header), 0, 0x200);
 
-  if (isOpen()) {
-    m_contentStorage->WritePlaceholder(*(NcmPlaceHolderId *)&m_ncaId, 0, m_buffer.data(), m_buffer.size());
-  }
+  m_contentStorage->WritePlaceholder(*(NcmPlaceHolderId *)&m_ncaId, 0, m_buffer.data(), m_buffer.size());
 }
