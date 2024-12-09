@@ -22,7 +22,6 @@ public:
 
   void RetrieveHeader();
   const PFS0BaseHeader *GetBaseHeader();
-  u64 GetDataOffset();
 
   void BufferData(void *buf, off_t offset, size_t size) override;
 

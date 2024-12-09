@@ -17,9 +17,7 @@ void XCI::BufferData(void *buf, off_t offset, size_t size) {
 }
 
 void XCI::RetrieveHeader() {
-  LOG_DEBUG("Retrieving HFS0 header...\n");
-
-  // Retrieve hfs0 offset
+  // Retrieve hfs0 offset (the PartitionFsHeaderAddress at 0x130 in CardHeader)
   u64 hfs0Offset = 0xf000;
 
   // Retrieve main hfs0 header
@@ -37,7 +35,7 @@ void XCI::RetrieveHeader() {
   this->BufferData(m_headerBytes.data() + sizeof(HFS0BaseHeader), hfs0Offset + sizeof(HFS0BaseHeader),
                    remainingHeaderSize);
 
-  // Find Secure partition
+  // find secure partition
   header = reinterpret_cast<HFS0BaseHeader *>(m_headerBytes.data());
   for (unsigned int i = 0; i < header->numFiles; i++) {
     const HFS0FileEntry *entry = hfs0GetFileEntry(header, i);
@@ -46,7 +44,7 @@ void XCI::RetrieveHeader() {
     if (entryName != "secure")
       continue;
 
-    m_secureHeaderOffset = hfs0Offset + remainingHeaderSize + 0x10 + entry->dataOffset;
+    m_secureHeaderOffset = hfs0Offset + sizeof(HFS0BaseHeader) + remainingHeaderSize + entry->dataOffset;
     m_secureHeaderBytes.resize(sizeof(HFS0BaseHeader), 0);
     this->BufferData(m_secureHeaderBytes.data(), m_secureHeaderOffset, sizeof(HFS0BaseHeader));
 
@@ -54,8 +52,7 @@ void XCI::RetrieveHeader() {
       THROW_FORMAT("hfs0 magic doesn't match\n");
 
     // Retrieve full header
-    remainingHeaderSize =
-        this->GetSecureHeader()->numFiles * sizeof(HFS0FileEntry) + this->GetSecureHeader()->stringTableSize;
+    remainingHeaderSize = this->GetFileEntryNum() * sizeof(HFS0FileEntry) + this->GetSecureHeader()->stringTableSize;
     m_secureHeaderBytes.resize(sizeof(HFS0BaseHeader) + remainingHeaderSize, 0);
     this->BufferData(m_secureHeaderBytes.data() + sizeof(HFS0BaseHeader), m_secureHeaderOffset + sizeof(HFS0BaseHeader),
                      remainingHeaderSize);
@@ -65,33 +62,19 @@ void XCI::RetrieveHeader() {
   THROW_FORMAT("couldn't optain secure hfs0 header\n");
 }
 
-const HFS0BaseHeader *XCI::GetSecureHeader() {
-  if (m_secureHeaderBytes.empty())
-    THROW_FORMAT("Cannot retrieve header as header bytes are empty. Have you retrieved it yet?\n");
-  return reinterpret_cast<HFS0BaseHeader *>(m_secureHeaderBytes.data());
-}
-
-u64 XCI::GetDataOffset() {
-  if (m_secureHeaderBytes.empty())
-    THROW_FORMAT("Cannot get data offset as header is empty. Have you retrieved it yet?\n");
-  return m_secureHeaderOffset + m_secureHeaderBytes.size();
-}
+const HFS0BaseHeader *XCI::GetSecureHeader() { return reinterpret_cast<HFS0BaseHeader *>(m_secureHeaderBytes.data()); }
 
 const u32 XCI::GetFileEntryNum() { return this->GetSecureHeader()->numFiles; }
+
+const void *XCI::GetFileEntry(unsigned int index) { return hfs0GetFileEntry(this->GetSecureHeader(), index); }
+
+const char *XCI::GetFileEntryName(const void *fileEntry) {
+  return hfs0GetFileName(this->GetSecureHeader(), (HFS0FileEntry *)fileEntry);
+}
 
 const u64 XCI::GetFileEntrySize(const void *fileEntry) { return ((HFS0FileEntry *)fileEntry)->fileSize; }
 
 const u64 XCI::GetFileEntryOffset(const void *fileEntry) {
-  return GetDataOffset() + ((HFS0FileEntry *)fileEntry)->dataOffset;
-}
-
-const void *XCI::GetFileEntry(unsigned int index) {
-  if (index >= this->GetFileEntryNum())
-    THROW_FORMAT("File entry index is out of bounds\n")
-  return hfs0GetFileEntry(this->GetSecureHeader(), index);
-}
-
-const char *XCI::GetFileEntryName(const void *fileEntry) {
-  return hfs0GetFileName(this->GetSecureHeader(), (HFS0FileEntry *)fileEntry);
+  return m_secureHeaderOffset + m_secureHeaderBytes.size() + ((HFS0FileEntry *)fileEntry)->dataOffset;
 }
 } // namespace tin::install::xci

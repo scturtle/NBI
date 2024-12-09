@@ -23,7 +23,6 @@ public:
 
   void RetrieveHeader();
   const HFS0BaseHeader *GetSecureHeader();
-  u64 GetDataOffset();
 
   void BufferData(void *buf, off_t offset, size_t size) override;
 
